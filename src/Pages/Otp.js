@@ -1,0 +1,176 @@
+import React, { useState, useRef, useEffect } from "react";
+import logoverif from '../Assets/verifyotp.png';
+import { Link, useNavigate } from "react-router-dom";
+
+function Otp() {
+  const [otp, setOTP] = useState(["", "", "", ""]);
+  const refs = [useRef(null), useRef(null), useRef(null), useRef(null)];
+  const [timer, setTimer] = useState(0);
+  const [disabled, setDisabled] = useState(false);
+  const [isInvalid, setIsInvalid] = useState(false);
+  const correctOTP = ["1", "2", "3", "4"];
+  const navigate = useNavigate();
+  const [failedAttempts, setFailedAttempts] = useState(0);
+  const [showPopup, setShowPopup] = useState(false);
+  const [resendAttemps, setResendAttemps] = useState(0);
+  // const [showBorder, setShowBorder] = useState(false);
+
+  
+  const handleChange = (event, index) => {
+    const { value } = event.target;
+    const newOTP = [...otp];
+    newOTP[index] = value;
+    setOTP(newOTP);
+    if (index < refs.length - 1 && value) {
+      refs[index + 1].current.focus();
+    }
+  };
+
+  const handleKeyDown = (event, index) => {
+    if (event.key === "Backspace" && index > 0) {
+      const newOTP = [...otp];
+      newOTP[index - 1] = "";
+      setOTP(newOTP);
+      refs[index - 1].current.focus();
+    } else if (event.key === "ArrowLeft" && index > 0) {
+      refs[index - 1].current.focus();
+    } else if (event.key === "ArrowRight" && index < otp.length - 1) {
+      refs[index + 1].current.focus();
+    }
+  };
+  
+
+
+  // useEffect(()=>{
+
+  //   let timeoutId;
+
+  //       if(timer > 0){
+  //           timeoutId = setTimeout(() => {
+  //             setTimer(timer - 1);
+  //           }, 1000)
+  //       }
+  //       else{
+  //         setShowPopup(false);
+  //       }
+  //       return () => clearTimeout(timeoutId);
+  // }, [timer, disabled]);
+
+  
+
+  const handleResend = () => {
+    setOTP(["", "", "", ""]); 
+    setDisabled(true);
+    setResendAttemps(resendAttemps + 1) // nonaktifkan button saat sedang mengirim ulang kode OTP
+  };
+
+
+  // useEffect(() => {
+  //   let intervalId;
+  
+  //   if (showPopup && popupTimer > 0) {
+  //     intervalId = setInterval(() => {
+  //       setPopupTimer(popupTimer - 1);
+  //     }, 1000);
+  //   } else if (showPopup && popupTimer === 0) {
+  //     setShowPopup(false);
+  //   }
+  
+  //   return () => clearInterval(intervalId);
+  // }, [showPopup, popupTimer]);
+
+  // const showPopupWithTimer = () => {
+  //   setPopupTimer(5); // set timer ke 5 detik
+  //   setShowPopup(true);
+  //   const intervalId = setInterval(() => {
+  //     setPopupTimer(prevTimer => prevTimer - 1);
+  //   }, 1000);
+  //   setTimeout(() => {
+  //     setShowPopup(false);
+  //     clearInterval(intervalId);
+  //   }, 5000);
+  // };
+
+  function handleSubmit(event){
+    event.preventDefault();
+
+    if (otp.join("") !== correctOTP.join("")){
+      setOTP(["", "", "", ""]);
+      setFailedAttempts(failedAttempts + 1);
+      if (failedAttempts >= 2) {
+        navigate('/otp-failed');
+      }
+      setIsInvalid(true);
+      setShowPopup(true)
+      setTimeout(()=> setShowPopup(false),4000);
+      // showPopupWithTimer();
+      setShowPopup(true);
+    } else {
+      setIsInvalid(false);
+      navigate('/otp-successful');
+    }
+  }
+
+  // const handleFocus = (event) => {
+  //   event.target.style.border = "2px solid red";
+  //   setTimeout(() => {event.target.border = ""
+  // }, 1000);
+  // };
+
+useEffect(() => {
+  if(resendAttemps === 1){
+    setFailedAttempts(0);
+  }
+}, [resendAttemps]);
+  
+  const fontWeight ='bold';
+
+  return (
+    <div className="App">
+        <div className="otp-page-container">
+        <div className="otp-logo">
+            <img src={logoverif} alt="" />
+        </div>
+        <div className="otp-text-header">
+        <h1 style={{fontWeight}}>Verification Code</h1>
+        <h6>We have sent the code to your email</h6>
+        </div>
+        <div className="otp-container">
+        {otp.map((digit, index) => (
+          <input
+            type="text"
+            maxLength="1"
+            key={index}
+            value={digit}
+            ref={refs[index]}
+            onChange={(event) => handleChange(event, index)}
+            onKeyDown={(event) => handleKeyDown(event, index)}
+            onSubmit={handleSubmit}
+            // onFocus={handleFocus}
+            // style={isInvalid || showBorder ? {borderColor: 'red'} : {}}
+          />
+        ))}
+        </div>
+        <div className="resend-otp">
+        <h3>Didn't receive the code?
+        <a href="/Otp" disabled={disabled} onClick={handleResend}>
+          Resend Code
+        </a></h3>
+      </div>
+      <div className="otp-submit">
+        <button type="submit" onClick={handleSubmit}>Verify Email</button>
+      </div>
+      {showPopup && (
+        <div className="popup">
+          <div className="popup-box">
+          <h4>Invalid Code!</h4>
+          <h6>Please click resend OTP to get  OTP Code again</h6>
+          </div>
+        </div> 
+      )}
+      </div>
+      </div>
+  );
+}
+
+export default Otp;
