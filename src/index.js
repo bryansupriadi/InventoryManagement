@@ -75,7 +75,11 @@ const router = createBrowserRouter([
     element: <ManageAccount/>,
   },
   {
-    path: "/add-sub-category",
+    path: "/add-sub-category/active",
+    element: <AddSubCategory/>,
+  },
+  {
+    path: "/add-sub-category/passive",
     element: <AddSubCategory/>,
   },
 ])

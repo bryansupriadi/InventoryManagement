@@ -515,6 +515,7 @@ nav {
 }
 .offcanvas.sidebar{
   background-color: #00788D;
+  z-index: 100000;
 }
 
 .sidebar-title{
@@ -756,7 +757,7 @@ body::-webkit-scrollbar {
 }
 
 .active-page-container {
-  height: 100vh;
+  min-height: 100vh;
   background-color: #002938;
 }
 
@@ -1081,12 +1082,22 @@ ul {
   position: fixed;
   width: 23rem;
   height: 15rem;
+  z-index: 9999;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  margin-top: 20px;
+}
+
+@media screen and (max-width: 400px) {
+  .floating-action-button-container {
+    bottom: 60px; /* Adjust this value to your liking */
+    right: 10px; /* Adjust this value to your liking */
+  }
 }
 
 .floating-action-button {
-  position: absolute;
-  bottom: 0;
-  right: 0;
+  position: fixed;
   width: 56px;
   height: 56px;
   border-radius: 50%;
@@ -1109,7 +1120,6 @@ ul {
   right: 2.5px;
   display: flex;
   flex-direction: column;
-  display: flex;
   justify-content: center;
 }
 

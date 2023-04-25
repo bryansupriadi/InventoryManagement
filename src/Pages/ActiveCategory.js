@@ -15,14 +15,8 @@ function ActiveCategory() {
                 <h1>Active</h1>
                 <SideBar/>
             </div>
-            <div className='product-category-container'>
-                <h4>Computer Devices</h4>
-                <h6><Link to="/computer-devices" style={{textDecoration: 'none', color: '#D9C5C5', fontWeight: 'lighter'}}>See All</Link></h6>
+            <div className='content-container'>
                 <SliderCD/>
-            </div>
-            <div>
-            <h4>Household Appliances</h4>
-            <h6><Link to="/computer-devices" style={{textDecoration: 'none', color: '#D9C5C5', fontWeight: 'lighter'}}>See All</Link></h6>
             </div>
             <div className='fab-btn'>
             <FloatingActionCategory/>
