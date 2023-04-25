@@ -129,6 +129,8 @@ function Otp() {
           console.log(res.data);
           console.log(res.data.msg);
 
+          localStorage.setItem("token", res.data.token);
+
           setIsInvalid(false);
           navigate("/otp-successful");
         })
