@@ -39,9 +39,9 @@ function FloatingActionButton() {
           </button>
           </div>
           <div className='fab-option-container'>
-          <span>          <Link to='/add-sub-category' style={{textDecoration: 'none', color: '#002938'}}>Add Sub Category</Link></span>
+          <span><Link to='/add-sub-category/active' style={{textDecoration: 'none', color: '#002938'}}>Add Sub Category</Link></span>
           <button className='fab-option'>
-          <Link to='/add-sub-category' style={{textDecoration: 'none', color: '#002938'}}>1</Link>
+          <Link to='/add-sub-category/active' style={{textDecoration: 'none', color: '#002938'}}>1</Link>
           </button>
           </div>
           </div>

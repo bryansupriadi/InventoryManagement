@@ -35,10 +35,14 @@ function SliderCD() {
   ));
 
   return (
+    <div className='product-category-container'>
+    <h4>Computer Devices</h4>
+    <h6><Link to="/computer-devices" style={{textDecoration: 'none', color: '#D9C5C5', fontWeight: 'lighter'}}>See All</Link></h6>
     <div className='carousel-items'>
       <Carousel responsive={responsive} showDots={false} arrows={false}>
         {devices}
       </Carousel>
+    </div>
     </div>
   );
 }
