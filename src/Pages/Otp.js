@@ -70,7 +70,7 @@ function Otp() {
         setDisabled(true);
         setResendAttemps(resendAttemps + 1); // nonaktifkan button saat sedang mengirim ulang kode OTP
 
-        if (resendAttemps >= 2) {
+        if (resendAttemps >= 3) {
           navigate("/otp-failed");
         }
       })
