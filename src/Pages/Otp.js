@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
-import logoverif from '../Assets/verifyotp.png';
+import logoverif from "../Assets/verifyotp.png";
 import { Link, useNavigate } from "react-router-dom";
+
+import axios from "axios";
 
 function Otp() {
   const [otp, setOTP] = useState(["", "", "", ""]);
@@ -15,7 +17,6 @@ function Otp() {
   const [resendAttemps, setResendAttemps] = useState(0);
   // const [showBorder, setShowBorder] = useState(false);
 
-  
   const handleChange = (event, index) => {
     const { value } = event.target;
     const newOTP = [...otp];
@@ -38,8 +39,6 @@ function Otp() {
       refs[index + 1].current.focus();
     }
   };
-  
-
 
   // useEffect(()=>{
 
@@ -56,18 +55,33 @@ function Otp() {
   //       return () => clearTimeout(timeoutId);
   // }, [timer, disabled]);
 
-  
+  const handleResend = async (event) => {
+    event.preventDefault();
 
-  const handleResend = () => {
-    setOTP(["", "", "", ""]); 
-    setDisabled(true);
-    setResendAttemps(resendAttemps + 1) // nonaktifkan button saat sedang mengirim ulang kode OTP
+    console.log("Sending request....");
+
+    await axios
+      .get("http://localhost:5000/v1/im/users/resendOTP")
+      .then((res) => {
+        console.log(res.data);
+        console.log(res.data.msg);
+
+        setOTP(["", "", "", ""]);
+        setDisabled(true);
+        setResendAttemps(resendAttemps + 1); // nonaktifkan button saat sedang mengirim ulang kode OTP
+
+        if (resendAttemps >= 2) {
+          navigate("/otp-failed");
+        }
+      })
+      .catch((err) => {
+        console.log(err, err.message);
+      });
   };
-
 
   // useEffect(() => {
   //   let intervalId;
-  
+
   //   if (showPopup && popupTimer > 0) {
   //     intervalId = setInterval(() => {
   //       setPopupTimer(popupTimer - 1);
@@ -75,7 +89,7 @@ function Otp() {
   //   } else if (showPopup && popupTimer === 0) {
   //     setShowPopup(false);
   //   }
-  
+
   //   return () => clearInterval(intervalId);
   // }, [showPopup, popupTimer]);
 
@@ -91,25 +105,40 @@ function Otp() {
   //   }, 5000);
   // };
 
-  function handleSubmit(event){
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (otp.join("") !== correctOTP.join("")){
-      setOTP(["", "", "", ""]);
-      setFailedAttempts(failedAttempts + 1);
-      if (failedAttempts >= 2) {
-        navigate('/otp-failed');
-      }
+    console.log("Sending request....");
+    console.log(otp);
+
+    if (!otp.join("") || !correctOTP.join("")) {
       setIsInvalid(true);
-      setShowPopup(true)
-      setTimeout(()=> setShowPopup(false),4000);
+      setShowPopup(true);
+      setTimeout(() => setShowPopup(false), 4000);
       // showPopupWithTimer();
       setShowPopup(true);
+      setOTP(["", "", "", ""]);
+      setFailedAttempts(failedAttempts + 1);
+      if (failedAttempts >= 3) {
+        navigate("/otp-failed");
+      }
     } else {
-      setIsInvalid(false);
-      navigate('/otp-successful');
+      await axios
+        .post("http://localhost:5000/v1/im/users/verified", { otp })
+        .then((res) => {
+          console.log(res.data);
+          console.log(res.data.msg);
+
+          localStorage.setItem("token", res.data.token);
+
+          setIsInvalid(false);
+          navigate("/otp-successful");
+        })
+        .catch((err) => {
+          console.log(err, err.message);
+        });
     }
-  }
+  };
 
   // const handleFocus = (event) => {
   //   event.target.style.border = "2px solid red";
@@ -117,59 +146,63 @@ function Otp() {
   // }, 1000);
   // };
 
-useEffect(() => {
-  if(resendAttemps === 1){
-    setFailedAttempts(0);
-  }
-}, [resendAttemps]);
-  
-  const fontWeight ='bold';
+  useEffect(() => {
+    if (resendAttemps === 1) {
+      setFailedAttempts(0);
+    }
+  }, [resendAttemps]);
+
+  const fontWeight = "bold";
 
   return (
     <div className="App">
-        <div className="otp-page-container">
+      <div className="otp-page-container">
         <div className="otp-logo">
-            <img src={logoverif} alt="" />
+          <img src={logoverif} alt="" />
         </div>
         <div className="otp-text-header">
-        <h1 style={{fontWeight}}>Verification Code</h1>
-        <h6>We have sent the code to your email</h6>
+          <h1 style={{ fontWeight }}>Verification Code</h1>
+          <h6>We have sent the code to your email</h6>
         </div>
         <div className="otp-container">
-        {otp.map((digit, index) => (
-          <input
-            type="text"
-            maxLength="1"
-            key={index}
-            value={digit}
-            ref={refs[index]}
-            onChange={(event) => handleChange(event, index)}
-            onKeyDown={(event) => handleKeyDown(event, index)}
-            onSubmit={handleSubmit}
-            // onFocus={handleFocus}
-            // style={isInvalid || showBorder ? {borderColor: 'red'} : {}}
-          />
-        ))}
+          {otp.map((digit, index) => (
+            <input
+              type="text"
+              maxLength="1"
+              key={index}
+              value={digit}
+              ref={refs[index]}
+              onChange={(event) => handleChange(event, index)}
+              onKeyDown={(event) => handleKeyDown(event, index)}
+              onSubmit={handleSubmit}
+              // onFocus={handleFocus}
+              // style={isInvalid || showBorder ? {borderColor: 'red'} : {}}
+            />
+          ))}
         </div>
         <div className="resend-otp">
-        <h3>Didn't receive the code?
-        <a href="/Otp" disabled={disabled} onClick={handleResend}>
-          Resend Code
-        </a></h3>
-      </div>
-      <div className="otp-submit">
-        <button type="submit" onClick={handleSubmit}>Verify Email</button>
-      </div>
-      {showPopup && (
-        <div className="popup">
-          <div className="popup-box">
-          <h4>Invalid Code!</h4>
-          <h6>Please click resend OTP to get  OTP Code again</h6>
+          <h3>
+            Didn't receive the code?
+            <a href="/otp" disabled={disabled} onClick={handleResend}>
+              Resend Code
+            </a>
+          </h3>
+        </div>
+        <div className="otp-submit">
+          <button type="submit" onClick={handleSubmit}>
+            Verify Email
+          </button>
+        </div>
+        {showPopup && (
+          <div className="popup">
+            <div className="popup-box">
+              <h4>Invalid Code!</h4>
+              <h6>Please click resend OTP to get OTP Code again</h6>
+            </div>
           </div>
-        </div> 
-      )}
+        )}
       </div>
-      </div>
+    </div>
   );
 }
 
