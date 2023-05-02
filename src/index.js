@@ -19,6 +19,7 @@ import VendorList from './Pages/VendorList';
 import VendorProduct from './Pages/VendorProduct';
 import ManageAccount from './Pages/ManageAccount';
 import AddSubCategory from './Pages/AddSubCategory';
+import ProductBrands from './Pages/ProductBrands';
 
 
 const router = createBrowserRouter([
@@ -51,11 +52,11 @@ const router = createBrowserRouter([
     element: <OtpFailed/>,
   },
   {
-    path: "/active-group",
+    path: "/active-category",
     element: <ActiveCategory/>,
   },
   {
-    path: "/passive-group",
+    path: "/passive-category",
     element: <PassiveCategory/>,
   },
   {
@@ -82,6 +83,23 @@ const router = createBrowserRouter([
     path: "/add-sub-category/passive",
     element: <AddSubCategory/>,
   },
+  {
+    path: "/active-category/computer-devices/:name",
+    element: <ProductBrands/>,
+  },
+  {
+    path: "/active-category/household-appliances/:name",
+    element: <ProductBrands/>,
+  },
+  {
+    path: "/passive-category/furniture/:name",
+    element: <ProductBrands/>,
+  },
+  {
+    path: "/passive-category/office-supplies/:name",
+    element: <ProductBrands/>,
+  },
+
 ])
 
 

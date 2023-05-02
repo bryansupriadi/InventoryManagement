@@ -2,7 +2,7 @@ import React from 'react'
 import FloatingActionCategory from '../Components/FloatingActionCategory';
 import SideBar from '../Components/SideBar';
 import { Link } from 'react-router-dom';
-import SliderCD from '../Components/Computer Devices/SliderCD';
+import SliderActive from '../Components/Computer Devices/SliderActive';
 
 
 
@@ -16,7 +16,7 @@ function ActiveCategory() {
                 <SideBar/>
             </div>
             <div className='content-container'>
-                <SliderCD/>
+              <SliderActive/>
             </div>
             <div className='fab-btn'>
             <FloatingActionCategory/>

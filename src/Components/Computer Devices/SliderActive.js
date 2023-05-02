@@ -1,11 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import ComputerDevices from './ComputerDevices';
+import {ComputerDevices, HouseholdAppliances} from './ComputerDevices';
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import ProductTemp from './ProductTemp';
 
-function SliderCD() {
+function SliderActive() {
   const responsive = {
     superLargeDesktop: {
       breakpoint: { max: 4000, min: 3000 },
@@ -25,8 +25,19 @@ function SliderCD() {
     }
   };
   
+
+
   const devices = ComputerDevices.map((item) => (
-    <Link to={`/active-category/${item.name}`} key={item.id}>
+    <Link to={`/active-category/computer-devices/${item.name}`} key={item.id}>
+      <ProductTemp 
+        name={item.name} 
+        icon={item.icon} 
+      />
+    </Link>
+  ));
+
+  const appliances = HouseholdAppliances.map((item) => (
+    <Link to={`/active-category/household-appliances/${item.name}`} key={item.id}>
       <ProductTemp 
         name={item.name} 
         icon={item.icon} 
@@ -37,14 +48,23 @@ function SliderCD() {
   return (
     <div className='product-category-container'>
     <h4>Computer Devices</h4>
-    <h6><Link to="/computer-devices" style={{textDecoration: 'none', color: '#D9C5C5', fontWeight: 'lighter'}}>See All</Link></h6>
+    <h6><Link to="/active-category/computer-devices" style={{textDecoration: 'none', color: '#D9C5C5', fontWeight: 'lighter'}}>See All</Link></h6>
     <div className='carousel-items'>
       <Carousel responsive={responsive} showDots={false} arrows={false}>
-        {devices}
+      {devices}
+      </Carousel>
+    </div>
+    <h4>Household Appliances</h4>
+    <h6><Link to="/active-category/household-appliances"  style={{textDecoration: 'none', color: '#D9C5C5', fontWeight: 'lighter'}}>See All</Link></h6>
+    <div className='carousel-items'>
+      <Carousel responsive={responsive} showDots={false} arrows={false}>
+      {appliances}
       </Carousel>
     </div>
     </div>
   );
 }
 
-export default SliderCD;
+
+
+export default SliderActive;

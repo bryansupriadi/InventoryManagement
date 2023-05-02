@@ -35,7 +35,11 @@ const subCategories = {
         { value: 'chair', label: 'Chair' },
         { value: 'table', label: 'Table' },
         { value: 'cupboard', label: 'Cupboard' },
-    ]
+    ],
+    officesupplies: [
+      { value: 'archfile', label: 'Arch File' },
+      { value: 'scissors', label: 'Scissors' },
+  ]
 };
 
 const vendors = [
@@ -59,6 +63,7 @@ const AddProductForm = () => {
     condition: '',
   });
 
+  const [productId, setProductId] =useState('');
   const [categoryOptions, setCategoryOptions] = useState([]);
   const [subCategoriesOptions, setSubCategoryOptions] = useState([]);
   const [errors, setErrors] = useState({});
@@ -79,6 +84,8 @@ const AddProductForm = () => {
       setSubCategoryOptions(subCategories.householdappliances);
     } else if (selectedOption.value === "furniture"){
       setSubCategoryOptions(subCategories.furniture);
+    } else if (selectedOption.value === "officesupplies"){
+      setSubCategoryOptions(subCategories.officesupplies);
     }
   
     if (name === "group") {
@@ -98,6 +105,29 @@ const AddProductForm = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+
+    let idString = '';
+    if(formValues.group && formValues.category){
+      if(formValues.group.value === 'active'){
+        idString += '1';
+      } else if (formValues.group.value === 'passive'){
+        idString += '0';
+      }
+      if (formValues.category.value === 'computerdevices'){
+        idString += '01';
+      } else if (formValues.category.value === 'householdappliances'){
+        idString += '02';
+      } else if (formValues.category.value === 'furniture') {
+        idString += '03';
+      } else if (formValues.category.value === 'officesupplies') {
+        idString += '04';
+      }
+
+      idString += productId;
+
+      console.log (idString);
+    }
+
     // handle form submission
     const newErrors = {};
 
@@ -135,6 +165,7 @@ const AddProductForm = () => {
     }
     if (Object.keys(newErrors).length === 0) {
       setErrors(errors);
+      setProductId((prevId) => prevId + 1)
     } else{
       setErrors(newErrors);
     }

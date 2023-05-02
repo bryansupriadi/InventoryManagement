@@ -782,11 +782,7 @@ body::-webkit-scrollbar {
 
 
 .passive-page-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+  min-height: 100vh;
   background-color: #002938;
 }
 
@@ -985,7 +981,6 @@ ul {
 
 .manage-account-page-container {
   min-height: 100vh;
-  max-height: 100%;
   background-color: #002938;
   width: 100%;
 }
@@ -1080,19 +1075,20 @@ ul {
 
 .floating-action-button-container {
   position: fixed;
-  width: 23rem;
-  height: 15rem;
   z-index: 9999;
   display: flex;
   justify-content: flex-end;
   align-items: flex-end;
   margin-top: 20px;
+  bottom: 60px; /* Adjust this value to your liking */
+  right: 10px;
 }
 
 @media screen and (max-width: 400px) {
   .floating-action-button-container {
     bottom: 60px; /* Adjust this value to your liking */
     right: 10px; /* Adjust this value to your liking */
+    position: fixed;
   }
 }
 
@@ -1159,6 +1155,12 @@ ul {
   border-radius: 5px;
 }
 
+.fab-btn {
+  position: fixed;
+  z-index: 9999;
+}
+
+
 .popup-container{
   position: fixed;
   background-color: #00788D;
@@ -1212,4 +1214,88 @@ ul {
   min-height: 100vh;
   width: 100%;
   background-color: #002938;
+}
+
+.select-ctgry-form {
+  width: 100%;
+  padding: 10px 5px;
+}
+
+.btn-ctgry-form {
+  float: right;
+  margin-top: 20px;
+  padding: 10px 20px;
+  color: #fff;
+  background-color: #3498db;
+  border: none;
+  border-radius: 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  max-width: 150px;
+  margin-right: 30px;
+  margin-top: 14rem;
+}
+
+
+.product-brand-page-container {
+  min-height: 100vh;
+  width: 100%;
+  background-color: #002938;
+}
+
+.sub-title-product{
+  background-color: #88e2ff;
+  max-width: 130px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 45px;
+  border-radius: 30px;
+  padding: 5px;
+  margin-left: 30px;
+  margin-top: 20px;
+}
+
+.sub-title-product h3 {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+
+.list-brands {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  margin-top: 20px;
+  border-top: 2px solid #00788D;
+  width: 100%;
+  padding-right: 30px;
+}
+
+.brand-info {
+  display: flex;
+  flex-direction: column;
+  padding-top: 15px;
+}
+
+.brand-info h3 {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.brand-info h6 {
+  font-size: 13px;
+}
+
+.price-info {
+  margin-left: 20px;
+  font-size: 18px;
+}
+
+
+.content-list {
+  margin-top: 20px;
+  color: #fff;
 }

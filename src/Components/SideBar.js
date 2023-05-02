@@ -55,8 +55,8 @@ function SideBar() {
                     style={{borderBottom: '1px solid #000'}}
                     className="text-white"
                     >
-                    <NavDropdown.Item href="/active-group">Active</NavDropdown.Item>
-                    <NavDropdown.Item href="/passive-group">Passive</NavDropdown.Item>
+                    <NavDropdown.Item href="/active-category">Active</NavDropdown.Item>
+                    <NavDropdown.Item href="/passive-category">Passive</NavDropdown.Item>
                   </NavDropdown>
                   <Nav.Link href="/reports" className="text-white" style={{borderBottom: '1px solid #000'}}>
                     <img src={report} alt="" className="me-2" />

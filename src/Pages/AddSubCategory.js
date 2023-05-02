@@ -51,13 +51,20 @@ function AddSubCategory() {
                     <h1>Add Sub Category</h1>
                     <SideBar/>
                 </div>
+                <div className='form-container'>
                 <form onSubmit={handleSubmit}>
                     <div>
                         <label className='form-field'>
                             Category Name
-                            <select value={category} onChange={handleCategoryChange} className='select-form'>
+                            <select 
+                            value={category} 
+                            onChange={handleCategoryChange} 
+                            className='select-ctgry-form'>
                                 {activeCategories.map((category) => (
-                                    <option key={category.value} value={category.value}>
+                                    <option 
+                                    key={category.value} 
+                                    value={category.value}
+                                    >
                                         {category.label}
                                     </option>
                                 ))}
@@ -66,21 +73,22 @@ function AddSubCategory() {
                     </div>
                     <div>
                         <label className='form-field'>
-                            Subcategory Name
-                            <input type='text' value={subCategoryName} onChange={handleSubCategoryNameChange} />
+                            Sub category Name
+                            <input type='text' value={subCategoryName} onChange={handleSubCategoryNameChange} className='input-form' />
                         </label>
                     </div>
                     <div>
                         <label className='form-field'>
-                            Subcategory Image
-                            <input type='text' value={subCategoryImage} onChange={handleSubCategoryImageChange} />
+                            Sub category Image
+                            <input type='file' value={subCategoryImage} onChange={handleSubCategoryImageChange} />
                         </label>
                     </div>
                     <div>
-                    <button type='submit'>Submit</button>
+                    <button type='submit' className='btn-ctgry-form'>Submit</button>
                     </div>
                 </form>
             </div>
+        </div>
         </div>
     )
     }

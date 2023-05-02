@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import SideBar from '../Components/SideBar';
 import Carousel from '../Components/Carousel';
 import Dropdown from '../Components/Dropdown';
-import {product} from '../Components/data/product';
+import product from '../Components/data/product';
 import SearchBar from "../Components/SearchBar";
 import { COLUMNS } from '../Components/Table';
 import {useTable} from 'react-table';

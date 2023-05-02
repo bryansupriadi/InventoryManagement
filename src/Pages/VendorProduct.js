@@ -4,7 +4,7 @@ import SideBar from '../Components/SideBar';
 
 function VendorProduct() {
 
-    const {name} =useParams();
+    const {name} = useParams();
 
   return (
     <div className='App'>
