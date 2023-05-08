@@ -60,7 +60,7 @@ function Home() {
             <SearchBar handleSearch={handleSearch}/>
           </div>
         </div>
-        <div className='table-home-page'>
+        <div className='table-home-page' style={{overflow: 'auto'}}>
         <table {...getTableProps()} className='table-container'>
           <thead>
           {headerGroups.map((headerGroup) => (

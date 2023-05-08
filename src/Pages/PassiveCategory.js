@@ -13,7 +13,7 @@ function PassiveCategory() {
       </div>
       <SliderPassive/>
       <div className='fab-btn'>
-        <FloatingActionCategory/>
+        <FloatingActionCategory type ='passive'/>
       </div>
     </div>
   </div>

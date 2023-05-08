@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-function FloatingActionButton() {
+function FloatingActionButton(props) {
   const [showOptions, setShowOptions] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [category, setCategory] = useState('');
+  const type = props.type;
+  const url = `/add-sub-category/${type}`;
 
   const toggleOptions = () => {
     setShowOptions(!showOptions);
@@ -39,9 +41,9 @@ function FloatingActionButton() {
           </button>
           </div>
           <div className='fab-option-container'>
-          <span><Link to='/add-sub-category/active' style={{textDecoration: 'none', color: '#002938'}}>Add Sub Category</Link></span>
+          <span><Link to={url} style={{textDecoration: 'none', color: '#002938'}}>Add Sub Category</Link></span>
           <button className='fab-option'>
-          <Link to='/add-sub-category/active' style={{textDecoration: 'none', color: '#002938'}}>1</Link>
+          <Link to={url} style={{textDecoration: 'none', color: '#002938'}}>1</Link>
           </button>
           </div>
           </div>

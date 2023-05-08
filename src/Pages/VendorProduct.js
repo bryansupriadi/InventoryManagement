@@ -14,7 +14,6 @@ function VendorProduct() {
     <SideBar/>
     </div>
     </div>
-    
     </div>
   )
 }

@@ -23,4 +23,4 @@ export const data = [
         "Price": "$418",
         "Group": "Passive",
     },
-    ]
+]

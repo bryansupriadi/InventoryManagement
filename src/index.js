@@ -18,8 +18,11 @@ import AddProductForm from './Pages/AddProduct';
 import VendorList from './Pages/VendorList';
 import VendorProduct from './Pages/VendorProduct';
 import ManageAccount from './Pages/ManageAccount';
-import AddSubCategory from './Pages/AddSubCategory';
+import { AddSubCategoryActive, AddSubCategoryPassive } from './Pages/AddSubCategory';
 import ProductBrands from './Pages/ProductBrands';
+import Scanner from './Pages/Scanner';
+import Report from './Pages/Report';
+import ProductBrandsDetail from './Pages/ProductBrandsDetail';
 
 
 const router = createBrowserRouter([
@@ -77,11 +80,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/add-sub-category/active",
-    element: <AddSubCategory/>,
+    element: <AddSubCategoryActive/>,
   },
   {
     path: "/add-sub-category/passive",
-    element: <AddSubCategory/>,
+    element: <AddSubCategoryPassive/>,
   },
   {
     path: "/active-category/computer-devices/:name",
@@ -99,7 +102,18 @@ const router = createBrowserRouter([
     path: "/passive-category/office-supplies/:name",
     element: <ProductBrands/>,
   },
-
+  {
+    path: "/scanner",
+    element: <Scanner/>,
+  },
+  {
+    path: "/reports",
+    element: <Report/>,
+  },
+  {
+    path: "/:subCategory/:brandName",
+    element: <ProductBrandsDetail/>,
+  },
 ])
 
 
