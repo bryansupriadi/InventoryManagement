@@ -59,8 +59,8 @@ function SignIn() {
               <label htmlFor="role">Role</label>
               <select id="role" value={role} onChange={handleRoleChange}>
                 <option selected>Choose your role</option>
-                <option value="user">User</option>
-                <option value="admin">Admin</option>
+                <option value="User">User</option>
+                <option value="Admin">Admin</option>
               </select>
             </div>
             <div className="email-form">
