@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTable } from "react-table";
+import logo from "../Assets/logo.png";
+
 import SideBar from "../Components/SideBar";
 import Carousel from "../Components/Carousel";
 import Dropdown from "../Components/Dropdown";
 import { product } from "../Components/data/product";
 import SearchBar from "../Components/SearchBar";
 import { COLUMNS } from "../Components/Table";
-import { useTable } from "react-table";
-import logo from "../Assets/logo.png";
+
+import api from "../api";
 
 const Home = () => {
   const navigate = useNavigate();
