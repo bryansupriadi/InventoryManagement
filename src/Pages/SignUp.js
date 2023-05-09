@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import LogoIM from "../Assets/logo.png";
 import { Link, useNavigate } from "react-router-dom";
 
-import axios from "axios";
+import api from "../api";
 
 function SignUp() {
   const navigate = useNavigate();
@@ -46,8 +46,8 @@ function SignUp() {
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
     } else {
-      await axios
-        .post("http://localhost:5000/v1/im/users/signUp", {
+      await api
+        .post("/v1/im/users/signUp", {
           username: name,
           emailAddress: email,
         })
