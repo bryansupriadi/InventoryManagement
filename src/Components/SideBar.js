@@ -12,7 +12,7 @@ import group from "../Assets/icon/category.png";
 import report from "../Assets/icon/line-chart.png";
 import logout from "../Assets/icon/logout.png";
 
-import axios from "axios";
+import api from "../api";
 
 const SideBar = () => {
   const [userData, setUserData] = useState({
@@ -24,8 +24,8 @@ const SideBar = () => {
     const token = localStorage.getItem("token");
 
     if (token) {
-      await axios
-        .get("http://localhost:5000/v1/im/users/me", {
+      await api
+        .get("/v1/im/users/me", {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((res) => {
@@ -111,7 +111,6 @@ const SideBar = () => {
                     id={`offcanvasNavbarDropdown-expand-${expand}`}
                     style={{ borderBottom: "1px solid #000" }}
                     className="text-white"
-                    
                   >
                     <NavDropdown.Item href="/active-group">
                       Active
