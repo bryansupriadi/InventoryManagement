@@ -2,16 +2,19 @@ import React, { useState, useRef, useEffect } from "react";
 import logoverif from "../Assets/verifyotp.png";
 import { Link, useNavigate } from "react-router-dom";
 
-import axios from "axios";
+import api from "../api";
 
 function Otp() {
+  const navigate = useNavigate();
+
   const [otp, setOTP] = useState(["", "", "", ""]);
   const refs = [useRef(null), useRef(null), useRef(null), useRef(null)];
+
   const [timer, setTimer] = useState(0);
   const [disabled, setDisabled] = useState(false);
   const [isInvalid, setIsInvalid] = useState(false);
+
   const correctOTP = ["1", "2", "3", "4"];
-  const navigate = useNavigate();
   const [failedAttempts, setFailedAttempts] = useState(0);
   const [showPopup, setShowPopup] = useState(false);
   const [resendAttemps, setResendAttemps] = useState(0);
@@ -60,8 +63,8 @@ function Otp() {
 
     console.log("Sending request....");
 
-    await axios
-      .get("http://localhost:5000/v1/im/users/resendOTP")
+    await api
+      .get("/v1/im/users/resendOTP")
       .then((res) => {
         console.log(res.data);
         console.log(res.data.msg);
@@ -123,8 +126,8 @@ function Otp() {
         navigate("/otp-failed");
       }
     } else {
-      await axios
-        .post("http://localhost:5000/v1/im/users/verified", { otp })
+      await api
+        .post("/v1/im/users/verified", { otp })
         .then((res) => {
           console.log(res.data);
           console.log(res.data.msg);
