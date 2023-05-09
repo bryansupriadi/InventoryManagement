@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import LogoIM from "../Assets/logo.png";
 import { useNavigate, Link } from "react-router-dom";
 
-import axios from "axios";
+import api from "../api";
 
 function SignIn() {
   const [email, setEmail] = useState("");
@@ -23,8 +23,9 @@ function SignIn() {
 
     console.log(email, role);
 
-    await axios
-      .post("http://localhost:5000/v1/im/users/signIn", {
+    // Lakukan validasi form dan proses login
+    await api
+      .post("/v1/im/users/signIn", {
         role,
         emailAddress: email,
       })
@@ -41,8 +42,6 @@ function SignIn() {
         }
       })
       .catch((err) => console.log(err, err.message));
-
-    // Lakukan validasi form dan proses login
   };
 
   return (
