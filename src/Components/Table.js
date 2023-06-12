@@ -1,37 +1,37 @@
 export const COLUMNS = [
-        {
-            Header: 'Name',
-            accessor: 'Name',
-        },
-        {
-            Header: 'Qty',
-            accessor: 'Qty',
-        },
-        {
-            Header: 'Price',
-            accessor: 'Price',
-        },
-        {
-            Header: 'Group',
-            accessor: 'Group',
-        },
+  {
+    Header: "Name",
+    accessor: "Name",
+  },
+  {
+    Header: "Qty",
+    accessor: "Qty",
+  },
+  {
+    Header: "Price",
+    accessor: "Price",
+  },
+  {
+    Header: "Group",
+    accessor: "Group",
+  },
 ];
 
 export const TABLE = [
-    {
-        Header: 'No',
-        accessor: 'No',
-    },
-    {
-        Header: 'Email',
-        accessor: 'Email',
-    },
-    {
-        Header: 'Name',
-        accessor: 'Name',
-    },
-    {
-        Header: 'Role',
-        accessor: 'Role',
-    },
-]
+  {
+    Header: "No",
+    accessor: "No",
+  },
+  {
+    Header: "Email",
+    accessor: "Email",
+  },
+  {
+    Header: "Name",
+    accessor: "Name",
+  },
+  {
+    Header: "Role",
+    accessor: "Role",
+  },
+];

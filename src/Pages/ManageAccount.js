@@ -6,13 +6,16 @@ import logo from "../Assets/logo.png";
 
 import { user } from "../Components/data/userdata";
 
-import axios from "axios";
+// import api from "../api";
 
 const ManageAccount = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // const token = localStorage.getItem("token");
 
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  // const [userData, setUserData] = useState([]);
   const [users, setUsers] = useState(user);
   const [keyword, setKeyword] = useState("");
 
@@ -21,7 +24,7 @@ const ManageAccount = () => {
     const filteredUser =
       keyword !== ""
         ? user.filter(
-            (user) =>
+            (userData) =>
               user.name.toLowerCase().indexOf(keyword) > -1 ||
               user.email.toLocaleLowerCase().indexOf(keyword) > -1
           )
@@ -58,62 +61,60 @@ const ManageAccount = () => {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     tableInstance;
 
-  const handleSignOut = async () => {
-    await axios
-      .get("http://localhost:5000/v1/im/users/signOut")
-      .then((res) => {
-        console.log(res.data);
-        console.log(res.data.msg);
+  // const handleSignOut = async () => {
+  //   await api
+  //     .get("/v1/im/users/signOut")
+  //     .then((res) => {
+  //       console.log(res.data);
+  //       console.log(res.data.msg);
 
-        localStorage.removeItem("token");
+  //       localStorage.removeItem("token");
 
-        navigate("/");
-      })
-      .catch((err) => {
-        console.log(err, err.message);
-      });
-  };
+  //       navigate("/sign-in");
+  //     })
+  //     .catch((err) => {
+  //       console.log(err, err.message);
+  //     });
+  // };
 
-  const getLoggedIn = () => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      setIsLoggedIn(true);
-    } else {
-      navigate("/");
-    }
-  };
+  // const getLoggedIn = () => {
+  //   const token = localStorage.getItem("token");
+  //   if (token) {
+  //     setIsLoggedIn(true);
+  //   } else {
+  //     navigate("/sign-in");
+  //   }
+  // };
 
-  const getUsers = async () => {
-    const token = localStorage.getItem("token");
+  // const getUsers = async () => {
+  //   if (token) {
+  //     await api
+  //       .get("/v1/im/users/", {
+  //         headers: { Authorization: `Bearer ${token}` },
+  //       })
+  //       .then((res) => {
+  //         console.log(res.data);
+  //         console.log(res.data.msg);
 
-    if (token) {
-      await axios
-        .get("http://localhost:5000/v1/im/users/", {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-        .then((res) => {
-          console.log(res.data);
-          console.log(res.data.msg);
+  //         setUserData(res.data.data);
+  //       });
+  //   }
+  // };
 
-          setUsers(res.data.data);
-        });
-    }
-  };
+  // useEffect(() => {
+  //   getLoggedIn();
+  //   getUsers();
+  // }, [navigate]);
 
-  useEffect(() => {
-    getLoggedIn();
-    // getUsers();
-  }, [navigate]);
-
-  return isLoggedIn ? (
+  return (
     <div className="App">
       <div className="manage-account-page-container">
         <div className="navbar-super-admin-container">
           <img src={logo} width="45" height="45" alt="" />
           <h1>
             <Link
-              to="/"
-              onClick={handleSignOut}
+              to="/sign-in"
+              // onClick={handleSignOut}
               style={{ textDecoration: "none", color: "#ff3333" }}
             >
               Sign Out
@@ -176,9 +177,20 @@ const ManageAccount = () => {
                                     )
                                   );
                                 }}
+
+                                // onChange={(event) => {
+                                //   const newRole = event.target.value;
+                                //   setUserData(
+                                //     userData.map((v) =>
+                                //       v.id === row.original.id
+                                //         ? { ...v, role: newRole }
+                                //         : v
+                                //     )
+                                //   );
+                                // }}
                               >
-                                <option value="user">User</option>
-                                <option value="admin">Admin</option>
+                                <option value="User">User</option>
+                                <option value="Admin">Admin</option>
                               </select>
                             ) : (
                               cell.render("Cell")
@@ -198,8 +210,6 @@ const ManageAccount = () => {
         </div>
       </div>
     </div>
-  ) : (
-    navigate("/")
   );
 };
 

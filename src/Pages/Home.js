@@ -7,20 +7,27 @@ import logo from "../Assets/logo.png";
 import SideBar from "../Components/SideBar";
 import Carousel from "../Components/Carousel";
 import Dropdown from "../Components/Dropdown";
-import { product } from "../Components/data/product";
 import SearchBar from "../Components/SearchBar";
-import { COLUMNS } from "../Components/Table";
 
-import api from "../api";
+import { COLUMNS } from "../Components/Table";
+import product from "../Components/data/product";
+
+// import api from "../api";
 
 const Home = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // const token = localStorage.getItem("token");
+
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  // const [productData, setProductData] = useState([]);
 
   const [selected, setSelected] = useState("All time");
+
   const columns = useMemo(() => COLUMNS, []);
   const data = useMemo(() => product, []);
+
   const [filteredData, setFilteredData] = useState(data);
 
   const handleSearch = (e) => {
@@ -43,20 +50,31 @@ const Home = () => {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     tableInstance;
 
-  const getLoggedIn = () => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      setIsLoggedIn(true);
-    } else {
-      navigate("/");
-    }
-  };
+  // const getProductData = async () => {
+  //   await api
+  //     .get("/v1/im/products/", {
+  //       headers: { Authorization: `Bearer ${token}` },
+  //     })
+  //     .then((res) => {
+  //       console.log(res.data);
+  //       setProductData(res.data.data);
+  //     });
+  // };
 
-  useEffect(() => {
-    getLoggedIn();
-  }, [navigate]);
+  // const getLoggedIn = () => {
+  //   if (token) {
+  //     setIsLoggedIn(true);
+  //   } else {
+  //     navigate("/sign-in");
+  //   }
+  // };
 
-  return isLoggedIn ? (
+  // useEffect(() => {
+  //   getLoggedIn();
+  //   // getProductData();
+  // }, [navigate]);
+
+  return (
     <div className="App">
       <div className="home-page-container">
         <div className="navbar-container">
@@ -102,8 +120,6 @@ const Home = () => {
         </div>
       </div>
     </div>
-  ) : (
-    navigate("/")
   );
 };
 
