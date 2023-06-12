@@ -1,7 +1,7 @@
 import React from 'react'
-import FloatingActionCategory from '../Components/FloatingActionCategory';
+import FloatingActionCategory from '../Components/FloatingAction/FloatingActionCategory';
 import SideBar from '../Components/SideBar';
-import SliderActive from '../Components/Computer Devices/SliderActive';
+import SliderActive from '../Components/Slider/SliderActive';
 
 
 
