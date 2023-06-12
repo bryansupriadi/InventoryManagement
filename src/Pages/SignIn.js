@@ -7,7 +7,7 @@ import axios from "axios";
 function SignIn() {
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("");
-  const [errorMesssage, setErrorMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
   const navigate = useNavigate();
 
   const handleEmailChange = (event) => {
@@ -72,8 +72,8 @@ function SignIn() {
                 onChange={handleEmailChange}
               />
             </div>
-            {errorMesssage && (
-              <div className="error-message">{errorMesssage}</div>
+            {errorMessage && (
+              <div className="error-message">{errorMessage}</div>
             )}
             <button type="submit">Sign in</button>
           </form>
