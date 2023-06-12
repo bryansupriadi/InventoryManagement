@@ -23,6 +23,11 @@ import ProductBrands from './Pages/ProductBrands';
 import Scanner from './Pages/Scanner';
 import Report from './Pages/Report';
 import ProductBrandsDetail from './Pages/ProductBrandsDetail';
+import AddProductType from './Pages/AddProductType';
+import VendorTable from './Pages/VendorTable';
+import ProductSeeAll from './Pages/ProductSeeAll';
+import ProductDetail from './Pages/ProductDetail';
+import EditProduct from './Pages/EditProduct';
 
 
 const router = createBrowserRouter([
@@ -55,12 +60,16 @@ const router = createBrowserRouter([
     element: <OtpFailed/>,
   },
   {
-    path: "/active-category",
+    path: "/Active-category",
     element: <ActiveCategory/>,
   },
   {
-    path: "/passive-category",
+    path: "/Passive-category",
     element: <PassiveCategory/>,
+  },
+  {
+    path: "/:group-category/:item",
+    element: <ProductSeeAll/>,
   },
   {
     path: "/add-product",
@@ -87,19 +96,7 @@ const router = createBrowserRouter([
     element: <AddSubCategoryPassive/>,
   },
   {
-    path: "/active-category/computer-devices/:name",
-    element: <ProductBrands/>,
-  },
-  {
-    path: "/active-category/household-appliances/:name",
-    element: <ProductBrands/>,
-  },
-  {
-    path: "/passive-category/furniture/:name",
-    element: <ProductBrands/>,
-  },
-  {
-    path: "/passive-category/office-supplies/:name",
+    path: "/:group-category/:item/:name",
     element: <ProductBrands/>,
   },
   {
@@ -110,9 +107,29 @@ const router = createBrowserRouter([
     path: "/reports",
     element: <Report/>,
   },
+    {
+      path: "/:group-category/:item/:subCategory/:brandName",
+      element: <ProductBrandsDetail/>,
+    },
   {
-    path: "/:subCategory/:brandName",
-    element: <ProductBrandsDetail/>,
+    path: "/:group-category/:item/:subCategory/:brandName/:id",
+    element: <ProductDetail/>,
+  },
+  {
+    path: "/:group-category/:item/:subCategory/:brandName/add-product-type",
+    element: <AddProductType/>,
+  },
+  {
+    path: "/vendor-list/:name/:subCategory/:brandName",
+    element: <VendorTable/>,
+  },
+  {
+    path: "/:group-category/:item/:subCategory/:brandName/:id/edit-product",
+    element: <EditProduct/>,
+  },
+  {
+    path: "/vendor-list/:name/:subCategory/:brandName/:id",
+    element: <ProductDetail/>,
   },
 ])
 
