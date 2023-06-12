@@ -152,6 +152,9 @@ const AddProductForm = () => {
     if (!formValues.quantity){
       newErrors.quantity = 'Please enter the numbers of product!';
     }
+    if (!formValues.purchaseDate){
+      newErrors.purchaseDate = 'Please enter the purchase date!';
+    }
     if (!formValues.eachPrice){
       newErrors.eachPrice = 'Please enter the product unit price!';
     }
@@ -213,7 +216,7 @@ const AddProductForm = () => {
         <Select options={subCategoriesOptions} name="subCategory" value={formValues.subCategory} onChange={(selectedOption) => handleSelectChange('subCategory', selectedOption)} className='select-form' />
       </label>
       </div>
-      {errors.subCategories && <div className='error-message-ctgry'>{errors.subCategories}</div>}
+      {errors.subCategory && <div className='error-message-ctgry'>{errors.subCategory}</div>}
       <div>
       <label className='form-field'>
         Type
