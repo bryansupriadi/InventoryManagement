@@ -1,61 +1,17 @@
 import React, { useState, useEffect } from "react";
-import Select from "react-select";
-import SideBar from "../Components/SideBar";
 import { useNavigate } from "react-router-dom";
+import Select from "react-select";
 
-// import api from "../api";
+import SideBar from "../Components/SideBar";
 
-const group = [
-  { value: "active", label: "Active" },
-  { value: "passive", label: "Passive" },
-];
-
-const categories = {
-  active: [
-    { value: "computerdevices", label: "Computer Devices" },
-    { value: "householdappliances", label: "Household Appliances" },
-  ],
-  passive: [
-    { value: "furniture", label: "Furniture" },
-    { value: "officesupplies", label: "Office Supplies" },
-  ],
-};
-
-const subCategories = {
-  computerdevices: [
-    { value: "monitor", label: "Monitor" },
-    { value: "mouse", label: "Mouse" },
-    { value: "printer", label: "Printer" },
-    { value: "cpu", label: "CPU" },
-    { value: "keyboard", label: "Keyboard" },
-  ],
-  householdappliances: [
-    { value: "fridge", label: "Fridge" },
-    { value: "ac", label: "AC" },
-  ],
-  furniture: [
-    { value: "chair", label: "Chair" },
-    { value: "table", label: "Table" },
-    { value: "cupboard", label: "Cupboard" },
-  ],
-  officesupplies: [
-    { value: "archfile", label: "Arch File" },
-    { value: "scissors", label: "Scissors" },
-  ],
-};
-
-const vendors = [
-  { value: "ikea", label: "IKEA" },
-  { value: "shopee", label: "Shopee" },
-  { value: "tokopedia", label: "Tokopedia" },
-];
+import api from "../api";
 
 const AddProductForm = () => {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
-  // const token = localStorage.getItem("token");
+  const token = localStorage.getItem("token");
 
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const [formValues, setFormValues] = useState({
     brandName: "",
@@ -72,28 +28,68 @@ const AddProductForm = () => {
   });
 
   const [productId, setProductId] = useState("");
-  const [categoryOptions, setCategoryOptions] = useState([]);
+  const [categories, setCategories] = useState("");
+  // const [categoryOptions, setCategoryOptions] = useState([]);
   const [subCategoriesOptions, setSubCategoryOptions] = useState([]);
+  const [vendorOptions, setVendorOptions] = useState([]);
   const [errors, setErrors] = useState({});
+
+  const group = [
+    { value: "active", label: "Active" },
+    { value: "passive", label: "Passive" },
+  ];
+
+  const categoriesOptions = categories.map((item) => {
+    return { value: item.categoryName, label: item.categoryName };
+  });
+
+  // const subCategories = {
+  //   computerdevices: [
+  //     { value: "monitor", label: "Monitor" },
+  //     { value: "mouse", label: "Mouse" },
+  //     { value: "printer", label: "Printer" },
+  //     { value: "cpu", label: "CPU" },
+  //     { value: "keyboard", label: "Keyboard" },
+  //   ],
+  //   householdappliances: [
+  //     { value: "fridge", label: "Fridge" },
+  //     { value: "ac", label: "AC" },
+  //   ],
+  //   furniture: [
+  //     { value: "chair", label: "Chair" },
+  //     { value: "table", label: "Table" },
+  //     { value: "cupboard", label: "Cupboard" },
+  //   ],
+  //   officesupplies: [
+  //     { value: "archfile", label: "Arch File" },
+  //     { value: "scissors", label: "Scissors" },
+  //   ],
+  // };
+
+  // const vendors = [
+  //   { value: "ikea", label: "IKEA" },
+  //   { value: "shopee", label: "Shopee" },
+  //   { value: "tokopedia", label: "Tokopedia" },
+  // ];
 
   const handleSelectChange = (name, selectedOption) => {
     setFormValues((prevState) => ({ ...prevState, [name]: selectedOption }));
 
-    if (selectedOption.value === "active") {
-      setCategoryOptions(categories.active);
-    } else if (selectedOption.value === "passive") {
-      setCategoryOptions(categories.passive);
-    }
+    // if (selectedOption.value === "active") {
+    //   setCategoryOptions(categories.active);
+    // } else if (selectedOption.value === "passive") {
+    //   setCategoryOptions(categories.passive);
+    // }
 
-    if (selectedOption.value === "computerdevices") {
-      setSubCategoryOptions(subCategories.computerdevices);
-    } else if (selectedOption.value === "householdappliances") {
-      setSubCategoryOptions(subCategories.householdappliances);
-    } else if (selectedOption.value === "furniture") {
-      setSubCategoryOptions(subCategories.furniture);
-    } else if (selectedOption.value === "officesupplies") {
-      setSubCategoryOptions(subCategories.officesupplies);
-    }
+    // if (selectedOption.value === "computerdevices") {
+    //   setSubCategoryOptions(subCategories.computerdevices);
+    // } else if (selectedOption.value === "householdappliances") {
+    //   setSubCategoryOptions(subCategories.householdappliances);
+    // } else if (selectedOption.value === "furniture") {
+    //   setSubCategoryOptions(subCategories.furniture);
+    // } else if (selectedOption.value === "officesupplies") {
+    //   setSubCategoryOptions(subCategories.officesupplies);
+    // }
 
     if (name === "group") {
       setFormValues((prevState) => ({
@@ -191,19 +187,35 @@ const AddProductForm = () => {
     }
   };
 
-  // const getLoggedIn = () => {
-  //   if (token) {
-  //     setIsLoggedIn(true);
-  //   } else {
-  //     navigate("/sign-in");
-  //   }
-  // };
+  const getLoggedIn = () => {
+    if (token) {
+      setIsLoggedIn(true);
+    } else {
+      navigate("/sign-in");
+    }
+  };
 
-  // useEffect(() => {
-  //   getLoggedIn();
-  // }, [navigate]);
+  const getAllCategories = async () => {
+    await api
+      .get("/v1/im/categories/", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((res) => {
+        console.log(res.data);
 
-  return (
+        setCategories(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err, err.message);
+      });
+  };
+
+  useEffect(() => {
+    getLoggedIn();
+    getAllCategories();
+  }, [navigate]);
+
+  return isLoggedIn ? (
     <div className="App">
       <div className="add-product-page-container">
         <div className="navbar-container">
@@ -248,11 +260,11 @@ const AddProductForm = () => {
               <label className="form-field">
                 Category
                 <Select
-                  options={categoryOptions}
-                  name="category"
-                  value={formValues.category}
+                  options={categoriesOptions}
+                  name="categoryName"
+                  value={formValues.categoryName}
                   onChange={(selectedOption) =>
-                    handleSelectChange("category", selectedOption)
+                    handleSelectChange("categoryName", selectedOption)
                   }
                   className="select-form"
                 />
@@ -297,7 +309,7 @@ const AddProductForm = () => {
               <label className="form-field">
                 Vendor
                 <Select
-                  options={vendors}
+                  options={vendorOptions}
                   name="vendor"
                   value={formValues.vendor}
                   onChange={(selectedOption) =>
@@ -405,6 +417,8 @@ const AddProductForm = () => {
         </div>
       </div>
     </div>
+  ) : (
+    navigate("/sign-in")
   );
 };
 
