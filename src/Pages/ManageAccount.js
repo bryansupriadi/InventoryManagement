@@ -136,6 +136,8 @@ const ManageAccount = () => {
           {users.length === 0 ? (
             <p>No data available</p>
           ) : (
+            <div className="scroll-table">
+            <div className="table-header">
             <table {...getTableProps()}>
               <thead>
                 {headerGroups.map((headerGroup) => (
@@ -143,6 +145,7 @@ const ManageAccount = () => {
                     {headerGroup.headers.map((column) => (
                       <th
                         style={{ padding: "10px" }}
+                        className="table-header-cell"
                         {...column.getHeaderProps()}
                       >
                         {column.render("Header")}
@@ -151,6 +154,10 @@ const ManageAccount = () => {
                   </tr>
                 ))}
               </thead>
+              </table>
+              </div>
+              <div className="table-body">
+              <table>
               <tbody {...getTableBodyProps()}>
                 {rows.map((row, i) => {
                   prepareRow(row);
@@ -160,6 +167,7 @@ const ManageAccount = () => {
                         return (
                           <td
                             style={{ padding: "10px" }}
+                            className="table-body-cell"
                             {...cell.getCellProps()}
                           >
                             {cell.column.id === "role" ? (
@@ -191,10 +199,12 @@ const ManageAccount = () => {
                 })}
               </tbody>
             </table>
+            </div>
+            </div>
           )}
-          <button type="submit" className="btn-manage-acc">
-            Save
-          </button>
+        <button type="submit" className="btn-manage-acc">
+          Save
+        </button>
         </div>
       </div>
     </div>
