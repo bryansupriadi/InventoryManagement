@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import data from '../Components/data/vendorData';
 import SideBar from '../Components/SideBar';
 import { Link } from 'react-router-dom';
+import FloatingActionVendor from '../Components/FloatingAction/FloatingActionVendor';
 
 function VendorList() {
   const [vendor, setVendor] = useState(data);
@@ -39,6 +40,9 @@ function VendorList() {
           </li>
         ))}
       </ul>
+      </div>
+      <div className='floating-action-button-container'>
+      <FloatingActionVendor/>
       </div>
     </div>
     </div>
