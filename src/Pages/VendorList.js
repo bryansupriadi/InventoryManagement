@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import SideBar from "../Components/SideBar";
 import FloatingActionVendor from "../Components/FloatingAction/FloatingActionVendor";
+
 import data from "../Components/data/vendorData";
 
 import api from "../api";
