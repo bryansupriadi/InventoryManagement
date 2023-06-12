@@ -5,6 +5,7 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import Offcanvas from "react-bootstrap/Offcanvas";
+import home from "../Assets/icon/home.png";
 import add from "../Assets/icon/shipping.png";
 import vendor from "../Assets/icon/market-store (1).png";
 import scan from "../Assets/icon/scanner.png";
@@ -57,7 +58,8 @@ const SideBar = () => {
           <Container fluid>
             <Navbar.Toggle
               aria-controls={`offcanvasNavbar-expand-${expand}`}
-              style={{ border: "none", marginTop: "20px" }}
+              style={{ border: "none", marginTop: "20px", fontSize: "15px"}}
+              className="custom-navbar-toggle"
             />
             <Navbar.Offcanvas
               id={`offcanvasNavbar-expand-${expand}`}
@@ -77,6 +79,14 @@ const SideBar = () => {
               </Offcanvas.Header>
               <Offcanvas.Body style={{ borderTop: "3px solid #000" }}>
                 <Nav className="justify-content-end flex-grow-1 pe-3">
+                <Nav.Link
+                href="/home"
+                className="text-white"
+                style={{ borderBottom: "1px solid #000" }}
+              >
+                <img src={home} alt="" className="me-2" />
+                Home
+              </Nav.Link>
                   <Nav.Link
                     href="/add-product"
                     className="text-white"
@@ -113,10 +123,10 @@ const SideBar = () => {
                     className="text-white"
                     
                   >
-                    <NavDropdown.Item href="/active-group">
+                    <NavDropdown.Item href="/Active-category">
                       Active
                     </NavDropdown.Item>
-                    <NavDropdown.Item href="/passive-group">
+                    <NavDropdown.Item href="/Passive-category">
                       Passive
                     </NavDropdown.Item>
                   </NavDropdown>
