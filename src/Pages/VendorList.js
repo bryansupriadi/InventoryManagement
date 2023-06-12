@@ -30,20 +30,6 @@ function VendorList() {
     setKeyword(keyword);
   };
 
-  const getDataVendor = async () => {
-    await api
-      .get("/v1/im/vendors/", {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((res) => {
-        console.log(res.data);
-        setVendor(res.data.data);
-      })
-      .catch((err) => {
-        console.log(err, err.message);
-      });
-  };
-
   const getLoggedIn = () => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -53,8 +39,22 @@ function VendorList() {
     }
   };
 
+  // const getDataVendor = async () => {
+  //   await api
+  //     .get("/v1/im/vendors/", {
+  //       headers: { Authorization: `Bearer ${token}` },
+  //     })
+  //     .then((res) => {
+  //       console.log(res.data);
+  //       setVendor(res.data.data);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err, err.message);
+  //     });
+  // };
+
   useEffect(() => {
-    // getLoggedIn();
+    getLoggedIn();
     // getDataVendor();
   }, [navigate]);
 
