@@ -17,30 +17,35 @@ export const ComputerDevices = [
         icon : monitorIcon,
         name : 'Monitor',
         category: 'Computer Devices',
+        group: 'Active',
     },
     {
         id : 2,
         icon : mouseIcon,
         name : 'Mouse', 
         category: 'Computer Devices',
+        group: 'Active',
     },
     {
         id : 3,
         icon : printerIcon,
         name : 'Printer', 
-        category: 'Computer Devices'
+        category: 'Computer Devices',
+        group: 'Active',
     },
     {
         id : 4,
         icon : keyboardIcon,
         name : 'Keyboard', 
-        category: 'Computer Devices'
+        category: 'Computer Devices',
+        group: 'Active',
     },
     {
         id : 5,
         icon : cpuIcon,
         name : 'CPU', 
-        category: 'Computer Devices'
+        category: 'Computer Devices',
+        group: 'Active',
     },
 ];
 
@@ -50,13 +55,15 @@ export const HouseholdAppliances = [
         id: 1,
         icon : fridgeIcon,
         name: 'Fridge',
-        category: 'Household Appliances'
+        category: 'Household Appliances',
+        group: 'Active',
     },
     {
         id: 2,
         icon : acIcon,
         name: 'AC',
-        category: 'Household Appliances'
+        category: 'Household Appliances',
+        group: 'Active',
     },
 ];
 
@@ -65,19 +72,22 @@ export const Furniture = [
         id: 1,
         icon : sofaIcon,
         name: 'Sofa',
-        category: 'Furniture'
+        category: 'Furniture',
+        group: 'Passive',
     },
     {
         id: 2,
         icon : chairIcon,
         name: 'Chair',
-        category: 'Furniture'
+        category: 'Furniture',
+        group: 'Passive',
     },
     {
         id: 3,
         icon : tableIcon,
         name: 'Table',
-        category: 'Furniture'
+        category: 'Furniture',
+        group: 'Passive',
     },
 ];
 
@@ -86,6 +96,7 @@ export const OfficeSupplies = [
         id: 1,
         icon : archIcon,
         name: 'Arch File',
-        category: 'OfficeSupplies'
+        category: 'OfficeSupplies',
+        group: 'Passive',
     },
 ];

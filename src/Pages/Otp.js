@@ -16,8 +16,9 @@ function Otp() {
 
   const correctOTP = ["1", "2", "3", "4"];
   const [failedAttempts, setFailedAttempts] = useState(0);
-  const [showPopup, setShowPopup] = useState(false);
+  const [showPopupInvalid, setShowPopupInvalid] = useState(false);
   const [resendAttemps, setResendAttemps] = useState(0);
+  const [showPopupResend, setShowPopupResend] = useState(false);
   // const [showBorder, setShowBorder] = useState(false);
 
   const handleChange = (event, index) => {
@@ -72,6 +73,10 @@ function Otp() {
         setOTP(["", "", "", ""]);
         setDisabled(true);
         setResendAttemps(resendAttemps + 1); // nonaktifkan button saat sedang mengirim ulang kode OTP
+        setShowPopupResend(true);
+        setTimeout(() => {
+          setShowPopupResend(false);
+        }, 4000)
 
         if (resendAttemps >= 3) {
           navigate("/otp-failed");
@@ -116,10 +121,10 @@ function Otp() {
 
     if (!otp.join("") || !correctOTP.join("")) {
       setIsInvalid(true);
-      setShowPopup(true);
-      setTimeout(() => setShowPopup(false), 4000);
+      setShowPopupInvalid(true);
+      setTimeout(() => setShowPopupInvalid(false), 4000);
       // showPopupWithTimer();
-      setShowPopup(true);
+      setShowPopupInvalid(true);
       setOTP(["", "", "", ""]);
       setFailedAttempts(failedAttempts + 1);
       if (failedAttempts >= 3) {
@@ -191,12 +196,20 @@ function Otp() {
             </a>
           </h3>
         </div>
+        {showPopupResend && (
+          <div className="popup">
+            <div className="popup-box">
+              <h4>Code Resend!</h4>
+              <h6>Please check your email for the new OTP Code</h6>
+            </div>
+          </div>
+        )}
         <div className="otp-submit">
           <button type="submit" onClick={handleSubmit}>
             Verify Email
           </button>
         </div>
-        {showPopup && (
+        {showPopupInvalid && (
           <div className="popup">
             <div className="popup-box">
               <h4>Invalid Code!</h4>

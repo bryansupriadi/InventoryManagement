@@ -5,6 +5,7 @@ function FloatingActionButton(props) {
   const [showOptions, setShowOptions] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [category, setCategory] = useState('');
+  const [errors, setErrors] = useState({});
   const type = props.type;
   const url = `/add-sub-category/${type}`;
 
@@ -22,10 +23,20 @@ function FloatingActionButton(props) {
 
   const handleAddCategory = (event) => {
     event.preventDefault();
-    // TODO: process the categoryInput value
-    setCategory('');
-    togglePopup();
-  };
+    const newErrors = {};
+
+    if (category.trim() === '') {
+        newErrors.category = 'Category name is required';
+    }
+
+    if (Object.keys(newErrors).length === 0) {
+        // TODO: process the categoryInput value
+        setCategory('');
+        togglePopup();
+    } else {
+      setErrors(newErrors);
+    }
+};
 
   return (
     <div className="floating-action-button-container">
@@ -54,6 +65,7 @@ function FloatingActionButton(props) {
           <form onSubmit={handleAddCategory}>
             <h1>Add Category</h1>
             <input type="text" placeholder="category name.." value={category} onChange={handleCategoryInputChange} />
+            {errors.category && <div className="error-message-vendor">{errors.category}</div>}
             <button type="submit">Save</button>
           </form>
         </div>

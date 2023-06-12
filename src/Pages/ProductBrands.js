@@ -5,37 +5,43 @@ import SideBar from "../Components/SideBar";
 import product from "../Components/data/product";
 
 function ProductBrands() {
-  const { name } = useParams();
+  const { group, item, name } = useParams();
 
   // Filter produk yang sesuai dengan sub kategori yang dipilih
   const filteredProducts = product.filter(
     (item) => item["Sub Category"] === name
   );
 
-  const categories = [
-    ...new Set(filteredProducts.map((item) => item.Category)),
-  ];
-
   // Ambil merek produk, jumlah, dan harga yang ada pada produk yang sudah difilter
   const productsInfo = filteredProducts.map((item) => ({
     brandName: item["Brand Name"],
     quantity: item["Qty"],
-    price: item["Price"],
+    price: item["Total Price"],
   }));
 
   // Tampilkan merek produk, jumlah, dan harga dalam list
   const content = (
     <ul className="list-brands-container">
       {productsInfo.map((info) => (
-        <li key={`${info.brandName}-${info.price}`}>
+        <li
+          key={`${info.brandName}-${info.price}`}
+          className={info.quantity ? "has-quantity" : "no-quantity"}
+        >
           <Link
-            to={`/${name.toLowerCase()}/${info.brandName.toLowerCase()}`}
+            to={{
+              pathname: `/${group}-category/${item}/${name}/${info.brandName}`,
+              state: {
+                group: group,
+                subCategory: name,
+                brandName: info.brandName,
+              },
+            }}
             style={{ textDecoration: "none", color: "white" }}
             className="list-brands"
           >
             <div className="brand-info">
               <h3>{info.brandName}</h3>
-              <h6>Quantity: {info.quantity}</h6>
+              {info.quantity && <h6>Quantity: {info.quantity}</h6>}
             </div>
             <div className="price-info">
               <h6>{info.price}</h6>
@@ -50,7 +56,7 @@ function ProductBrands() {
     <div className="App">
       <div className="product-brand-page-container">
         <div className="navbar-container">
-          <h1>{categories}</h1>
+          <h1>{item}</h1>
           <SideBar />
         </div>
         <div className="sub-title-product">

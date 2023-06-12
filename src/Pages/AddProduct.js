@@ -164,6 +164,9 @@ const AddProductForm = () => {
     if (!formValues.quantity) {
       newErrors.quantity = "Please enter the numbers of product!";
     }
+    if (!formValues.purchaseDate) {
+      newErrors.purchaseDate = "Please enter the purchase date!";
+    }
     if (!formValues.eachPrice) {
       newErrors.eachPrice = "Please enter the product unit price!";
     }

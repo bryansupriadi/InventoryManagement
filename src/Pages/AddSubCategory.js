@@ -127,6 +127,7 @@ export function AddSubCategoryPassive() {
   const [category, setCategory] = useState("");
   const [subCategoryName, setSubCategoryName] = useState("");
   const [subCategoryImage, setSubCategoryImage] = useState("");
+  const [errors, setErrors] = useState({});
 
   const handleCategoryChange = (event) => {
     setCategory(event.target.value);
@@ -142,7 +143,20 @@ export function AddSubCategoryPassive() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // tambahkan kode untuk melakukan submit form
+    const newErrors = {};
+
+    if (!subCategoryName) {
+      newErrors.subCategoryName = "Please enter the sub category name!";
+    }
+    if (!subCategoryImage) {
+      newErrors.subCategoryImage = "Please insert the photo!";
+    }
+
+    if (Object.keys(newErrors).length === 0) {
+      setErrors({});
+    } else {
+      setErrors(newErrors);
+    }
   };
 
   return (
@@ -180,6 +194,9 @@ export function AddSubCategoryPassive() {
                   className="input-form"
                 />
               </label>
+              {errors.subCategoryName && (
+                <div className="error-message-1">{errors.subCategoryName}</div>
+              )}
             </div>
             <div>
               <label className="form-field">
@@ -190,6 +207,9 @@ export function AddSubCategoryPassive() {
                   onChange={handleSubCategoryImageChange}
                 />
               </label>
+              {errors.subCategoryImage && (
+                <div className="error-message-1">{errors.subCategoryImage}</div>
+              )}
             </div>
             <div>
               <button type="submit" className="btn-ctgry-form">

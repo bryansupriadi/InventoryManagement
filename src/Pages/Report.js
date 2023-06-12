@@ -1,32 +1,83 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
 import { PieChart } from "react-minimal-pie-chart";
 
 import SideBar from "../Components/SideBar";
+import DropdownReport from "../Components/DropdownReport";
 import product from "../Components/data/product";
-import DatePicker from "../Components/datepicker";
 
 import api from "../api";
 
 function Report() {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
-  // const token = localStorage.getItem("token");
+  const token = localStorage.getItem("token");
 
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const [reportData, setReportData] = useState([]);
 
-  const totalQty = product.reduce((total, item) => total + item.Qty, 0);
-  const totalPrice = product.reduce(
-    (total, item) => total + parseInt(item.Price.slice(1)),
+  const [selected, setSelected] = useState("All time");
+  const [filteredProducts, setFilteredProducts] = useState(product);
+
+  const setSelectedOption = (option) => {
+    setSelected(option);
+    if (option === "Last year") {
+      const lastYear = new Date();
+      lastYear.setFullYear(lastYear.getFullYear() - 1);
+      const filtered = product.filter((item) => {
+        const date = new Date(item["Sub Data"][0].Date);
+        return date >= lastYear;
+      });
+      setFilteredProducts(filtered);
+    } else if (option === "Last 3 years") {
+      const last3Years = new Date();
+      last3Years.setFullYear(last3Years.getFullYear() - 3);
+      const filtered = product.filter((item) => {
+        const date = new Date(item["Sub Data"][0].Date);
+        return date >= last3Years;
+      });
+      setFilteredProducts(filtered);
+    } else if (option === "Last 5 years") {
+      const last5Years = new Date();
+      last5Years.setFullYear(last5Years.getFullYear() - 6);
+      const filtered = product.filter((item) => {
+        const date = new Date(item["Sub Data"][0].Date);
+        return date >= last5Years;
+      });
+      setFilteredProducts(filtered);
+    } else if (option === "Last 10 years") {
+      const last10Years = new Date();
+      last10Years.setFullYear(last10Years.getFullYear() - 10);
+      const filtered = product.filter((item) => {
+        const date = new Date(item["Sub Data"][0].Date);
+        return date >= last10Years;
+      });
+      setFilteredProducts(filtered);
+    } else if (option === "All time") {
+      setFilteredProducts(product);
+    }
+  };
+
+  const totalQty = filteredProducts.reduce(
+    (total, item) => total + item.Qty,
     0
   );
-  const totalGood = product.reduce((total, item) => total + item.Good, 0);
-  const totalBad = product.reduce((total, item) => total + item.Bad, 0);
-  const percentGood = ((totalGood / totalQty) * 100).toFixed(2);
-  const percentBad = ((totalBad / totalQty) * 100).toFixed(2);
+  const totalPrice = filteredProducts.reduce(
+    (total, item) => total + parseInt(item["Total Price"].slice(1)),
+    0
+  );
+  const totalGood = filteredProducts.reduce(
+    (total, item) => total + item.Good,
+    0
+  );
+  const totalBad = filteredProducts.reduce(
+    (total, item) => total + item.Bad,
+    0
+  );
+  const filteredCount = filteredProducts.length;
+  const percentGood = ((totalGood / filteredCount) * 100).toFixed(2);
+  const percentBad = ((totalBad / filteredCount) * 100).toFixed(2);
   const data = [
     {
       title: "Good",
@@ -40,28 +91,28 @@ function Report() {
     },
   ];
 
-  // const getLoggedIn = () => {
-  //   const token = localStorage.getItem("token");
-  //   if (token) {
-  //     setIsLoggedIn(true);
-  //   } else {
-  //     navigate("/sign-in");
-  //   }
-  // };
+  const getLoggedIn = () => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      setIsLoggedIn(true);
+    } else {
+      navigate("/sign-in");
+    }
+  };
 
-  // const getReportData = () => {
-  //   api
-  //     .get("/v1/im/products/report-data", {
-  //       headers: { Authorization: `Bearer ${token}` },
-  //     })
-  //     .then((res) => {
-  //       console.log(res.data);
-  //       setReportData(res.data.data);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err, err.message);
-  //     });
-  // };
+  const getReportData = () => {
+    api
+      .get("/v1/im/products/report-data", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((res) => {
+        console.log(res.data);
+        setReportData(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err, err.message);
+      });
+  };
 
   useEffect(() => {
     // getLoggedIn();
@@ -76,7 +127,7 @@ function Report() {
           <SideBar />
         </div>
         <div>
-          <DatePicker />
+          <DropdownReport selected={selected} setSelected={setSelectedOption} />
         </div>
         <div className="content-box-container">
           <div className="box-content-1">

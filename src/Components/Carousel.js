@@ -8,9 +8,7 @@ class AutoCarousel extends React.Component {
   render() {
     const totalProduct = product.length;
     const totalQty = product.reduce((total, item) => total + item.Qty, 0);
-    const totalPrice = product.reduce(
-      (total, item) => total + parseInt(item.Price.slice(1)), 0
-    );
+    const totalPrice = product.reduce((total, item) => total + parseInt(item['Total Price'].slice(1)), 0);
     const outOfStock = product.filter(item => item.Qty <= 5).length;
 
     const settings = {

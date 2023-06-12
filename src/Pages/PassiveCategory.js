@@ -1,7 +1,7 @@
 import React from "react";
 import SideBar from "../Components/SideBar";
-import SliderPassive from "../Components/Computer Devices/SliderPassive";
-import FloatingActionCategory from "../Components/FloatingActionCategory";
+import SliderPassive from "../Components/Slider/SliderPassive";
+import FloatingActionCategory from "../Components/FloatingAction/FloatingActionCategory";
 
 function PassiveCategory() {
   return (

@@ -1,11 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import {Furniture, OfficeSupplies} from './ComputerDevices';
+import {ComputerDevices, HouseholdAppliances} from './SubCategory';
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import ProductTemp from './ProductTemp';
 
-function SliderPassive() {
+function SliderActive() {
   const responsive = {
     superLargeDesktop: {
       breakpoint: { max: 4000, min: 3000 },
@@ -27,8 +27,8 @@ function SliderPassive() {
   
 
 
-  const furniture = Furniture.map((item) => (
-    <Link to={`/passive-category/furniture/${item.name}`} key={item.id}>
+  const devices = ComputerDevices.map((item) => (
+    <Link to={`/${item.group}-category/${item.category}/${item.name}`} key={item.id}>
       <ProductTemp 
         name={item.name} 
         icon={item.icon} 
@@ -36,8 +36,8 @@ function SliderPassive() {
     </Link>
   ));
 
-  const supplies = OfficeSupplies.map((item) => (
-    <Link to={`/passive-category/office-supplies/${item.name}`} key={item.id}>
+  const appliances = HouseholdAppliances.map((item) => (
+    <Link to={`/${item.group}-category/${item.category}/${item.name}`} key={item.id}>
       <ProductTemp 
         name={item.name} 
         icon={item.icon} 
@@ -47,18 +47,18 @@ function SliderPassive() {
 
   return (
     <div className='product-category-container'>
-    <h4>Furniture</h4>
-    <h6><Link to="/passive-category/furniture" style={{textDecoration: 'none', color: '#D9C5C5', fontWeight: 'lighter'}}>See All</Link></h6>
+    <h4>Computer Devices</h4>
+    <h6><Link to="/Active-category/Computer Devices" style={{textDecoration: 'none', color: '#D9C5C5', fontWeight: 'lighter'}}>See All</Link></h6>
     <div className='carousel-items'>
       <Carousel responsive={responsive} showDots={false} arrows={false}>
-      {furniture}
+      {devices}
       </Carousel>
     </div>
-    <h4>Office Supplies</h4>
-    <h6><Link to="/passive-category/household-appliances"  style={{textDecoration: 'none', color: '#D9C5C5', fontWeight: 'lighter'}}>See All</Link></h6>
+    <h4>Household Appliances</h4>
+    <h6><Link to="/Active-category/Household Appliances"  style={{textDecoration: 'none', color: '#D9C5C5', fontWeight: 'lighter'}}>See All</Link></h6>
     <div className='carousel-items'>
       <Carousel responsive={responsive} showDots={false} arrows={false}>
-      {supplies}
+      {appliances}
       </Carousel>
     </div>
     </div>
@@ -67,4 +67,4 @@ function SliderPassive() {
 
 
 
-export default SliderPassive;
+export default SliderActive;

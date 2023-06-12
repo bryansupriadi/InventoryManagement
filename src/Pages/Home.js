@@ -7,48 +7,55 @@ import logo from "../Assets/logo.png";
 import SideBar from "../Components/SideBar";
 import Carousel from "../Components/Carousel";
 import Dropdown from "../Components/Dropdown";
-import SearchBar from "../Components/SearchBar";
-
-import { COLUMNS } from "../Components/Table";
 import product from "../Components/data/product";
+import SearchBar from "../Components/SearchBar";
+import { COLUMNS } from "../Components/Table";
+import { Icon } from "@iconify/react";
 
-// import api from "../api";
+import api from "../api";
 
 const Home = () => {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
+  const token = localStorage.getItem("token");
 
-  // const token = localStorage.getItem("token");
-
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  // const [productData, setProductData] = useState([]);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const [selected, setSelected] = useState("All time");
 
   const columns = useMemo(() => COLUMNS, []);
-  const data = useMemo(() => product, []);
+  const data = useMemo(() => products, [products]);
 
-  const [filteredData, setFilteredData] = useState(data);
+  const [products, setProducts] = useState(product);
+  const [keyword, setKeyword] = useState("");
 
-  const handleSearch = (e) => {
-    const value = e.target.value;
-    const lowercasedValue = value.toLowerCase().trim();
-    if (lowercasedValue === "") setFilteredData(data);
-    else {
-      const filteredItems = data.filter(
-        (item) => item.name && item.name.toLowerCase().includes(lowercasedValue)
-      );
-      setFilteredData(filteredItems);
-    }
+  const filterProduct = (event) => {
+    const keyword = event.target.value.toLowerCase();
+    const filteredProduct =
+      keyword !== ""
+        ? products.filter(
+            (product) =>
+              product.Name.toLowerCase().indexOf(keyword) > -1 ||
+              product.Group.toLowerCase().indexOf(keyword) > -1
+          )
+        : product;
+
+    setProducts(filteredProduct);
+    setKeyword(keyword);
   };
 
-  const tableInstance = useTable({
-    columns,
-    data: filteredData,
-  });
+  const tableInstance = useTable({ columns, data });
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     tableInstance;
+
+  const getLoggedIn = () => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      setIsLoggedIn(true);
+    } else {
+      navigate("/");
+    }
+  };
 
   // const getProductData = async () => {
   //   await api
@@ -61,65 +68,92 @@ const Home = () => {
   //     });
   // };
 
-  // const getLoggedIn = () => {
-  //   if (token) {
-  //     setIsLoggedIn(true);
-  //   } else {
-  //     navigate("/sign-in");
-  //   }
-  // };
+  useEffect(() => {
+    getLoggedIn();
+    // getProductData();
+  }, [navigate]);
 
-  // useEffect(() => {
-  //   getLoggedIn();
-  //   // getProductData();
-  // }, [navigate]);
-
-  return (
+  return isLoggedIn ? (
     <div className="App">
       <div className="home-page-container">
         <div className="navbar-container">
-          <img src={logo} width="45" height="45" alt="" />
+          <img src={logo} width="40" height="40" alt="" />
           <SideBar />
         </div>
-        <Dropdown selected={selected} setSelected={setSelected} />
+        <div className="dropdown-home">
+          <Dropdown selected={selected} setSelected={setSelected} />
+        </div>
         <Carousel />
         <div className="home-title">
           <div className="title-container">
             <h1>Inventory Items</h1>
-            <SearchBar handleSearch={handleSearch} />
+            <div className="search-bar-container">
+              <form action="" className="search" id="search-bar">
+                <input
+                  type="text"
+                  value={keyword}
+                  onChange={filterProduct}
+                  placeholder="Search"
+                  className="search-bar-input"
+                />
+                <Icon icon="ic:round-search" />
+              </form>
+            </div>
           </div>
         </div>
         <div className="table-home-page">
-          <table {...getTableProps()} className="table-container">
-            <thead>
-              {headerGroups.map((headerGroup) => (
-                <tr {...headerGroup.getHeaderGroupProps()}>
-                  {headerGroup.headers.map((column) => (
-                    <th {...column.getHeaderProps()}>
-                      {column.render("Header")}
-                    </th>
-                  ))}
-                </tr>
-              ))}
-            </thead>
-            <tbody {...getTableBodyProps()}>
-              {rows.map((row) => {
-                prepareRow(row);
-                return (
-                  <tr {...row.getRowProps()}>
-                    {row.cells.map((cell) => {
+          {products.length === 0 ? (
+            <p>No data available</p>
+          ) : (
+            <div className="scroll-table-1">
+              <div className="table-header">
+                <table {...getTableProps()}>
+                  <thead>
+                    {headerGroups.map((headerGroup) => (
+                      <tr {...headerGroup.getHeaderGroupProps()}>
+                        {headerGroup.headers.map((column) => (
+                          <th
+                            className="table-header-cell-1"
+                            {...column.getHeaderProps()}
+                          >
+                            {column.render("Header")}
+                          </th>
+                        ))}
+                      </tr>
+                    ))}
+                  </thead>
+                </table>
+              </div>
+              <div className="table-body">
+                <table>
+                  <tbody {...getTableBodyProps()}>
+                    {rows.map((row) => {
+                      prepareRow(row);
                       return (
-                        <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                        <tr {...row.getRowProps()}>
+                          {row.cells.map((cell) => {
+                            return (
+                              <td
+                                className="table-body-cell-1"
+                                {...cell.getCellProps()}
+                              >
+                                {cell.render("Cell")}
+                              </td>
+                            );
+                          })}
+                        </tr>
                       );
                     })}
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
+  ) : (
+    navigate("/")
   );
 };
 

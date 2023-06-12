@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-import data from "../Components/data/vendorData";
 import SideBar from "../Components/SideBar";
+import FloatingActionVendor from "../Components/FloatingAction/FloatingActionVendor";
+import data from "../Components/data/vendorData";
 
-// import api from "../api";
+import api from "../api";
 
 function VendorList() {
-  const token = localStorage.getItem("token");
   const navigate = useNavigate();
+  const token = localStorage.getItem("token");
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -28,19 +29,19 @@ function VendorList() {
     setKeyword(keyword);
   };
 
-  // const getDataVendor = async () => {
-  //   await api
-  //     .get("/v1/im/vendors/", {
-  //       headers: { Authorization: `Bearer ${token}` },
-  //     })
-  //     .then((res) => {
-  //       console.log(res.data);
-  //       setVendor(res.data.data);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err, err.message);
-  //     });
-  // };
+  const getDataVendor = async () => {
+    await api
+      .get("/v1/im/vendors/", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((res) => {
+        console.log(res.data);
+        setVendor(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err, err.message);
+      });
+  };
 
   const getLoggedIn = () => {
     const token = localStorage.getItem("token");
@@ -52,7 +53,7 @@ function VendorList() {
   };
 
   useEffect(() => {
-    getLoggedIn();
+    // getLoggedIn();
     // getDataVendor();
   }, [navigate]);
 
@@ -86,6 +87,9 @@ function VendorList() {
             ))}
           </ul>
         </div>
+      </div>
+      <div className="floating-action-button-container">
+        <FloatingActionVendor />
       </div>
     </div>
   ) : (
