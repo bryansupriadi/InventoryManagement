@@ -28,6 +28,7 @@ import VendorTable from './Pages/VendorTable';
 import ProductSeeAll from './Pages/ProductSeeAll';
 import ProductDetail from './Pages/ProductDetail';
 import EditProduct from './Pages/EditProduct';
+import ManageAccountDetail from './Pages/ManageAccountDetail';
 
 
 const router = createBrowserRouter([
@@ -86,6 +87,10 @@ const router = createBrowserRouter([
   {
     path: "/manage-account",
     element: <ManageAccount/>,
+  },
+  {
+    path: "/manage-account/:id",
+    element: <ManageAccountDetail/>,
   },
   {
     path: "/add-sub-category/active",

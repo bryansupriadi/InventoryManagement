@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import product from '../Components/data/product';
 import SideBar from '../Components/SideBar';
 import FloatingActionProduct from '../Components/FloatingAction/FloatingActionProduct';
@@ -7,6 +7,29 @@ import FloatingActionProduct from '../Components/FloatingAction/FloatingActionPr
 const ProductDetail = () => {
   const { subCategory: urlSubCategory, brandName: urlBrandName, id: urlId } = useParams();
   const [filteredProducts, setFilteredProducts] = useState([]);
+  const location = useLocation();
+  const [showPopupSuccess, setShowPopupSuccess] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
+
+  useEffect(() => {
+    if (location.state && location.state.showPopupSuccess) {
+      setSuccessMessage(location.state.successMessage);
+      setShowPopupSuccess(true);
+    }
+  }, [location.state]);  
+
+
+  useEffect(() => {
+    if (showPopupSuccess) {
+      const timer = setTimeout(() => {
+        setShowPopupSuccess(false);
+      }, 3500);
+    
+      return () => {
+        clearTimeout(timer);
+      };
+    }
+  }, [showPopupSuccess]);
 
   useEffect(() => {
     // Mencari produk berdasarkan subCategory dan brandName
@@ -26,6 +49,17 @@ const ProductDetail = () => {
   }, [urlSubCategory, urlBrandName, urlId]);
 
   const { Type } = filteredProducts.length > 0 ? filteredProducts[0] : '';
+
+
+  const Popup = ({ message }) => {
+    return (
+      <div className="popup-success">
+        <div className="popup-success-content">
+          <div className="popup-success-message">{message}</div>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <div className='App'>
@@ -56,6 +90,11 @@ const ProductDetail = () => {
         <FloatingActionProduct/>
         </div>
       </div>
+      {showPopupSuccess && (
+        <Popup
+          message={successMessage}
+        />
+      )}  
     </div>
   );
 };

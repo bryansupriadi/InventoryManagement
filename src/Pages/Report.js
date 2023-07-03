@@ -10,50 +10,51 @@ function Report() {
 
   const setSelectedOption = (option) => {
     setSelected(option);
+    let filtered = [];
+  
     if (option === 'Last year') {
       const lastYear = new Date();
       lastYear.setFullYear(lastYear.getFullYear() - 1);
-      const filtered = product.filter((item) => {
-        const date = new Date(item['Sub Data'][0].Date);
-        return date >= lastYear;
+      filtered = product.filter((item) => {
+        const subData = item['Sub Data'];
+        return subData.some((subItem) => {
+          const date = new Date(subItem.Date);
+          return date >= lastYear;
+        });
       });
-      setFilteredProducts(filtered);
     } else if (option === 'Last 3 years') {
       const last3Years = new Date();
       last3Years.setFullYear(last3Years.getFullYear() - 3);
-      const filtered = product.filter((item) => {
-        const date = new Date(item['Sub Data'][0].Date);
-        return date >= last3Years;
+      filtered = product.filter((item) => {
+        const subData = item['Sub Data'];
+        return subData.some((subItem) => {
+          const date = new Date(subItem.Date);
+          return date >= last3Years;
+        });
       });
-      setFilteredProducts(filtered);
     } else if (option === 'Last 5 years') {
       const last5Years = new Date();
-      last5Years.setFullYear(last5Years.getFullYear() - 6);
-      const filtered = product.filter((item) => {
-        const date = new Date(item['Sub Data'][0].Date);
-        return date >= last5Years;
+      last5Years.setFullYear(last5Years.getFullYear() - 5);
+      filtered = product.filter((item) => {
+        const subData = item['Sub Data'];
+        return subData.some((subItem) => {
+          const date = new Date(subItem.Date);
+          return date >= last5Years;
+        });
       });
-      setFilteredProducts(filtered);
-    } else if (option === 'Last 10 years') {
-      const last10Years = new Date();
-      last10Years.setFullYear(last10Years.getFullYear() - 10);
-      const filtered = product.filter((item) => {
-        const date = new Date(item['Sub Data'][0].Date);
-        return date >= last10Years;
-      });
-      setFilteredProducts(filtered);
-    } else if (option === 'All time') {
-      setFilteredProducts(product);
+    }  else if (option === 'All time') {
+      filtered = product;
     }
+    setFilteredProducts(filtered);
   };
+  
 
   const totalQty = filteredProducts.reduce((total, item) => total + item.Qty, 0);
-  const totalPrice = filteredProducts.reduce((total, item) => total + parseInt(item['Total Price'].slice(1)), 0);
+  const totalPrice = filteredProducts.reduce((total, item) => total + parseInt(item['Total Price']), 0);
   const totalGood = filteredProducts.reduce((total, item) => total + item.Good, 0);
   const totalBad = filteredProducts.reduce((total, item) => total + item.Bad, 0);
-  const filteredCount = filteredProducts.length;
-  const percentGood = ((totalGood / filteredCount) * 100).toFixed(2);
-  const percentBad = ((totalBad / filteredCount) * 100).toFixed(2);
+  const percentGood = ((totalGood / totalQty) * 100).toFixed(2);
+  const percentBad = ((totalBad / totalQty) * 100).toFixed(2);
   const data = [
     {
       title: 'Good',
