@@ -25,6 +25,8 @@ export function AddSubCategoryActive() {
   const [subCategoryName, setSubCategoryName] = useState('');
   const [subCategoryImage, setSubCategoryImage] = useState('');
   const [errors, setErrors] = useState({});
+  const [showPopupSuccess, setShowPopupSuccess] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('')
 
   const handleCategoryChange = event => {
     setCategory(event.target.value);
@@ -37,6 +39,13 @@ export function AddSubCategoryActive() {
   const handleSubCategoryImageChange = event => {
     setSubCategoryImage(event.target.value);
   };
+
+  const resetForm = () => {
+    setCategory('');
+    setSubCategoryName('');
+    setSubCategoryImage('');
+    setErrors({});
+  }
 
   const handleSubmit = event => {
     event.preventDefault();
@@ -51,10 +60,28 @@ export function AddSubCategoryActive() {
 
     if (Object.keys(newErrors).length === 0) {
       setErrors({});
+      setSuccessMessage('Sub Category successfully added!')
+      setShowPopupSuccess(true);
+      resetForm();
+      setTimeout(() => {
+        setShowPopupSuccess(false);
+      },3500);
     } else {
       setErrors(newErrors);
+      setSuccessMessage('')
     }
   };
+
+  const Popup = ({ message }) => {
+    return (
+      <div className="popup-success">
+        <div className="popup-success-content">
+          <div className="popup-success-message">{message}</div>
+        </div>
+      </div>
+    );
+  };
+  
 
   return (
     <div className='App'>
@@ -109,10 +136,15 @@ export function AddSubCategoryActive() {
             </div>
             </form>
             </div>
+            {showPopupSuccess && (
+              <Popup
+                message={successMessage}
+              />
+            )}            
         </div>
     </div>
     );
-    };
+  };
 
  export function AddSubCategoryPassive() {
 
@@ -139,6 +171,8 @@ export function AddSubCategoryActive() {
         const [subCategoryName, setSubCategoryName] = useState('');
         const [subCategoryImage, setSubCategoryImage] = useState('');
         const [errors, setErrors] = useState({});
+        const [showPopupSuccess, setShowPopupSuccess] = useState(false);
+        const [successMessage, setSuccessMessage] = useState('')
     
         const handleCategoryChange = (event) => {
             setCategory(event.target.value);
@@ -152,6 +186,13 @@ export function AddSubCategoryActive() {
             setSubCategoryImage(event.target.value);
         };
     
+        const resetForm = () => {
+          setCategory('');
+          setSubCategoryName('');
+          setSubCategoryImage('');
+          setErrors({});
+        }
+
         const handleSubmit = event => {
             event.preventDefault();
             const newErrors = {};
@@ -165,9 +206,26 @@ export function AddSubCategoryActive() {
         
             if (Object.keys(newErrors).length === 0) {
               setErrors({});
+              setSuccessMessage('Sub Category successfully added!')
+              setShowPopupSuccess(true);
+              resetForm();
+              setTimeout(() => {
+                setShowPopupSuccess(false);
+              },3500);
             } else {
               setErrors(newErrors);
+              setSuccessMessage('');
             }
+          };
+
+          const Popup = ({ message }) => {
+            return (
+              <div className="popup-success">
+                <div className="popup-success-content">
+                  <div className="popup-success-message">{message}</div>
+                </div>
+              </div>
+            );
           };
     
         return (
@@ -216,6 +274,11 @@ export function AddSubCategoryActive() {
                         </div>
                     </form>
                 </div>
+                {showPopupSuccess && (
+                  <Popup
+                    message={successMessage}
+                  />
+                )}   
             </div>
             </div>
         );

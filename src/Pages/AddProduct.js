@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
 import SideBar from '../Components/SideBar';
 import { useNavigate } from 'react-router-dom';
@@ -67,6 +67,8 @@ const AddProductForm = () => {
   const [categoryOptions, setCategoryOptions] = useState([]);
   const [subCategoriesOptions, setSubCategoryOptions] = useState([]);
   const [errors, setErrors] = useState({});
+  const [showPopupSuccess, setShowPopupSuccess] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('')
   const navigate = useNavigate();
   
   const handleSelectChange = (name, selectedOption) => {
@@ -102,6 +104,22 @@ const AddProductForm = () => {
     const { name, value } = event.target;
     setFormValues((prevState) => ({ ...prevState, [name]: value }));
   };
+
+  const resetForm = () => {
+    setFormValues((prevState) => ({ ...prevState, brandName: '' })) 
+    setFormValues((prevState) => ({ ...prevState, group: null })) 
+    setFormValues((prevState) => ({ ...prevState, category: null })) 
+    setFormValues((prevState) => ({ ...prevState, subCategory: null })) 
+    setFormValues((prevState) => ({ ...prevState, type: '' })) 
+    setFormValues((prevState) => ({ ...prevState, vendor: '' })) 
+    setFormValues((prevState) => ({ ...prevState, purchaseDate: '' })) 
+    setFormValues((prevState) => ({ ...prevState, quantity: '' })) 
+    setFormValues((prevState) => ({ ...prevState, eachPrice: '' })) 
+    setFormValues((prevState) => ({ ...prevState, currentLocation: '' })) 
+    setFormValues((prevState) => ({ ...prevState, condition: '' }))
+    setFormValues((prevState) => ({ ...prevState, conditionGood: '' })) 
+    setFormValues((prevState) => ({ ...prevState, conditionBad: '' })) 
+  }
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -167,11 +185,34 @@ const AddProductForm = () => {
       newErrors.condition = 'The total of good and bad condition must be equal to quantity!';
     }
     if (Object.keys(newErrors).length === 0) {
-      setErrors(errors);
+      setErrors({});
       setProductId((prevId) => prevId + 1)
+      setSuccessMessage('Product successfully added!');
+      setShowPopupSuccess(true);
+      resetForm();
+      setTimeout(() => {
+        setShowPopupSuccess(false);
+      },3500);
     } else{
       setErrors(newErrors);
+      setSuccessMessage('');
     }
+  };
+
+  useEffect(() => {
+    if (showPopupSuccess) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [showPopupSuccess]);
+
+  const Popup = ({ message }) => {
+    return (
+      <div className="popup-success">
+        <div className="popup-success-content">
+          <div className="popup-success-message">{message}</div>
+        </div>
+      </div>
+    );
   };
 
 
@@ -274,6 +315,11 @@ const AddProductForm = () => {
     <button type="submit" className='btn-form'>Add Product</button>
   </form>
   </div>
+  {showPopupSuccess && (
+    <Popup
+      message={successMessage}
+    />
+  )}    
   </div>
   </div>
 );
