@@ -3,7 +3,7 @@ import { Icon } from '@iconify/react';
 
 function DropdownReport({selected, setSelected}) {
     const [isActive, setIsActive] = useState(false);
-    const options = ["Last year", "Last 3 years", "Last 5 years", "Last 10 years", "All time"]
+    const options = ["Last year", "Last 3 years", "Last 5 years", "All time"]
   
     return (
     <div className='dropdown-container'>
