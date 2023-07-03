@@ -1,20 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useTable } from "react-table";
 import { useMemo } from "react";
 import logo from "../Assets/logo.png";
-
 import { user } from "../Components/data/userdata";
-
 import axios from "axios";
 
 const ManageAccount = () => {
   const navigate = useNavigate();
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
   const [users, setUsers] = useState(user);
   const [keyword, setKeyword] = useState("");
+  const location = useLocation();
 
   const filterUser = (event) => {
     const keyword = event.target.value.toLowerCase();
@@ -23,7 +21,7 @@ const ManageAccount = () => {
         ? user.filter(
             (user) =>
               user.name.toLowerCase().indexOf(keyword) > -1 ||
-              user.email.toLocaleLowerCase().indexOf(keyword) > -1
+              user.email.toLowerCase().indexOf(keyword) > -1
           )
         : user;
     setUsers(filteredUser);
@@ -57,6 +55,13 @@ const ManageAccount = () => {
   const tableInstance = useTable({ columns, data });
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     tableInstance;
+
+    const handleRowClick = (user, event) => {
+      if (event.target.tagName !== 'SELECT') {
+        navigate(`${location.pathname}/${user['id']}`);
+      }
+    }
+    
 
   const handleSignOut = async () => {
     await axios
@@ -109,11 +114,11 @@ const ManageAccount = () => {
     <div className="App">
       <div className="manage-account-page-container">
         <div className="navbar-super-admin-container">
-          <img src={logo} width="45" height="45" alt="" />
+          <img src={logo} width="40" height="40" alt="" />
           <h1>
             <Link
               to="/"
-              onClick={handleSignOut}
+              // onClick={handleSignOut}
               style={{ textDecoration: "none", color: "#ff3333" }}
             >
               Sign Out
@@ -162,7 +167,9 @@ const ManageAccount = () => {
                 {rows.map((row, i) => {
                   prepareRow(row);
                   return (
-                    <tr {...row.getRowProps()}>
+                    <tr 
+                    {...row.getRowProps()}
+                    onClick={(event) => handleRowClick(row.original, event)}>
                       {row.cells.map((cell) => {
                         return (
                           <td
