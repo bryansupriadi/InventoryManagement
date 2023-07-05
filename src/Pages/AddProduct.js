@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import Select from "react-select";
 
 import SideBar from "../Components/SideBar";
-import Popup from "../Components/Popup";
 
 import api from "../api";
 
@@ -241,6 +240,16 @@ const AddProductForm = () => {
     getLoggedIn();
     getAllCategories();
   }, [navigate]);
+
+  const Popup = ({ message }) => {
+    return (
+      <div className="popup-success">
+        <div className="popup-success-content">
+          <div className="popup-success-message">{message}</div>
+        </div>
+      </div>
+    );
+  };
 
   return isLoggedIn ? (
     <div className="App">

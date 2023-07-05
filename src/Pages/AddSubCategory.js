@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 
-import Popup from "../Component/Popup";
 import SideBar from "../Components/SideBar";
 
 export function AddSubCategoryActive() {
@@ -47,6 +46,16 @@ export function AddSubCategoryActive() {
   const handleSubmit = (event) => {
     event.preventDefault();
     // tambahkan kode untuk melakukan submit form
+  };
+
+  const Popup = ({ message }) => {
+    return (
+      <div className="popup-success">
+        <div className="popup-success-content">
+          <div className="popup-success-message">{message}</div>
+        </div>
+      </div>
+    );
   };
 
   return (
