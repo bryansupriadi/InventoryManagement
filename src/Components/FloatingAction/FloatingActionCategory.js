@@ -6,6 +6,8 @@ function FloatingActionButton(props) {
   const [showPopup, setShowPopup] = useState(false);
   const [category, setCategory] = useState('');
   const [errors, setErrors] = useState({});
+  const [showPopupSuccess, setShowPopupSuccess] = useState(false);
+  const [successMessage, setSuccessMessage] = useState(''); 
   const type = props.type;
   const url = `/add-sub-category/${type}`;
 
@@ -21,6 +23,10 @@ function FloatingActionButton(props) {
     setCategory(event.target.value);
   };
 
+  const resetForm = () => {
+    setCategory('');
+  }
+
   const handleAddCategory = (event) => {
     event.preventDefault();
     const newErrors = {};
@@ -31,11 +37,28 @@ function FloatingActionButton(props) {
 
     if (Object.keys(newErrors).length === 0) {
         // TODO: process the categoryInput value
-        setCategory('');
+        setErrors('');
+        setSuccessMessage('Category successfully added!');
+        setShowPopupSuccess(true);
+        resetForm();
+        setTimeout(() => {
+          setShowPopupSuccess(false);
+        }, 3500);
         togglePopup();
     } else {
       setErrors(newErrors);
+      setSuccessMessage('');
     }
+};
+
+const Popup = ({ message }) => {
+  return (
+    <div className="popup-success">
+      <div className="popup-success-content">
+        <div className="popup-success-message">{message}</div>
+      </div>
+    </div>
+  );
 };
 
   return (
@@ -71,6 +94,11 @@ function FloatingActionButton(props) {
         </div>
       )}
       </div>
+      {showPopupSuccess && (
+        <Popup
+          message={successMessage}
+        />
+      )}  
     </div>
   );
 }

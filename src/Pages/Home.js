@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { useTable } from "react-table";
 import { Icon } from "@iconify/react";
 import logo from "../Assets/logo.png";
-
 import SideBar from "../Components/SideBar";
 import Carousel from "../Components/Carousel";
 import Dropdown from "../Components/Dropdown";
@@ -23,8 +22,42 @@ const Home = () => {
 
   const [selected, setSelected] = useState("All time");
 
+  const [filteredProducts, setFilteredProducts] = useState(product);
+
+  const COLUMNS = [
+    {
+      Header: "Name",
+      accessor: "Name",
+    },
+    {
+      Header: "Qty",
+      accessor: (row) => {
+        const product = products.find((item) => item.Name === row.Name);
+        return product ? product["Sub Data"].length : 0;
+      },
+    },
+    {
+      Header: "Price",
+      accessor: (row) => {
+        const product = products.find((item) => item.Name === row.Name);
+        let totalPrice = 0;
+        if (product) {
+          product["Sub Data"].forEach((subItem) => {
+            totalPrice += subItem.Price;
+          });
+        }
+        return totalPrice;
+      },
+    },
+    {
+      Header: "Group",
+      accessor: "Group",
+    },
+  ];
+
   const [products, setProducts] = useState(product);
   const [keyword, setKeyword] = useState("");
+  // const [columns, setColumns] = useState(COLUMNS);
 
   const columns = useMemo(() => COLUMNS, []);
   const data = useMemo(() => products, [products]);
@@ -38,11 +71,82 @@ const Home = () => {
               product.Name.toLowerCase().indexOf(keyword) > -1 ||
               product.Group.toLowerCase().indexOf(keyword) > -1
           )
-        : product;
+        : products;
 
-    setProducts(filteredProduct);
+    setFilteredProducts(filteredProduct);
     setKeyword(keyword);
+
+    if (keyword === "") {
+      setFilteredProducts(product);
+      setProducts(product);
+    }
   };
+
+  const setSelectedOption = (option) => {
+    setSelected(option);
+
+    if (option === "Last year") {
+      const lastYear = new Date();
+      lastYear.setFullYear(lastYear.getFullYear() - 1);
+      const filtered = product.map((item) => {
+        const subData = item["Sub Data"].filter((subItem) => {
+          const subItemDate = new Date(subItem.Date);
+          return subItemDate >= lastYear;
+        });
+        return { ...item, "Sub Data": subData };
+      });
+      setFilteredProducts(filtered);
+      setProducts(filtered); // Perbarui nilai products
+    } else if (option === "Last 3 years") {
+      const last3Years = new Date();
+      last3Years.setFullYear(last3Years.getFullYear() - 3);
+      const filtered = product.map((item) => {
+        const subData = item["Sub Data"].filter((subItem) => {
+          const subItemDate = new Date(subItem.Date);
+          return subItemDate >= last3Years;
+        });
+        return { ...item, "Sub Data": subData };
+      });
+      setFilteredProducts(filtered);
+      setProducts(filtered); // Perbarui nilai products
+    } else if (option === "Last 5 years") {
+      const last5Years = new Date();
+      last5Years.setFullYear(last5Years.getFullYear() - 5);
+      const filtered = product.map((item) => {
+        const subData = item["Sub Data"].filter((subItem) => {
+          const subItemDate = new Date(subItem.Date);
+          return subItemDate >= last5Years;
+        });
+        return { ...item, "Sub Data": subData };
+      });
+      setFilteredProducts(filtered);
+      setProducts(filtered); // Perbarui nilai products
+    } else if (option === "All time") {
+      setFilteredProducts(product);
+      setProducts(product); // Perbarui nilai products
+    }
+  };
+
+  useEffect(() => {
+    const updatedColumns = [...columns];
+    updatedColumns[1].accessor = (row) => {
+      const product = filteredProducts.find((item) => item.Name === row.Name);
+      return product ? product["Sub Data"].length : 0;
+    };
+    updatedColumns[2].accessor = (row) => {
+      const product = filteredProducts.find((item) => item.Name === row.Name);
+      let totalPrice = 0;
+      if (product) {
+        product["Sub Data"].forEach((subItem) => {
+          totalPrice += subItem.Price;
+        });
+      }
+      return totalPrice;
+    };
+    setColumns(updatedColumns);
+  }, [filteredProducts, columns]);
+
+  const data = useMemo(() => filteredProducts, [filteredProducts]);
 
   const tableInstance = useTable({ columns, data });
 
@@ -82,9 +186,9 @@ const Home = () => {
           <SideBar />
         </div>
         <div className="dropdown-home">
-          <Dropdown selected={selected} setSelected={setSelected} />
+          <Dropdown selected={selected} setSelected={setSelectedOption} />
         </div>
-        <Carousel />
+        <Carousel products={filteredProducts} />
         <div className="home-title">
           <div className="title-container">
             <h1>Inventory Items</h1>
@@ -128,22 +232,29 @@ const Home = () => {
               <div className="table-body">
                 <table>
                   <tbody {...getTableBodyProps()}>
-                    {rows.map((row) => {
+                    {rows.map((row, index) => {
                       prepareRow(row);
-                      return (
-                        <tr {...row.getRowProps()}>
-                          {row.cells.map((cell) => {
-                            return (
-                              <td
-                                className="table-body-cell-1"
-                                {...cell.getCellProps()}
-                              >
-                                {cell.render("Cell")}
-                              </td>
-                            );
-                          })}
-                        </tr>
-                      );
+                      const qty = row.cells[1].value;
+                      const price = row.cells[2].value;
+
+                      if (qty !== 0 && price !== 0) {
+                        return (
+                          <tr {...row.getRowProps()} key={index}>
+                            {row.cells.map((cell, index) => {
+                              return (
+                                <td
+                                  className="table-body-cell-1"
+                                  {...cell.getCellProps()}
+                                  key={index}
+                                >
+                                  {cell.render("Cell")}
+                                </td>
+                              );
+                            })}
+                          </tr>
+                        );
+                      }
+                      return null;
                     })}
                   </tbody>
                 </table>

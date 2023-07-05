@@ -794,20 +794,18 @@ nav {
 .table-home-page th{
   border-bottom: 3px solid #00788D;
   border-top: 3px solid #00788D;
-  padding: 5px;
+  padding: 5px 0px 5px 0px;
   text-align: center;
-  padding-left: 10px;
-  padding-right: 10px;
 }
 
 .table-header-cell-1{
-  width: 100px;
+  width: 150px;
 }
 
 .table-home-page td{
   text-align: left;
   justify-content: center;
-  padding: 5px 18px;
+  padding: 5px 19px 5px 20px;
   font-size: 15px;
 }
 
@@ -1084,7 +1082,7 @@ ul {
   align-items: center;
   border-bottom: 5px solid #00788D;
   background-color: #88e2ff;
-  padding: 30px;
+  padding: 20px 30px;
 }
 
 .navbar-super-admin-container h1{
@@ -1174,6 +1172,10 @@ ul {
   float: right;
 }
 
+.manage-account-detail-container{
+  min-height: 100vh;
+  background-color: #002938;
+}
 
 .floating-action-button-container {
   position: fixed;
@@ -1994,4 +1996,57 @@ border-radius: 5px;
   position: fixed;
   z-index: 9999;
   margin-top: -8vh;
+}
+
+.popup-success {
+  position: fixed;
+  top: 20%; /* Mengatur posisi vertikal di tengah */
+  left: 50%; /* Mengatur posisi horizontal di tengah */
+  transform: translate(-50%, -50%); /* Mentranslasikan ke posisi tepat di tengah */
+  min-width: 330px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-success-content {
+  background-color: #32E225;
+  padding: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.popup-success-message {
+  color: #fff;
+  font-weight: bold;
+}
+
+.user-detail{
+  color: #fff;
+  padding-top: 20px;
+  padding-right: 30px;
+}
+
+
+.user-detail p {
+  max-width: 330px;
+  padding-top: 10px;
+}
+
+.btn-user-detail {
+  margin-top: 14rem;
+  padding: 10px 20px;
+  color: #88e2ff;
+  font-weight: bolder;
+  background-color: #ff3333;
+  border: none;
+  border-radius: 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  max-width: 150px;
+  margin-left: 17rem;
 }

@@ -4,6 +4,8 @@ function FloatingActionVendor() {
     const [vendor, setVendor] = useState('');
     const [showPopup, setShowPopup] = useState(false);
     const [errors, setErrors] = useState({});
+    const [showPopupSuccess, setShowPopupSuccess] = useState(false);
+    const [successMessage, setSuccessMessage] = useState('')
 
     const togglePopup = () => {
         setShowPopup(!showPopup);
@@ -11,6 +13,11 @@ function FloatingActionVendor() {
 
     const handleVendorInputChange = (event) => {
         setVendor(event.target.value);
+    }
+
+    const resetForm = () => {
+        setVendor('');
+        setErrors({});
     }
 
     const handleAddVendor = (event) => {
@@ -23,12 +30,28 @@ function FloatingActionVendor() {
 
         if (Object.keys(newErrors).length === 0) {
             // TODO: process the categoryInput value
-            setVendor('');
+            setErrors({});
+            setSuccessMessage('Vendor successfully added!')
+            setShowPopupSuccess(true);
+            resetForm();
+            setTimeout(() => {
+                setShowPopupSuccess(false);
+            },3500)
             togglePopup();
         } else {
             setErrors(newErrors);
         }
     };
+
+    const Popup = ({ message }) => {
+        return (
+          <div className="popup-success">
+            <div className="popup-success-content">
+              <div className="popup-success-message">{message}</div>
+            </div>
+          </div>
+        );
+      };
 
     return (
         <div className='floating-action-vendor-container'>
@@ -46,7 +69,12 @@ function FloatingActionVendor() {
                         </form>
                     </div>
                 )}
-            </div>    
+            </div>
+            {showPopupSuccess && (
+                <Popup
+                  message={successMessage}
+                />
+              )} 
         </div>
     )
 }

@@ -5,19 +5,23 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorkerRegistration";
 import reportWebVitals from "./reportWebVitals";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
+
 import SignUp from "./Pages/SignUp";
 import SignIn from "./Pages/SignIn";
-import "bootstrap/dist/css/bootstrap.min.css";
 import Otp from "./Pages/Otp";
 import OtpSuccess from "./Components/OtpSuccess";
 import OtpFailed from "./Components/OtpFailed";
+
 import Home from "./Pages/Home";
+
 import PassiveCategory from "./Pages/PassiveCategory";
 import ActiveCategory from "./Pages/ActiveCategory";
 import AddProductForm from "./Pages/AddProduct";
 import VendorList from "./Pages/VendorList";
 import VendorProduct from "./Pages/VendorProduct";
 import ManageAccount from "./Pages/ManageAccount";
+
 import {
   AddSubCategoryActive,
   AddSubCategoryPassive,
@@ -31,6 +35,7 @@ import VendorTable from "./Pages/VendorTable";
 import ProductSeeAll from "./Pages/ProductSeeAll";
 import ProductDetail from "./Pages/ProductDetail";
 import EditProduct from "./Pages/EditProduct";
+import ManageAccountDetail from "./Pages/ManageAccountDetail";
 
 const router = createBrowserRouter([
   {
@@ -88,6 +93,10 @@ const router = createBrowserRouter([
   {
     path: "/manage-account",
     element: <ManageAccount />,
+  },
+  {
+    path: "/manage-account/:id",
+    element: <ManageAccountDetail />,
   },
   {
     path: "/add-sub-category/active",

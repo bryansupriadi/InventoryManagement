@@ -3,7 +3,7 @@ import { Icon } from '@iconify/react';
 
 function Dropdown({selected, setSelected}) {
     const [isActive, setIsActive] = useState(false);
-    const options = ["Last year", "Last 3 years", "Last 5 years", "Last 10 years", "All time"]
+    const options = ["Last year", "Last 3 years", "Last 5 years", "All time"]
  
     const handleOptionClick = (option) => {
       setSelected(option);
@@ -17,8 +17,7 @@ function Dropdown({selected, setSelected}) {
     return (
     <div className='dropdown-container'>
     <div className='dropdown-page'>
-      <div className='dropdown-btn' onClick={(e) =>
-        setIsActive(!isActive)}>
+      <div className='dropdown-btn' onClick={(e) => setIsActive(!isActive)}>
       {selected}
       <Icon icon="gridicons:dropdown" width="35" height="35" />
       </div>

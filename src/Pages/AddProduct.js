@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Select from "react-select";
 
 import SideBar from "../Components/SideBar";
+import Popup from "../Components/Popup";
 
 import api from "../api";
 
@@ -10,6 +11,9 @@ const AddProductForm = () => {
   const navigate = useNavigate();
 
   const token = localStorage.getItem("token");
+
+  const [showPopupSuccess, setShowPopupSuccess] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -105,6 +109,22 @@ const AddProductForm = () => {
     setFormValues((prevState) => ({ ...prevState, [name]: value }));
   };
 
+  const resetForm = () => {
+    setFormValues((prevState) => ({ ...prevState, brandName: "" }));
+    setFormValues((prevState) => ({ ...prevState, group: null }));
+    setFormValues((prevState) => ({ ...prevState, category: null }));
+    setFormValues((prevState) => ({ ...prevState, subCategory: null }));
+    setFormValues((prevState) => ({ ...prevState, type: "" }));
+    setFormValues((prevState) => ({ ...prevState, vendor: "" }));
+    setFormValues((prevState) => ({ ...prevState, purchaseDate: "" }));
+    setFormValues((prevState) => ({ ...prevState, quantity: "" }));
+    setFormValues((prevState) => ({ ...prevState, eachPrice: "" }));
+    setFormValues((prevState) => ({ ...prevState, currentLocation: "" }));
+    setFormValues((prevState) => ({ ...prevState, condition: "" }));
+    setFormValues((prevState) => ({ ...prevState, conditionGood: "" }));
+    setFormValues((prevState) => ({ ...prevState, conditionBad: "" }));
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -180,10 +200,17 @@ const AddProductForm = () => {
         "The total of good and bad condition must be equal to quantity!";
     }
     if (Object.keys(newErrors).length === 0) {
-      setErrors(errors);
+      setErrors({});
       setProductId((prevId) => prevId + 1);
+      setSuccessMessage("Product successfully added!");
+      setShowPopupSuccess(true);
+      resetForm();
+      setTimeout(() => {
+        setShowPopupSuccess(false);
+      }, 3500);
     } else {
       setErrors(newErrors);
+      setSuccessMessage("");
     }
   };
 
@@ -415,6 +442,7 @@ const AddProductForm = () => {
             </button>
           </form>
         </div>
+        {showPopupSuccess && <Popup message={successMessage} />}
       </div>
     </div>
   ) : (

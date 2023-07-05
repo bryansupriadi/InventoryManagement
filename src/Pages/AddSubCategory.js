@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+
+import Popup from "../Component/Popup";
 import SideBar from "../Components/SideBar";
 
 export function AddSubCategoryActive() {
@@ -26,6 +28,9 @@ export function AddSubCategoryActive() {
   const [category, setCategory] = useState("");
   const [subCategoryName, setSubCategoryName] = useState("");
   const [subCategoryImage, setSubCategoryImage] = useState("");
+  const [errors, setErrors] = useState({});
+  const [showPopupSuccess, setShowPopupSuccess] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
 
   const handleCategoryChange = (event) => {
     setCategory(event.target.value);
@@ -96,6 +101,7 @@ export function AddSubCategoryActive() {
               </button>
             </div>
           </form>
+          {showPopupSuccess && <Popup message={successMessage} />}
         </div>
       </div>
     </div>
@@ -128,6 +134,8 @@ export function AddSubCategoryPassive() {
   const [subCategoryName, setSubCategoryName] = useState("");
   const [subCategoryImage, setSubCategoryImage] = useState("");
   const [errors, setErrors] = useState({});
+  const [showPopupSuccess, setShowPopupSuccess] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
 
   const handleCategoryChange = (event) => {
     setCategory(event.target.value);
@@ -139,6 +147,13 @@ export function AddSubCategoryPassive() {
 
   const handleSubCategoryImageChange = (event) => {
     setSubCategoryImage(event.target.value);
+  };
+
+  const resetForm = () => {
+    setCategory("");
+    setSubCategoryName("");
+    setSubCategoryImage("");
+    setErrors({});
   };
 
   const handleSubmit = (event) => {
@@ -154,9 +169,26 @@ export function AddSubCategoryPassive() {
 
     if (Object.keys(newErrors).length === 0) {
       setErrors({});
+      setSuccessMessage("Sub Category successfully added!");
+      setShowPopupSuccess(true);
+      resetForm();
+      setTimeout(() => {
+        setShowPopupSuccess(false);
+      }, 3500);
     } else {
       setErrors(newErrors);
+      setSuccessMessage("");
     }
+  };
+
+  const Popup = ({ message }) => {
+    return (
+      <div className="popup-success">
+        <div className="popup-success-content">
+          <div className="popup-success-message">{message}</div>
+        </div>
+      </div>
+    );
   };
 
   return (
@@ -217,6 +249,7 @@ export function AddSubCategoryPassive() {
               </button>
             </div>
           </form>
+          {showPopupSuccess && <Popup message={successMessage} />}
         </div>
       </div>
     </div>

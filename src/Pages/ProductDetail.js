@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 
 import product from "../Components/data/product";
 import SideBar from "../Components/SideBar";
@@ -21,6 +21,9 @@ const ProductDetail = () => {
     id: urlId,
   } = useParams();
   const [filteredProducts, setFilteredProducts] = useState([]);
+  const location = useLocation();
+  const [showPopupSuccess, setShowPopupSuccess] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
 
   const { Type } = filteredProducts.length > 0 ? filteredProducts[0] : "";
 
@@ -48,8 +51,8 @@ const ProductDetail = () => {
   };
 
   useEffect(() => {
-    // getLoggedIn();
-    // getProductDetail();
+    getLoggedIn();
+    getProductDetail();
 
     // Mencari produk berdasarkan subCategory dan brandName
     const filteredProducts = product.filter((item) => {
@@ -68,9 +71,41 @@ const ProductDetail = () => {
     );
 
     setFilteredProducts(productIdData);
-  }, [urlSubCategory, urlBrandName, urlId, navigate]);
 
-  return (
+    if (location.state && location.state.showPopupSuccess) {
+      setSuccessMessage(location.state.successMessage);
+      setShowPopupSuccess(true);
+    }
+
+    if (showPopupSuccess) {
+      const timer = setTimeout(() => {
+        setShowPopupSuccess(false);
+      }, 3500);
+
+      return () => {
+        clearTimeout(timer);
+      };
+    }
+  }, [
+    urlSubCategory,
+    urlBrandName,
+    urlId,
+    navigate,
+    showPopupSuccess,
+    location.state,
+  ]);
+
+  const Popup = ({ message }) => {
+    return (
+      <div className="popup-success">
+        <div className="popup-success-content">
+          <div className="popup-success-message">{message}</div>
+        </div>
+      </div>
+    );
+  };
+
+  return isLoggedIn ? (
     <div className="App">
       <div className="product-detail-page-container">
         <div className="navbar-container">
@@ -99,7 +134,10 @@ const ProductDetail = () => {
           <FloatingActionProduct />
         </div>
       </div>
+      {showPopupSuccess && <Popup message={successMessage} />}
     </div>
+  ) : (
+    navigate("/sign-in")
   );
 };
 

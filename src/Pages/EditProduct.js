@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import SideBar from '../Components/SideBar';
 import product from '../Components/data/product';
 
 function EditProduct() {
-  const { subCategory: urlSubCategory, brandName: urlBrandName, id: urlId } = useParams();
+  const { group: urlGroup, item: urlItem, subCategory: urlSubCategory, brandName: urlBrandName, id: urlId } = useParams();
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [purchaseDate, setPurchaseDate] = useState('');
   const [price, setPrice] = useState('');
   const [currentLocation, setCurrentLocation] = useState('');
   const [condition, setCondition] = useState('');
-  const [errors, setErrors] = useState('')
+  const [errors, setErrors] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Mencari produk berdasarkan subCategory dan brandName
@@ -31,6 +32,7 @@ function EditProduct() {
 
   const { Type } = filteredProducts.length > 0 ? filteredProducts[0] : '';
 
+
   const handleEditProduct = (event) => {
     event.preventDefault();
     const newErrors = {};
@@ -50,16 +52,15 @@ function EditProduct() {
       newErrors.condition = 'Condition must be either "Good" or "Bad"!';
     }
     if (Object.keys(newErrors).length === 0) {
-      setErrors(errors);
+      setErrors({});
+      navigate(`/${urlGroup}-category/${urlItem}/${urlSubCategory}/${urlBrandName}/${urlId}`, {
+        state: { showPopupSuccess: true, successMessage: 'Edit product successfully!' }
+      });      
     } else {
       setErrors(newErrors);
     }
-    // Setelah penyimpanan berhasil, lakukan reset nilai form
-    setPurchaseDate('');
-    setPrice('');
-    setCurrentLocation('');
-    setCondition('');
   };
+
 
   return (
     <div className="App">
