@@ -24,6 +24,10 @@ const Home = () => {
 
   const [filteredProducts, setFilteredProducts] = useState(product);
 
+  const data = useMemo(() => filteredProducts, [filteredProducts]);
+  const [products, setProducts] = useState(product);
+  const [keyword, setKeyword] = useState("");
+
   const COLUMNS = [
     {
       Header: "Name",
@@ -55,12 +59,7 @@ const Home = () => {
     },
   ];
 
-  const [products, setProducts] = useState(product);
-  const [keyword, setKeyword] = useState("");
-  // const [columns, setColumns] = useState(COLUMNS);
-
-  const columns = useMemo(() => COLUMNS, []);
-  const data = useMemo(() => products, [products]);
+  const [columns, setColumns] = useState(COLUMNS);
 
   const filterProduct = (event) => {
     const keyword = event.target.value.toLowerCase();
@@ -127,34 +126,12 @@ const Home = () => {
     }
   };
 
-  useEffect(() => {
-    const updatedColumns = [...columns];
-    updatedColumns[1].accessor = (row) => {
-      const product = filteredProducts.find((item) => item.Name === row.Name);
-      return product ? product["Sub Data"].length : 0;
-    };
-    updatedColumns[2].accessor = (row) => {
-      const product = filteredProducts.find((item) => item.Name === row.Name);
-      let totalPrice = 0;
-      if (product) {
-        product["Sub Data"].forEach((subItem) => {
-          totalPrice += subItem.Price;
-        });
-      }
-      return totalPrice;
-    };
-    setColumns(updatedColumns);
-  }, [filteredProducts, columns]);
-
-  const data = useMemo(() => filteredProducts, [filteredProducts]);
-
   const tableInstance = useTable({ columns, data });
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     tableInstance;
 
   const getLoggedIn = () => {
-    const token = localStorage.getItem("token");
     if (token) {
       setIsLoggedIn(true);
     } else {
@@ -176,7 +153,24 @@ const Home = () => {
   useEffect(() => {
     getLoggedIn();
     // getProductData();
-  }, [navigate]);
+
+    const updatedColumns = [...columns];
+    updatedColumns[1].accessor = (row) => {
+      const product = filteredProducts.find((item) => item.Name === row.Name);
+      return product ? product["Sub Data"].length : 0;
+    };
+    updatedColumns[2].accessor = (row) => {
+      const product = filteredProducts.find((item) => item.Name === row.Name);
+      let totalPrice = 0;
+      if (product) {
+        product["Sub Data"].forEach((subItem) => {
+          totalPrice += subItem.Price;
+        });
+      }
+      return totalPrice;
+    };
+    setColumns(updatedColumns);
+  }, [filteredProducts, columns, navigate]);
 
   return isLoggedIn ? (
     <div className="App">
