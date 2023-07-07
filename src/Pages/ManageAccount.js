@@ -13,8 +13,8 @@ const ManageAccount = () => {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const [users, setUsers] = useState([]);
   // const [users, setUsers] = useState(user);
+  const [users, setUsers] = useState([]);
   const [keyword, setKeyword] = useState("");
   const location = useLocation();
 
@@ -85,24 +85,23 @@ const ManageAccount = () => {
   const handleSubmit = async (id) => {
     console.log(id);
 
-    // await api
-    //   .patch(
-    //     `/v1/im/users/${id}`,
-    //     { role: users.role },
-    //     { headers: { Authorization: `Bearer ${token}` } }
-    //   )
-    //   .then((res) => {
-    //     console.log(res.data);
+    await api
+      .patch(
+        `/v1/im/users/${id}`,
+        { role: users.role },
+        { headers: { Authorization: `Bearer ${token}` } }
+      )
+      .then((res) => {
+        console.log(res.data);
 
-    //     navigate("/manage-account");
-    //   })
-    //   .catch((err) => {
-    //     console.log(err, err.message);
-    //   });
+        navigate("/manage-account");
+      })
+      .catch((err) => {
+        console.log(err, err.message);
+      });
   };
 
   const getLoggedIn = () => {
-    const token = localStorage.getItem("token");
     if (token) {
       setIsLoggedIn(true);
     } else {
@@ -137,7 +136,6 @@ const ManageAccount = () => {
           <img src={logo} width="40" height="40" alt="" />
           <h1>
             <Link
-              // to="/sign-in"
               onClick={handleSignOut}
               style={{ textDecoration: "none", color: "#ff3333" }}
             >
