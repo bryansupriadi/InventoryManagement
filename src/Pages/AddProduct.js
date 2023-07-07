@@ -24,17 +24,17 @@ const AddProductForm = () => {
     typeProductName: "",
     vendorName: null,
     purchaseDate: "",
-    quantity: "",
-    eachPrice: "",
+    quantity: 0,
+    eachPrice: 0,
     currentLocation: "",
-    condition: "",
+    conditionGood: 0,
+    conditionBad: 0,
   });
 
-  const [productId, setProductId] = useState("");
-  const [categories, setCategories] = useState("");
-  // const [categoryOptions, setCategoryOptions] = useState([]);
-  const [subCategoriesOptions, setSubCategoryOptions] = useState([]);
-  const [vendorOptions, setVendorOptions] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [subCategories, setSubCategories] = useState([]);
+  const [vendors, setVendors] = useState([]);
+
   const [errors, setErrors] = useState({});
 
   const group = [
@@ -42,112 +42,55 @@ const AddProductForm = () => {
     { value: "passive", label: "Passive" },
   ];
 
-  const categoriesOptions = categories.map((item) => {
-    return { value: item.categoryName, label: item.categoryName };
+  const categoriesOptions = categories.map((category) => {
+    return { value: category.categoryName, label: category.categoryName };
   });
 
-  // const subCategories = {
-  //   computerdevices: [
-  //     { value: "monitor", label: "Monitor" },
-  //     { value: "mouse", label: "Mouse" },
-  //     { value: "printer", label: "Printer" },
-  //     { value: "cpu", label: "CPU" },
-  //     { value: "keyboard", label: "Keyboard" },
-  //   ],
-  //   householdappliances: [
-  //     { value: "fridge", label: "Fridge" },
-  //     { value: "ac", label: "AC" },
-  //   ],
-  //   furniture: [
-  //     { value: "chair", label: "Chair" },
-  //     { value: "table", label: "Table" },
-  //     { value: "cupboard", label: "Cupboard" },
-  //   ],
-  //   officesupplies: [
-  //     { value: "archfile", label: "Arch File" },
-  //     { value: "scissors", label: "Scissors" },
-  //   ],
-  // };
+  const subCategoriesOptions = subCategories.map((subCategory) => {
+    return {
+      value: subCategory.subCategoryName,
+      label: subCategory.subCategoryName,
+    };
+  });
 
-  // const vendors = [
-  //   { value: "ikea", label: "IKEA" },
-  //   { value: "shopee", label: "Shopee" },
-  //   { value: "tokopedia", label: "Tokopedia" },
-  // ];
+  const vendorOptions = vendors.map((vendor) => {
+    return { value: vendor.vendorName, label: vendor.vendorName };
+  });
 
   const handleSelectChange = (name, selectedOption) => {
     setFormValues((prevState) => ({ ...prevState, [name]: selectedOption }));
 
-    // if (selectedOption.value === "active") {
-    //   setCategoryOptions(categories.active);
-    // } else if (selectedOption.value === "passive") {
-    //   setCategoryOptions(categories.passive);
-    // }
-
-    // if (selectedOption.value === "computerdevices") {
-    //   setSubCategoryOptions(subCategories.computerdevices);
-    // } else if (selectedOption.value === "householdappliances") {
-    //   setSubCategoryOptions(subCategories.householdappliances);
-    // } else if (selectedOption.value === "furniture") {
-    //   setSubCategoryOptions(subCategories.furniture);
-    // } else if (selectedOption.value === "officesupplies") {
-    //   setSubCategoryOptions(subCategories.officesupplies);
-    // }
-
     if (name === "group") {
       setFormValues((prevState) => ({
         ...prevState,
-        category: null,
-        subCategory: null,
+        categoryName: null,
+        subCategoryName: null,
       }));
     }
   };
 
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
     setFormValues((prevState) => ({ ...prevState, [name]: value }));
   };
 
   const resetForm = () => {
     setFormValues((prevState) => ({ ...prevState, brandName: "" }));
     setFormValues((prevState) => ({ ...prevState, group: null }));
-    setFormValues((prevState) => ({ ...prevState, category: null }));
-    setFormValues((prevState) => ({ ...prevState, subCategory: null }));
-    setFormValues((prevState) => ({ ...prevState, type: "" }));
-    setFormValues((prevState) => ({ ...prevState, vendor: "" }));
+    setFormValues((prevState) => ({ ...prevState, categoryName: null }));
+    setFormValues((prevState) => ({ ...prevState, subCategoryName: null }));
+    setFormValues((prevState) => ({ ...prevState, typeProductName: "" }));
+    setFormValues((prevState) => ({ ...prevState, vendorName: "" }));
     setFormValues((prevState) => ({ ...prevState, purchaseDate: "" }));
     setFormValues((prevState) => ({ ...prevState, quantity: "" }));
     setFormValues((prevState) => ({ ...prevState, eachPrice: "" }));
     setFormValues((prevState) => ({ ...prevState, currentLocation: "" }));
-    setFormValues((prevState) => ({ ...prevState, condition: "" }));
     setFormValues((prevState) => ({ ...prevState, conditionGood: "" }));
     setFormValues((prevState) => ({ ...prevState, conditionBad: "" }));
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
-    let idString = "";
-    if (formValues.group && formValues.category) {
-      if (formValues.group.value === "active") {
-        idString += "1";
-      } else if (formValues.group.value === "passive") {
-        idString += "0";
-      }
-      if (formValues.category.value === "computerdevices") {
-        idString += "01";
-      } else if (formValues.category.value === "householdappliances") {
-        idString += "02";
-      } else if (formValues.category.value === "furniture") {
-        idString += "03";
-      } else if (formValues.category.value === "officesupplies") {
-        idString += "04";
-      }
-
-      idString += productId;
-
-      console.log(idString);
-    }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
     // handle form submission
     const newErrors = {};
@@ -155,40 +98,50 @@ const AddProductForm = () => {
     if (!formValues.brandName) {
       newErrors.brandName = "Please enter the product name!";
     }
+
     if (!formValues.group) {
       newErrors.group = "Please choose the group!";
     }
-    if (!formValues.category) {
+
+    if (!formValues.categoryName) {
       setErrors((prevState) => ({
         ...prevState,
-        category: "Fill the group first!",
+        categoryName: "Fill the group first!",
       }));
     }
-    if (!formValues.subCategory) {
+
+    if (!formValues.subCategoryName) {
       setErrors((prevState) => ({
         ...prevState,
-        subCategory: "Fill the category first!",
+        subCategoryName: "Fill the category first!",
       }));
     }
-    if (!formValues.type) {
-      newErrors.type = "Please enter the type of the product!";
+
+    if (!formValues.typeProductName) {
+      newErrors.typeProductName = "Please enter the type of the product!";
     }
-    if (!formValues.vendor) {
-      newErrors.vendor = "Please select the vendor!";
+
+    if (!formValues.vendorName) {
+      newErrors.vendorName = "Please select the vendor!";
     }
+
     if (!formValues.quantity) {
       newErrors.quantity = "Please enter the numbers of product!";
     }
+
     if (!formValues.purchaseDate) {
       newErrors.purchaseDate = "Please enter the purchase date!";
     }
+
     if (!formValues.eachPrice) {
       newErrors.eachPrice = "Please enter the product unit price!";
     }
+
     if (!formValues.currentLocation) {
       newErrors.currentLocation =
         "Please enter the current locantion of the product";
     }
+
     if (!formValues.conditionGood || !formValues.conditionBad) {
       newErrors.condition = "Please enter the condition of product!";
     } else if (
@@ -198,15 +151,30 @@ const AddProductForm = () => {
       newErrors.condition =
         "The total of good and bad condition must be equal to quantity!";
     }
+
     if (Object.keys(newErrors).length === 0) {
-      setErrors({});
-      setProductId((prevId) => prevId + 1);
-      setSuccessMessage("Product successfully added!");
-      setShowPopupSuccess(true);
-      resetForm();
-      setTimeout(() => {
-        setShowPopupSuccess(false);
-      }, 3500);
+      // add product api
+      await api
+        .post("/v1/im/products", formValues, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((res) => {
+          console.log(res.data);
+
+          setErrors({});
+          setSuccessMessage(res.data.msg);
+          setShowPopupSuccess(true);
+          resetForm();
+          setTimeout(() => {
+            setShowPopupSuccess(false);
+          }, 3500);
+        })
+        .catch((err) => {
+          console.log(err, err.message);
+
+          setErrors(newErrors);
+          setSuccessMessage("");
+        });
     } else {
       setErrors(newErrors);
       setSuccessMessage("");
@@ -236,9 +204,41 @@ const AddProductForm = () => {
       });
   };
 
+  const getAllSubCategories = async () => {
+    await api
+      .get("/v1/im/subCategories/", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((res) => {
+        console.log(res.data);
+
+        setSubCategories(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err, err.message);
+      });
+  };
+
+  const getAllVendors = async () => {
+    await api
+      .get("/v1/im/vendors/", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((res) => {
+        console.log(res.data);
+
+        setVendors(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err, err.message);
+      });
+  };
+
   useEffect(() => {
     getLoggedIn();
     getAllCategories();
+    getAllSubCategories();
+    getAllVendors();
   }, [navigate]);
 
   const Popup = ({ message }) => {
@@ -250,6 +250,8 @@ const AddProductForm = () => {
       </div>
     );
   };
+
+  console.log(formValues);
 
   return isLoggedIn ? (
     <div className="App">
@@ -296,8 +298,8 @@ const AddProductForm = () => {
               <label className="form-field">
                 Category
                 <Select
-                  options={categoriesOptions}
                   name="categoryName"
+                  options={categoriesOptions}
                   value={formValues.categoryName}
                   onChange={(selectedOption) =>
                     handleSelectChange("categoryName", selectedOption)
@@ -306,8 +308,8 @@ const AddProductForm = () => {
                 />
               </label>
             </div>
-            {errors.category && (
-              <div className="error-message-ctgry">{errors.category}</div>
+            {errors.categoryName && (
+              <div className="error-message-ctgry">{errors.categoryName}</div>
             )}
             <div>
               <label className="form-field">
@@ -315,31 +317,35 @@ const AddProductForm = () => {
                 <Select
                   options={subCategoriesOptions}
                   name="subCategory"
-                  value={formValues.subCategory}
+                  value={formValues.subCategoryName}
                   onChange={(selectedOption) =>
-                    handleSelectChange("subCategory", selectedOption)
+                    handleSelectChange("subCategoryName", selectedOption)
                   }
                   className="select-form"
                 />
               </label>
             </div>
-            {errors.subCategories && (
-              <div className="error-message-ctgry">{errors.subCategories}</div>
+            {errors.subCategoryName && (
+              <div className="error-message-ctgry">
+                {errors.subCategoryName}
+              </div>
             )}
             <div>
               <label className="form-field">
                 Type
                 <input
                   type="text"
-                  name="type"
-                  value={formValues.type}
+                  name="typeProductName"
+                  value={formValues.typeProductName}
                   onChange={handleInputChange}
                   className="input-form"
                 />
               </label>
             </div>
-            {errors.type && (
-              <div className="error-message-ctgry">{errors.type}</div>
+            {errors.typeProductName && (
+              <div className="error-message-ctgry">
+                {errors.typeProductName}
+              </div>
             )}
             <div>
               <label className="form-field">
@@ -347,16 +353,16 @@ const AddProductForm = () => {
                 <Select
                   options={vendorOptions}
                   name="vendor"
-                  value={formValues.vendor}
+                  value={formValues.vendorName}
                   onChange={(selectedOption) =>
-                    handleSelectChange("vendor", selectedOption)
+                    handleSelectChange("vendorName", selectedOption)
                   }
                   className="select-form"
                 />
               </label>
             </div>
-            {errors.vendor && (
-              <div className="error-message-ctgry">{errors.vendor}</div>
+            {errors.vendorName && (
+              <div className="error-message-ctgry">{errors.vendorName}</div>
             )}
             <div>
               <label className="form-field">
