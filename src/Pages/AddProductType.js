@@ -1,30 +1,38 @@
-import React, { useState } from 'react';
-import SideBar from '../Components/SideBar';
-import Select from 'react-select';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import Select from "react-select";
+
+import SideBar from "../Components/SideBar";
+
+import api from "../api";
 
 function AddProductType() {
+  const navigate = useNavigate();
+  const token = localStorage.getItem("token");
 
-  const [productId, setProductId] =useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [errors, setErrors] = useState({});
 
   const [formValues, setFormValues] = useState({
-    type: '',
-    vendor: null,
-    purchaseDate: '',
-    quantity: '',
-    eachPrice: '',
-    currentLocation: '',
-    condition: '',
+    type: "",
+    vendorName: null,
+    purchaseDateProductType: "",
+    quantityProductType: "",
+    eachPriceProductType: "",
+    currentLocationProductType: "",
+    conditionGoodProductType: 0,
+    conditionBadProductType: 0,
+    condition: "",
   });
 
-  const vendors = [
-    { value: 'ikea', label: 'IKEA' },
-    { value: 'shopee', label: 'Shopee' },
-    { value: 'tokopedia', label: 'Tokopedia' },
-  ];
+  const [vendors, setVendors] = useState([]);
 
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
+  const vendorOptions = vendors.map((vendor) => {
+    return { value: vendor.vendorName, label: vendor.vendorName };
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
     setFormValues((prevValues) => ({
       ...prevValues,
       [name]: value,
@@ -38,166 +46,230 @@ function AddProductType() {
     }));
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
-    let idString = '';
-    if(formValues.group && formValues.category){
-      if(formValues.group.value === 'active'){
-        idString += '1';
-      } else if (formValues.group.value === 'passive'){
-        idString += '0';
-      }
-      if (formValues.category.value === 'computerdevices'){
-        idString += '01';
-      } else if (formValues.category.value === 'householdappliances'){
-        idString += '02';
-      } else if (formValues.category.value === 'furniture') {
-        idString += '03';
-      } else if (formValues.category.value === 'officesupplies') {
-        idString += '04';
-      }
-
-      idString += productId;
-
-      console.log (idString);
-    }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
     // handle form submission
     const newErrors = {};
-  
-    if (!formValues.type){
-      newErrors.type = 'Please enter the type of the product!';
+
+    if (!formValues.type) {
+      newErrors.type = "Please enter the type of the product!";
     }
-    if (!formValues.vendor){
-      newErrors.vendor = 'Please select the vendor!';
+    if (!formValues.vendorName) {
+      newErrors.vendorName = "Please select the vendor!";
     }
-    if (!formValues.quantity){
-      newErrors.quantity = 'Please enter the numbers of product!';
-    }    
-    if (!formValues.purchaseDate){
-      newErrors.purchaseDate = 'Please enter the purchase date!';
+    if (!formValues.quantityProductType) {
+      newErrors.quantityProductType = "Please enter the numbers of product!";
     }
-    if (!formValues.eachPrice){
-      newErrors.eachPrice = 'Please enter the product unit price!';
+    if (!formValues.purchaseDateProductType) {
+      newErrors.purchaseDateProductType = "Please enter the purchase date!";
     }
-    if (!formValues.currentLocation){
-      newErrors.currentLocation = 'Please enter the current locantion of the product';
+    if (!formValues.eachPriceProductType) {
+      newErrors.eachPriceProductType = "Please enter the product unit price!";
     }
-    if (!formValues.conditionGood || !formValues.conditionBad) {
-      newErrors.condition = 'Please enter the condition of product!';
-    } else if (parseInt(formValues.conditionGood) + parseInt(formValues.conditionBad) !== parseInt(formValues.quantity)) {
-      newErrors.condition = 'The total of good and bad condition must be equal to quantity!';
+    if (!formValues.currentLocationProductType) {
+      newErrors.currentLocationProductType =
+        "Please enter the current locantion of the product";
     }
+    if (
+      !formValues.conditionGoodProductType ||
+      !formValues.conditionBadProductType
+    ) {
+      newErrors.condition = "Please enter the condition of product!";
+    } else if (
+      parseInt(formValues.conditionGoodProductType) +
+        parseInt(formValues.conditionBadProductType) !==
+      parseInt(formValues.quantityProductType)
+    ) {
+      newErrors.condition =
+        "The total of good and bad condition must be equal to quantity!";
+    }
+
     if (Object.keys(newErrors).length === 0) {
-      setErrors({});
-      setProductId((prevId) => prevId + 1)
-    } else{
+      // add api
+      await api
+        .post("/v1/im/productTypes/", formValues, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((res) => {
+          console.log(res.data);
+          setErrors({});
+
+          // redirect to product list
+        })
+        .catch((err) => {
+          console.log(err, err.message);
+        });
+    } else {
       setErrors(newErrors);
     }
   };
 
-  return (
-    <div className='App'>
-      <div className='add-product-type-container'>
-        <div className='navbar-container'>
+  const getLoggedIn = () => {
+    if (token) {
+      setIsLoggedIn(true);
+    } else {
+      navigate("/sign-in");
+    }
+  };
+
+  const getAllVendors = async () => {
+    await api
+      .get("/v1/im/vendors/", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((res) => {
+        console.log(res.data);
+
+        setVendors(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err, err.message);
+      });
+  };
+
+  useEffect(() => {
+    getLoggedIn();
+    getAllVendors();
+  }, [navigate]);
+
+  return isLoggedIn ? (
+    <div className="App">
+      <div className="add-product-type-container">
+        <div className="navbar-container">
           <h1>Add Product Type</h1>
           <SideBar />
         </div>
-        <div className='form-container'>
+        <div className="form-container">
           <form onSubmit={handleSubmit}>
             <div>
-              <label className='form-field'>
+              <label className="form-field">
                 Type
                 <input
-                  type='text'
-                  name='type'
+                  type="text"
+                  name="type"
                   value={formValues.type}
                   onChange={handleInputChange}
-                  className='input-form'
+                  className="input-form"
                 />
               </label>
             </div>
-            {errors.type && <div className='error-message-ctgry'>{errors.type}</div>}
+            {errors.type && (
+              <div className="error-message-ctgry">{errors.type}</div>
+            )}
             <div>
-              <label className='form-field'>
+              <label className="form-field">
                 Vendor
-                <Select 
-                options={vendors} 
-                name="vendor" 
-                defaultValue={formValues.vendor} 
-                onChange={(selectedOption) => handleSelectChange('vendor', selectedOption)}  
-                className='select-form'
+                <Select
+                  options={vendorOptions}
+                  name="vendorName"
+                  defaultValue={formValues.vendorName}
+                  onChange={(selectedOption) =>
+                    handleSelectChange("vendor", selectedOption)
+                  }
+                  className="select-form"
                 />
               </label>
             </div>
-            {errors.vendor && <div className='error-message-ctgry'>{errors.vendor}</div>}
+            {errors.vendorName && (
+              <div className="error-message-ctgry">{errors.vendorName}</div>
+            )}
             <div>
-              <label className='form-field'>
+              <label className="form-field">
                 Purchase Date
                 <input
-                  type='date'
-                  name='purchaseDate'
-                  value={formValues.purchaseDate}
+                  type="date"
+                  name="purchaseDate"
+                  value={formValues.purchaseDateProductType}
                   onChange={handleInputChange}
-                  className='input-form'
+                  className="input-form"
                 />
               </label>
             </div>
-            {errors.purchaseDate && <div className='error-message-ctgry'>{errors.purchaseDate}</div>}
+            {errors.purchaseDateProductType && (
+              <div className="error-message-ctgry">
+                {errors.purchaseDateProductType}
+              </div>
+            )}
             <div>
-              <label className='form-field'>
+              <label className="form-field">
                 Quantity
                 <input
-                  type='number'
-                  name='quantity'
-                  value={formValues.quantity}
+                  type="number"
+                  name="quantity"
+                  value={formValues.quantityProductType}
                   onChange={handleInputChange}
-                  className='input-form'
+                  className="input-form"
                 />
               </label>
             </div>
-            {errors.quantity && <div className='error-message-ctgry'>{errors.quantity}</div>}
+            {errors.quantityProductType && (
+              <div className="error-message-ctgry">
+                {errors.quantityProductType}
+              </div>
+            )}
             <div>
-              <label className='form-field'>
+              <label className="form-field">
                 Each Price
                 <input
-                  type='number'
-                  name='eachPrice'
-                  value={formValues.eachPrice}
+                  type="number"
+                  name="eachPrice"
+                  value={formValues.eachPriceProductType}
                   onChange={handleInputChange}
-                  className='input-form'
+                  className="input-form"
                 />
               </label>
             </div>
-            {errors.eachPrice && <div className='error-message-ctgry'>{errors.eachPrice}</div>}
+            {errors.eachPriceProductType && (
+              <div className="error-message-ctgry">
+                {errors.eachPriceProductType}
+              </div>
+            )}
             <div>
-              <label className='form-field'>
+              <label className="form-field">
                 Current Location
                 <input
-                  type='text'
-                  name='currentLocation'
-                  value={formValues.currentLocation}
+                  type="text"
+                  name="currentLocation"
+                  value={formValues.currentLocationProductType}
                   onChange={handleInputChange}
-                  className='input-form'
+                  className="input-form"
                 />
               </label>
             </div>
-            {errors.currentLocation && <div className='error-message-ctgry'>{errors.currentLocation}</div>}
+            {errors.currentLocationProductType && (
+              <div className="error-message-ctgry">
+                {errors.currentLocationProductType}
+              </div>
+            )}
             <div>
-              <label className='form-field'>
+              <label className="form-field">
                 Condition
                 <div className="condition-input">
                   <span>Good</span>
-                  <input type="number" name="conditionGood" value={formValues.conditionGood} onChange={handleInputChange} className='good' />
+                  <input
+                    type="number"
+                    name="conditionGood"
+                    value={formValues.conditionGoodProductType}
+                    onChange={handleInputChange}
+                    className="good"
+                  />
                   <span>Bad</span>
-                  <input type="number" name="conditionBad" value={formValues.conditionBad} onChange={handleInputChange} className='bad' />
+                  <input
+                    type="number"
+                    name="conditionBad"
+                    value={formValues.conditionBadProductType}
+                    onChange={handleInputChange}
+                    className="bad"
+                  />
                 </div>
               </label>
-              {errors.condition && <div className='error-message-ctgry'>{errors.condition}</div>}
+              {errors.condition && (
+                <div className="error-message-ctgry">{errors.condition}</div>
+              )}
             </div>
             <div>
-              <button type='submit' className='btn-product-type-form'>
+              <button type="submit" className="btn-product-type-form">
                 Submit
               </button>
             </div>
@@ -205,6 +277,8 @@ function AddProductType() {
         </div>
       </div>
     </div>
+  ) : (
+    navigate("/sign-in")
   );
 }
 
