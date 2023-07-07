@@ -6,9 +6,6 @@ import "react-multi-carousel/lib/styles.css";
 import FloatingActionCategory from "../Components/FloatingAction/FloatingActionCategory";
 import SideBar from "../Components/SideBar";
 
-// import ProductTemp from "../Components/Slider/ProductTemp";
-// import SliderActive from "../Components/Slider/SliderActive";
-
 import api from "../api";
 
 function ActiveCategory() {
