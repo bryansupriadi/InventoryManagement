@@ -37,6 +37,20 @@ export function AddSubCategoryActive() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const newErrors = {};
+
+    if (!formValues.categoryName) {
+      newErrors.categoryName = "Please enter the category first!";
+    }
+
+    if (!formValues.subCategoryName) {
+      newErrors.subCategoryName = "Please enter the sub category first!";
+    }
+
+    if (!subCategoryImage) {
+      newErrors.subCategoryImage = "Please enter the sub category image first!";
+    }
+
     const formData = new FormData();
     formData.append("categoryName", formValues.categoryName);
     formData.append("subCategoryName", formValues.subCategoryName);
@@ -57,6 +71,9 @@ export function AddSubCategoryActive() {
       })
       .catch((err) => {
         console.log(err, err.message);
+
+        setErrors(newErrors);
+        setSuccessMessage("");
       });
   };
 
@@ -113,8 +130,8 @@ export function AddSubCategoryActive() {
               <label className="form-field">
                 Category Name
                 <select
-                  value={formValues.categoryName}
                   name="categoryName"
+                  value={formValues.categoryName}
                   onChange={handleInputChange}
                   className="select-ctgry-form"
                 >
@@ -127,6 +144,9 @@ export function AddSubCategoryActive() {
                 </select>
               </label>
             </div>
+            {errors.categoryName && (
+              <div className="error-message-ctgry">{errors.categoryName}</div>
+            )}
             <div>
               <label className="form-field">
                 Sub category Name
@@ -139,6 +159,11 @@ export function AddSubCategoryActive() {
                 />
               </label>
             </div>
+            {errors.subCategoryName && (
+              <div className="error-message-ctgry">
+                {errors.subCategoryName}
+              </div>
+            )}
             <div>
               <label className="form-field">
                 Sub category Image
@@ -149,6 +174,11 @@ export function AddSubCategoryActive() {
                 />
               </label>
             </div>
+            {errors.subCategoryImage && (
+              <div className="error-message-ctgry">
+                {errors.subCategoryImage}
+              </div>
+            )}
             <div>
               <button type="submit" className="btn-ctgry-form">
                 Submit
