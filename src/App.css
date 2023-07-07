@@ -17,13 +17,12 @@ nav {
   min-height: 90px;
 }
 
-.App{
+.App {
   min-height: 100vh;
   width: 85vw;
   max-width: 400px;
   margin: 0rem auto;
 }
-
 
 @media (max-width: 400px) {
   .App {
@@ -31,7 +30,6 @@ nav {
     height: 100%;
   }
 }
-
 
 .login-page-container {
   display: flex;
@@ -60,7 +58,7 @@ nav {
   padding: 50px;
 }
 
-.login-image-container img{
+.login-image-container img {
   max-height: 75px;
   max-width: 75px;
 }
@@ -68,7 +66,7 @@ nav {
 .login-image-container h1 {
   font-weight: bold;
   justify-content: center;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   color: #002938;
   position: relative;
   top: -50px;
@@ -77,7 +75,7 @@ nav {
 .login-form-container h2 {
   font-size: 25px;
   position: relative;
-  top: -50Px;
+  top: -50px;
   transform: translateY(-50%);
 }
 
@@ -86,11 +84,11 @@ nav {
   color: #667085;
   font-size: 12px;
   position: relative;
-  top: -50Px;
+  top: -50px;
   transform: translateY(-50%);
 }
 
-.login-form-container h5{
+.login-form-container h5 {
   font-weight: 200;
   color: #667085;
   font-size: 14px;
@@ -103,7 +101,7 @@ nav {
   padding-top: 10px;
   padding-bottom: 50px;
   position: relative;
-  top: -40Px;
+  top: -40px;
 }
 
 .login-form-container div {
@@ -116,7 +114,6 @@ nav {
   margin-bottom: 5px;
 }
 
-
 .login-form-container input,
 .login-form-container select {
   padding: 10px;
@@ -128,7 +125,7 @@ nav {
   height: 45px;
 }
 
-.login-form-container select{
+.login-form-container select {
   height: 35px;
   padding: 5px;
   border: 1px solid #000;
@@ -140,7 +137,7 @@ nav {
 
 .login-form-container button {
   padding: 10px;
-  background-color: #00788D;
+  background-color: #00788d;
   border: 2px solid #002938;
   color: #fff;
   border-radius: 10px;
@@ -172,10 +169,10 @@ nav {
   align-items: center;
   position: relative;
   top: -50px;
-  padding: 50px; 
+  padding: 50px;
 }
 
-.signup-image-container img{
+.signup-image-container img {
   max-height: 75px;
   max-width: 75px;
 }
@@ -183,7 +180,7 @@ nav {
 .signup-image-container h1 {
   font-weight: bold;
   justify-content: center;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   color: #002938;
   position: relative;
   top: -50px;
@@ -192,7 +189,7 @@ nav {
 .signup-form-container h2 {
   font-size: 25px;
   position: relative;
-  top: -50Px;
+  top: -50px;
   transform: translateY(-50%);
 }
 
@@ -201,11 +198,11 @@ nav {
   color: #667085;
   font-size: 12px;
   position: relative;
-  top: -50Px;
+  top: -50px;
   transform: translateY(-50%);
 }
 
-.signup-form-container h5{
+.signup-form-container h5 {
   font-weight: 200;
   color: #667085;
   font-size: 14px;
@@ -218,7 +215,7 @@ nav {
   padding-top: 10px;
   padding-bottom: 50px;
   position: relative;
-  top: -40Px;
+  top: -40px;
 }
 
 .signup-form-container div {
@@ -231,7 +228,6 @@ nav {
   margin-bottom: 5px;
 }
 
-
 .signup-form-container input {
   padding: 10px;
   border: 1px solid #000;
@@ -242,10 +238,9 @@ nav {
   height: 45px;
 }
 
-
 .signup-form-container button {
   padding: 10px;
-  background-color: #00788D;
+  background-color: #00788d;
   color: #fff;
   border: 2px solid #002938;
   border-radius: 10px;
@@ -254,27 +249,27 @@ nav {
 }
 
 .error-message {
-  color: #FF3333;
+  color: #ff3333;
   font-size: 12px;
   margin-bottom: 5px;
   margin-top: -20px;
 }
 
 .error-message-vendor {
-  color: #FF3333;
+  color: #ff3333;
   font-size: 12px;
 }
 
 .error-message-ctgry {
-  color: #FF3333;
+  color: #ff3333;
   font-size: 12px;
   margin-left: 33px;
   margin-top: -10px;
   font-weight: bold;
-} 
+}
 
 .error-message-1 {
-  color: #FF3333;
+  color: #ff3333;
   font-size: 12px;
   margin-bottom: 5px;
   margin-left: 30px;
@@ -282,7 +277,7 @@ nav {
 }
 
 .error-message-2 {
-  color: #FF3333;
+  color: #ff3333;
   font-size: 12px;
   font-weight: bold;
 }
@@ -302,15 +297,15 @@ nav {
   margin-top: -200px;
 }
 
-.otp-text-header h1{
+.otp-text-header h1 {
   font-size: 30px;
-  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
   font-weight: 100;
 }
 
-.otp-text-header h6{
+.otp-text-header h6 {
   font-size: 16px;
-  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
   font-weight: 100;
   padding-bottom: 30px;
 }
@@ -340,14 +335,14 @@ nav {
   border: 2px solid red;
 }
 
-.resend-otp h3{
+.resend-otp h3 {
   font-size: 16px;
 }
 
 .resend-otp a {
   padding-left: 20px;
   text-decoration: none;
-  color: #3F3484;
+  color: #3f3484;
   font-weight: bold;
 }
 
@@ -357,7 +352,7 @@ nav {
 
 .otp-submit button {
   padding: 10px;
-  background-color: #00788D;
+  background-color: #00788d;
   color: #fff;
   border: 2px solid #002938;
   border-radius: 10px;
@@ -376,7 +371,7 @@ nav {
 .popup-box {
   width: 273px;
   height: 119px;
-  background-color: #F36363;
+  background-color: #f36363;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
@@ -386,7 +381,7 @@ nav {
 
 .popup-box h4 {
   font-size: 18px;
-  color: #D10000;
+  color: #d10000;
   text-align: left;
   padding-top: 5px;
   padding-right: 110px;
@@ -395,7 +390,7 @@ nav {
 .popup-box h6 {
   font-size: 15px;
   color: #fff;
-  padding-left:  30px;
+  padding-left: 30px;
   padding-right: 30px;
   justify-content: center;
   top: -25px;
@@ -416,17 +411,17 @@ nav {
   margin-top: -150px;
 }
 
-.otps-text-header h1{
+.otps-text-header h1 {
   font-size: 30px;
-  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
   font-weight: 100;
   padding-bottom: 10px;
   margin-top: -20px;
 }
 
-.otps-text-header h6{
+.otps-text-header h6 {
   font-size: 16px;
-  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
   font-weight: 100;
   padding-bottom: 200px;
   display: flex;
@@ -442,7 +437,7 @@ nav {
 
 .otps-submit button {
   padding: 10px;
-  background-color: #00788D;
+  background-color: #00788d;
   color: #fff;
   border: 2px solid #002938;
   border-radius: 10px;
@@ -466,9 +461,9 @@ nav {
   margin-top: -80px;
 }
 
-.otpf-text-header h1{
+.otpf-text-header h1 {
   font-size: 30px;
-  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
   font-weight: 100;
   padding-bottom: 10px;
   margin-top: -15px;
@@ -476,9 +471,9 @@ nav {
   text-align: center;
 }
 
-.otpf-text-header h6{
+.otpf-text-header h6 {
   font-size: 16px;
-  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
   font-weight: 100;
   padding-bottom: 150px;
   display: flex;
@@ -497,7 +492,7 @@ nav {
 
 .otpf-submit button {
   padding: 10px;
-  background-color: #00788D;
+  background-color: #00788d;
   color: #fff;
   border: 2px solid #002938;
   border-radius: 10px;
@@ -506,7 +501,7 @@ nav {
   width: 300px;
 }
 
-.home-page-container{
+.home-page-container {
   min-height: 100vh;
   background-color: #88e2ff;
   position: relative;
@@ -517,7 +512,7 @@ nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 5px solid #00788D;
+  border-bottom: 5px solid #00788d;
   background-color: #88e2ff;
 }
 
@@ -532,52 +527,52 @@ nav {
   margin-left: 30px;
   margin-top: 10px;
 }
-.offcanvas.sidebar{
-  background-color: #00788D;
+.offcanvas.sidebar {
+  background-color: #00788d;
   z-index: 100000;
 }
 
-.custom-navbar-toggle{
+.custom-navbar-toggle {
   font-size: 24px;
 }
 
-.sidebar-title{
+.sidebar-title {
   margin: auto;
   color: #fff;
   padding-top: 15px;
   padding-bottom: 9px;
 }
 
-.username { 
+.username {
   font-size: 25px;
 }
 
-.role{
+.role {
   font-size: 20px;
   font-weight: bold;
 }
 
-.text-sidebar{
+.text-sidebar {
   color: #fff;
 }
 
-.dropdown-item{
-  color: #3F3484 ;
+.dropdown-item {
+  color: #3f3484;
 }
 
 .dropdown {
   padding: 0;
 }
 
-.dropdown-container{
+.dropdown-container {
   position: relative;
   margin-left: 200px;
   padding-top: 20px;
   z-index: 10;
 }
 
-.dropdown-page{
-  width : 145px;
+.dropdown-page {
+  width: 145px;
   height: 40px;
   margin: 0 auto;
   position: relative;
@@ -620,7 +615,7 @@ nav {
 .dropdown-page .dropdown-btn-1 {
   padding: 10px 10px;
   padding-right: 1px;
-  background-color: #00788D;
+  background-color: #00788d;
   border-radius: 10px;
   color: #fff;
   font-weight: bold;
@@ -636,7 +631,7 @@ nav {
   top: 25px;
   left: 0;
   padding: 10px;
-  background-color: #00788D;
+  background-color: #00788d;
   color: #fff;
   width: 145px;
   border-radius: 10px;
@@ -650,7 +645,6 @@ nav {
   font-weight: 700;
 }
 
-
 .carousel-container {
   position: absolute;
   top: 30px;
@@ -662,8 +656,6 @@ nav {
   align-items: center;
   justify-content: center;
 }
-
-
 
 .carousel-container h3 {
   font-size: 2rem;
@@ -684,7 +676,7 @@ nav {
 }
 
 .carousel-slide-1 {
-  background-color: #2E0249;
+  background-color: #2e0249;
   max-width: 340px;
   height: 190px;
   border-radius: 10px;
@@ -700,7 +692,7 @@ nav {
 }
 
 .carousel-slide-3 {
-  background-color: #3B0D57;
+  background-color: #3b0d57;
   max-width: 340px;
   height: 190px;
   border-radius: 10px;
@@ -708,15 +700,14 @@ nav {
 }
 
 .carousel-slide-4 {
-  background-color: #42135F;
+  background-color: #42135f;
   max-width: 340px;
   height: 190px;
   border-radius: 10px;
   padding: 10px;
 }
 
-
-.home-title{
+.home-title {
   max-width: 150px;
   padding-left: 30px;
   font-weight: bolder;
@@ -729,8 +720,7 @@ nav {
   align-items: center;
 }
 
-
-.home-title h1{
+.home-title h1 {
   color: #002938;
   font-weight: bolder;
   font-size: 25px;
@@ -742,7 +732,7 @@ nav {
 .search {
   position: relative;
   width: 150px;
-  height: 45px; 
+  height: 45px;
   background-color: #fff;
   border-radius: 20px;
   border: 1px solid #000;
@@ -750,7 +740,7 @@ nav {
   align-items: center;
 }
 
-.search-bar-input{
+.search-bar-input {
   border: none;
   outline: none;
   width: calc(100% - 30px);
@@ -761,7 +751,7 @@ nav {
   font-size: 15px;
 }
 
-.search-btn{
+.search-btn {
   width: 40px;
   height: 50px;
   border-radius: 50%;
@@ -776,7 +766,7 @@ nav {
   cursor: pointer;
 }
 
-.table-home-page { 
+.table-home-page {
   flex: 1;
   width: 100%;
   background-color: #002938;
@@ -785,43 +775,43 @@ nav {
   min-height: 195px;
 }
 
-.table-home-page p{
+.table-home-page p {
   display: flex;
   justify-content: center;
   padding-top: 30px;
 }
 
-.table-home-page th{
-  border-bottom: 3px solid #00788D;
-  border-top: 3px solid #00788D;
+.table-home-page th {
+  border-bottom: 3px solid #00788d;
+  border-top: 3px solid #00788d;
   padding: 5px 0px 5px 0px;
   text-align: center;
 }
 
-.table-header-cell-1{
+.table-header-cell-1 {
   width: 150px;
 }
 
-.table-home-page td{
+.table-home-page td {
   text-align: left;
   justify-content: center;
   padding: 5px 19px 5px 20px;
   font-size: 15px;
 }
 
-.table-body-cell-1{
+.table-body-cell-1 {
   width: 150px;
 }
 
-.scroll-table-1{
+.scroll-table-1 {
   height: 150px;
 }
 
-.scroll-table{
+.scroll-table {
   height: 300px;
 }
 
-.table-body{
+.table-body {
   height: 100%;
   overflow: auto;
   margin-top: 5px;
@@ -841,7 +831,6 @@ nav {
   outline: 1px solid #666;
   border-radius: 10px;
 }
-
 
 body::-webkit-scrollbar {
   display: none;
@@ -870,20 +859,15 @@ body::-webkit-scrollbar {
   padding-bottom: 15px;
 }
 
-
-
 .passive-page-container {
   min-height: 100vh;
   background-color: #002938;
 }
 
-
-
 .add-product-page-container {
   height: 100%;
   background-color: #002938;
 }
-
 
 .form-container {
   display: flex;
@@ -907,7 +891,7 @@ body::-webkit-scrollbar {
   color: #fff;
 }
 
-.select-form{
+.select-form {
   color: #000;
 }
 
@@ -919,7 +903,6 @@ select {
   margin-left: 10px;
 } */
 
-
 .input-form {
   padding: 5px;
   border-radius: 5px;
@@ -928,7 +911,6 @@ select {
   max-height: 40px;
   width: 100%;
 }
-
 
 .btn-form {
   float: right;
@@ -978,14 +960,12 @@ select {
   margin-top: 10px;
 }
 
-
 .vendor-list-page-container {
   min-height: 100vh;
   max-height: 100%;
   background-color: #002938;
   margin: 0;
 }
-
 
 .search-vendor-container {
   padding: 30px 20px;
@@ -994,7 +974,7 @@ select {
   align-items: center;
 }
 
-.search-vendor{
+.search-vendor {
   width: 300px;
   display: flex;
   justify-content: center;
@@ -1004,16 +984,14 @@ select {
   padding-left: 10px;
 }
 
-
-
 .vendor-list-container ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
 }
 
-.vendor-list-container li{
-  border-top: 3px solid #00788D;
+.vendor-list-container li {
+  border-top: 3px solid #00788d;
   color: #fff;
   font-size: 25px;
   padding: 20px 30px;
@@ -1035,14 +1013,13 @@ select {
   font-size: 80%;
 }
 
-
 .card {
   border-radius: 10px;
   max-width: 150px;
   margin: auto 1rem;
   text-align: center;
   font-family: arial;
-  background-color: #00788D !important;
+  background-color: #00788d !important;
 }
 
 .product--image {
@@ -1053,7 +1030,7 @@ select {
   border-bottom: 1px solid #000;
   border-radius: 10px 10px 10px 10px;
   background-color: #fff;
-  color: #00788D;
+  color: #00788d;
   padding: 20px;
 }
 
@@ -1063,12 +1040,9 @@ select {
   padding-top: 10px;
 }
 
-
-
 ul {
   list-style-type: none;
 }
-
 
 .manage-account-page-container {
   min-height: 100vh;
@@ -1076,38 +1050,37 @@ ul {
   width: 100%;
 }
 
-.navbar-super-admin-container{
+.navbar-super-admin-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 5px solid #00788D;
+  border-bottom: 5px solid #00788d;
   background-color: #88e2ff;
   padding: 20px 30px;
 }
 
-.navbar-super-admin-container h1{
+.navbar-super-admin-container h1 {
   padding: 30px 0px 10px 0px;
   font-size: 20px;
   font-weight: bold;
 }
 
-
 .manage-account-title h1 {
   color: #fff;
   font-size: 23px;
-  padding: 20px 30px 20px 30px ;
+  padding: 20px 30px 20px 30px;
   font-family: "Poppins", sans-serif !important;
   font-weight: bolder;
 }
 
-.search-user-container{
+.search-user-container {
   display: flex;
   justify-content: center;
   align-items: center;
   padding-bottom: 20px;
 }
 
-.search-user-container input{
+.search-user-container input {
   padding: 5px 10px;
   border-radius: 20px;
   width: 340px;
@@ -1116,7 +1089,7 @@ ul {
 .user-list-container {
   color: #fff;
   font-size: 14px;
-  display:flex;
+  display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -1124,7 +1097,7 @@ ul {
   border-collapse: collapse;
 }
 
-.user-list-container th{
+.user-list-container th {
   align-items: center;
   border-bottom: 3px solid #2980b9;
   justify-content: center;
@@ -1137,8 +1110,10 @@ ul {
 
 .user-list-container td {
   max-width: 105px; /* batasi lebar maksimum untuk kolom email */
-  overflow: hidden; /* sembunyikan konten yang terlalu panjang */    text-overflow: ellipsis; /* tambahkan titik-titik di ujung konten yang terpotong */
-  white-space: nowrap; /* hindari baris baru pada teks panjang */    padding: 20px 0;
+  overflow: hidden; /* sembunyikan konten yang terlalu panjang */
+  text-overflow: ellipsis; /* tambahkan titik-titik di ujung konten yang terpotong */
+  white-space: nowrap; /* hindari baris baru pada teks panjang */
+  padding: 20px 0;
   justify-content: center;
   align-items: center;
 }
@@ -1148,8 +1123,8 @@ ul {
 }
 
 .select-role-option {
-  padding : 5px 10px;
-  background-color: #00788D;
+  padding: 5px 10px;
+  background-color: #00788d;
   color: #fff;
   border: 1px solid #fff;
   border-radius: 5px;
@@ -1172,7 +1147,7 @@ ul {
   float: right;
 }
 
-.manage-account-detail-container{
+.manage-account-detail-container {
   min-height: 100vh;
   background-color: #002938;
 }
@@ -1194,7 +1169,7 @@ ul {
   display: flex;
   justify-content: flex-end;
   align-items: flex-end;
-  margin-bottom: -26vh;
+  margin-bottom: 8vh;
   margin-left: 50vh;
 }
 
@@ -1215,7 +1190,7 @@ ul {
     position: fixed;
   }
 
-  .floating-action-vendor-container-1{
+  .floating-action-vendor-container-1 {
     margin-bottom: 60px;
     margin-right: 10px;
     position: fixed;
@@ -1270,13 +1245,12 @@ ul {
   font-weight: bold;
 }
 
-
-.fab-option-container{
+.fab-option-container {
   display: flex;
   justify-content: space-between;
 }
 
-.fab-option-container span{
+.fab-option-container span {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1284,7 +1258,7 @@ ul {
   background-color: #88e2ff;
   color: #002938;
   font-weight: bold;
-  width:  115px;
+  width: 115px;
   height: 25px;
   padding: 5px;
   margin: 12.5px;
@@ -1296,10 +1270,9 @@ ul {
   z-index: 9999;
 }
 
-
-.popup-container{
+.popup-container {
   position: fixed;
-  background-color: #00788D;
+  background-color: #00788d;
   width: 330px;
   height: 220px;
   border-radius: 20px;
@@ -1348,7 +1321,7 @@ ul {
 
 .popup-generate-container {
   position: fixed;
-  background-color: #00788D;
+  background-color: #00788d;
   width: 330px;
   height: 330px;
   border-radius: 20px;
@@ -1374,7 +1347,6 @@ ul {
   display: flex;
   justify-content: center;
   align-items: center;
- 
 }
 
 .popup-generate-container button {
@@ -1391,8 +1363,7 @@ ul {
   margin-top: 20px;
 }
 
-
-.add-sub-category-page-container{
+.add-sub-category-page-container {
   min-height: 100vh;
   width: 100%;
   background-color: #002938;
@@ -1419,14 +1390,13 @@ ul {
   margin-top: 14rem;
 }
 
-
 .product-brand-page-container {
   min-height: 100vh;
   width: 100%;
   background-color: #002938;
 }
 
-.sub-title-product{
+.sub-title-product {
   background-color: #88e2ff;
   max-width: 130px;
   display: flex;
@@ -1445,10 +1415,10 @@ ul {
   margin-bottom: 5px;
 }
 
-.list-brands-container{
+.list-brands-container {
   margin: 0;
   padding: 0;
-  border-top: 3px solid #00788D;
+  border-top: 3px solid #00788d;
 }
 
 .list-brands {
@@ -1461,7 +1431,7 @@ ul {
   margin: 0;
   padding: 0;
   padding-right: 30px;
-  border-bottom: 2px solid #00788D;
+  border-bottom: 2px solid #00788d;
 }
 
 .list-brands-container li.no-quantity {
@@ -1488,19 +1458,17 @@ ul {
   font-size: 18px;
 }
 
-
 .content-list {
   margin-top: 20px;
   color: #fff;
 }
 
-
-.vendor-product-page-container{
+.vendor-product-page-container {
   min-height: 100vh;
   background-color: #002938;
 }
 
-.scanner-page-container{
+.scanner-page-container {
   min-height: 100vh;
   background-color: #002938;
 }
@@ -1511,13 +1479,13 @@ ul {
   object-fit: cover;
 }
 
-.product-qr-scan h6{
+.product-qr-scan h6 {
   color: #fff;
   padding: 30px;
   font-size: 18px;
 }
 
-.report-page-container{
+.report-page-container {
   min-height: 100vh;
   background-color: #002938;
 }
@@ -1528,8 +1496,8 @@ ul {
   padding: 30px;
 }
 
-.box-content-1{
-  background-color: #00788D;
+.box-content-1 {
+  background-color: #00788d;
   color: #fff;
   width: 150px;
   height: 100px;
@@ -1537,13 +1505,13 @@ ul {
   padding: 10px;
 }
 
-.box-content-1 h3{
+.box-content-1 h3 {
   font-size: 18px;
   font-weight: bold;
 }
 
 .box-content-2 {
-  background-color: #00788D;
+  background-color: #00788d;
   color: #fff;
   width: 150px;
   height: 100px;
@@ -1551,13 +1519,13 @@ ul {
   padding: 10px;
 }
 
-.box-content-2 h3{
+.box-content-2 h3 {
   font-size: 18px;
   font-weight: bold;
 }
 
 .box-content-3 {
-  background-color: #00788D;
+  background-color: #00788d;
   color: #fff;
   width: 340px;
   height: 125px;
@@ -1566,7 +1534,7 @@ ul {
   margin: auto;
 }
 
-.box-content-3 h3{
+.box-content-3 h3 {
   font-size: 18px;
   font-weight: bold;
   display: flex;
@@ -1595,29 +1563,31 @@ ul {
   text-align: center;
 }
 
-.condition-good-table{
+.condition-good-table {
   padding-left: 20px;
 }
 
-.condition-good-table h4, .condition-good-table p{
+.condition-good-table h4,
+.condition-good-table p {
   display: flex;
   justify-content: center;
   font-size: 17px;
   font-weight: bold;
 }
 
-.condition-bad-table{
+.condition-bad-table {
   padding-right: 20px;
 }
 
-.condition-bad-table h4, .condition-bad-table p{
+.condition-bad-table h4,
+.condition-bad-table p {
   display: flex;
   justify-content: center;
   font-size: 17px;
   font-weight: bold;
 }
 
-.chart-container{
+.chart-container {
   width: 340px;
   height: 310px;
   background-color: #88e2ff;
@@ -1627,28 +1597,26 @@ ul {
   margin: auto;
   margin-top: 20px;
   border-radius: 20px;
-  
 }
 
-.pie-chart{
+.pie-chart {
   max-width: 230px;
   max-height: 230px;
   color: hsl(0, 0%, 100%);
 }
 
-
-.dropdown-date-picker{
-  font-size: '16px';
+.dropdown-date-picker {
+  font-size: "16px";
   display: flex;
   justify-content: flex-end;
-  align-items:center;
+  align-items: center;
   padding-top: 20px;
   padding-right: 30px;
 }
 
-.dropdown-month{
+.dropdown-month {
   width: 5rem;
-  background-color: #00788D;
+  background-color: #00788d;
   color: #fff;
   min-height: 41px;
   border: 1px solid #fff;
@@ -1656,12 +1624,11 @@ ul {
   padding-left: 25px;
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
-
 }
 
-.dropdown-year{
+.dropdown-year {
   width: 5rem;
-  background-color: #00788D;
+  background-color: #00788d;
   color: #fff;
   min-height: 40.5px;
   border: 1px solid #fff;
@@ -1671,7 +1638,7 @@ ul {
   border-bottom-right-radius: 10px;
 }
 
-.product-brands-detail-container{
+.product-brands-detail-container {
   min-height: 100vh;
   background-color: #002938;
 }
@@ -1679,14 +1646,14 @@ ul {
 .product-list-container {
   color: #fff;
   font-size: 11px;
-  display:flex;
+  display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   max-width: 100%;
 }
 
-.product-list-container th{
+.product-list-container th {
   align-items: center;
   font-size: 11px;
   border-bottom: 3px solid #2980b9;
@@ -1697,15 +1664,15 @@ ul {
 
 .product-list-container td {
   max-width: 180px; /* batasi lebar maksimum untuk kolom email */
-  overflow: hidden; /* sembunyikan konten yang terlalu panjang */    
+  overflow: hidden; /* sembunyikan konten yang terlalu panjang */
   text-overflow: ellipsis; /* tambahkan titik-titik di ujung konten yang terpotong */
-  white-space: nowrap; /* hindari baris baru pada teks panjang */    
+  white-space: nowrap; /* hindari baris baru pada teks panjang */
   padding: 20px 0;
   justify-content: center;
   align-items: center;
 }
 
-.slider-sub-category{
+.slider-sub-category {
   border-radius: 30px;
   font-weight: bold;
   display: flex;
@@ -1713,30 +1680,29 @@ ul {
   font-size: 18px;
 }
 
-.add-product-type-container{
+.add-product-type-container {
   min-height: 100vh;
   background-color: #002938;
 }
 
-.btn-product-type-form{
-    float: right;
-    margin-top: 20px;
-    padding: 10px 20px;
-    color: #fff;
-    background-color: #3498db;
-    border: none;
-    border-radius: 20px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    max-width: 150px;
-    margin-right: 30px;
+.btn-product-type-form {
+  float: right;
+  margin-top: 20px;
+  padding: 10px 20px;
+  color: #fff;
+  background-color: #3498db;
+  border: none;
+  border-radius: 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  max-width: 150px;
+  margin-right: 30px;
 }
-
 
 .product-detail-table-container {
   color: #fff;
-  display:flex;
+  display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -1745,9 +1711,9 @@ ul {
   max-width: 400px;
 }
 
-.product-detail-table-container th{
+.product-detail-table-container th {
   align-items: center;
-  border-top:3px solid #2980b9;
+  border-top: 3px solid #2980b9;
   border-bottom: 3px solid #2980b9;
   justify-content: center;
   position: sticky;
@@ -1761,8 +1727,10 @@ ul {
 
 .product-detail-table-container td {
   max-width: 105px; /* batasi lebar maksimum untuk kolom email */
-  overflow: hidden; /* sembunyikan konten yang terlalu panjang */    text-overflow: ellipsis; /* tambahkan titik-titik di ujung konten yang terpotong */
-  white-space: nowrap; /* hindari baris baru pada teks panjang */    padding: 20px 0;
+  overflow: hidden; /* sembunyikan konten yang terlalu panjang */
+  text-overflow: ellipsis; /* tambahkan titik-titik di ujung konten yang terpotong */
+  white-space: nowrap; /* hindari baris baru pada teks panjang */
+  padding: 20px 0;
   justify-content: center;
   align-items: center;
   font-size: 11.5px;
@@ -1774,12 +1742,12 @@ ul {
   width: 100px;
 }
 
-.vendor-table-page-container{
+.vendor-table-page-container {
   min-height: 100vh;
   background-color: #002938;
 }
 
-.sub-title-product-1{
+.sub-title-product-1 {
   background-color: #88e2ff;
   max-width: 130px;
   display: flex;
@@ -1798,8 +1766,7 @@ ul {
   margin-bottom: 5px;
 }
 
-
-.see-all-page-container{
+.see-all-page-container {
   min-height: 100vh;
   background-color: #002938;
 }
@@ -1811,31 +1778,30 @@ ul {
   padding-top: 20px;
 }
 
-.see-all-list-container li{
-  border-top: 3px solid #00788D;
+.see-all-list-container li {
+  border-top: 3px solid #00788d;
   color: #fff;
   font-size: 25px;
   padding: 20px 30px;
 }
 
-.product-detail-page-container{
+.product-detail-page-container {
   min-height: 100vh;
   background-color: #002938;
 }
 
-.product-type{
+.product-type {
   color: #fff;
   padding-top: 20px;
   padding-right: 30px;
 }
-
 
 .product-type p {
   max-width: 240px;
   padding-top: 10px;
 }
 
-.edit-product-page-container{
+.edit-product-page-container {
   min-height: 100vh;
   background-color: #002938;
   overflow: auto;
@@ -1850,13 +1816,12 @@ ul {
 }
 
 .popup-delete-container {
-  background-color: #00788D;
+  background-color: #00788d;
 }
 
 .button-container {
   display: flex;
 }
-
 
 .cancel-button {
   margin-right: 10px;
@@ -1883,7 +1848,6 @@ ul {
   border: 1px solid #000;
 }
 
-
 .popup-delete-container h3 {
   font-size: 16px;
   font-weight: bold;
@@ -1908,88 +1872,87 @@ ul {
   margin-top: 20px;
 }
 
-.floating-action-type-container{
+.floating-action-type-container {
   bottom: 60px;
   right: 10px;
   position: fixed;
 }
 
 .floating-action-type {
-position: fixed;
-width: 56px;
-height: 56px;
-border-radius: 50%;
-background-color: #88e2ff;
-color: #002938;
-font-size: 36px;
-text-align: center;
-cursor: pointer;
-border: none;
-font-weight: bold;
+  position: fixed;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-color: #88e2ff;
+  color: #002938;
+  font-size: 36px;
+  text-align: center;
+  cursor: pointer;
+  border: none;
+  font-weight: bold;
 }
 
 .floating-action-type span {
-display: block;
+  display: block;
 }
 
 .floating-action-type-options {
-position: absolute;
-bottom: 60px;
-right: 2.5px;
-display: flex;
-flex-direction: column;
-justify-content: center;
+  position: absolute;
+  bottom: 60px;
+  right: 2.5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .floating-action-type-options button {
-width: 50px;
-height: 50px;
-border-radius: 50%;
-background-color: #88e2ff;
-color: #002938;
-font-size: 18px;
-line-height: 40px;
-text-align: center;
-margin-bottom: 8px;
-cursor: pointer;
-border: none;
-font-weight: bold;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #88e2ff;
+  color: #002938;
+  font-size: 18px;
+  line-height: 40px;
+  text-align: center;
+  margin-bottom: 8px;
+  cursor: pointer;
+  border: none;
+  font-weight: bold;
 }
 
-
-.fab-option-1-container{
-display: flex;
-justify-content: space-between;
+.fab-option-1-container {
+  display: flex;
+  justify-content: space-between;
 }
 
-.fab-option-1-container span{
-display: flex;
-justify-content: center;
-align-items: center;
-font-size: 12px;
-background-color: #88e2ff;
-color: #002938;
-font-weight: bold;
-width:  115px;
-height: 25px;
-padding: 5px;
-margin: 12.5px;
-border-radius: 5px;
+.fab-option-1-container span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+  background-color: #88e2ff;
+  color: #002938;
+  font-weight: bold;
+  width: 115px;
+  height: 25px;
+  padding: 5px;
+  margin: 12.5px;
+  border-radius: 5px;
 }
 
-.btn-form-1{
-    float: right;
-    margin-top: 20px;
-    padding: 10px 20px;
-    color: #fff;
-    background-color: #3498db;
-    border: none;
-    border-radius: 20px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    max-width: 150px;
-    margin-bottom: 20px;
+.btn-form-1 {
+  float: right;
+  margin-top: 20px;
+  padding: 10px 20px;
+  color: #fff;
+  background-color: #3498db;
+  border: none;
+  border-radius: 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  max-width: 150px;
+  margin-bottom: 20px;
 }
 
 .fab-btn-1 {
@@ -2002,7 +1965,10 @@ border-radius: 5px;
   position: fixed;
   top: 20%; /* Mengatur posisi vertikal di tengah */
   left: 50%; /* Mengatur posisi horizontal di tengah */
-  transform: translate(-50%, -50%); /* Mentranslasikan ke posisi tepat di tengah */
+  transform: translate(
+    -50%,
+    -50%
+  ); /* Mentranslasikan ke posisi tepat di tengah */
   min-width: 330px;
   height: 50px;
   display: flex;
@@ -2011,7 +1977,7 @@ border-radius: 5px;
 }
 
 .popup-success-content {
-  background-color: #32E225;
+  background-color: #32e225;
   padding: 10px;
   padding-left: 20px;
   padding-right: 20px;
@@ -2024,12 +1990,11 @@ border-radius: 5px;
   font-weight: bold;
 }
 
-.user-detail{
+.user-detail {
   color: #fff;
   padding-top: 20px;
   padding-right: 30px;
 }
-
 
 .user-detail p {
   max-width: 330px;
