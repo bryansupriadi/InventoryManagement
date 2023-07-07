@@ -55,22 +55,28 @@ function AddProductType() {
     if (!formValues.type) {
       newErrors.type = "Please enter the type of the product!";
     }
+
     if (!formValues.vendorName) {
       newErrors.vendorName = "Please select the vendor!";
     }
+
     if (!formValues.quantityProductType) {
       newErrors.quantityProductType = "Please enter the numbers of product!";
     }
+
     if (!formValues.purchaseDateProductType) {
       newErrors.purchaseDateProductType = "Please enter the purchase date!";
     }
+
     if (!formValues.eachPriceProductType) {
       newErrors.eachPriceProductType = "Please enter the product unit price!";
     }
+
     if (!formValues.currentLocationProductType) {
       newErrors.currentLocationProductType =
         "Please enter the current locantion of the product";
     }
+
     if (
       !formValues.conditionGoodProductType ||
       !formValues.conditionBadProductType
@@ -85,24 +91,22 @@ function AddProductType() {
         "The total of good and bad condition must be equal to quantity!";
     }
 
-    if (Object.keys(newErrors).length === 0) {
-      // add api
-      await api
-        .post("/v1/im/productTypes/", formValues, {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-        .then((res) => {
-          console.log(res.data);
-          setErrors({});
+    // add api
+    await api
+      .post("/v1/im/productTypes/", formValues, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((res) => {
+        console.log(res.data);
+        setErrors({});
 
-          // redirect to product list
-        })
-        .catch((err) => {
-          console.log(err, err.message);
-        });
-    } else {
-      setErrors(newErrors);
-    }
+        // redirect to product list
+        // navigate("/");
+      })
+      .catch((err) => {
+        console.log(err, err.message);
+        setErrors(newErrors);
+      });
   };
 
   const getLoggedIn = () => {
