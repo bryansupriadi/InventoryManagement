@@ -104,17 +104,21 @@ const AddProductForm = () => {
     }
 
     if (!formValues.categoryName) {
-      setErrors((prevState) => ({
-        ...prevState,
-        categoryName: "Fill the group first!",
-      }));
+      // setErrors((prevState) => ({
+      //   ...prevState,
+      //   categoryName: "Fill the group first!",
+      // }));
+
+      newErrors.categoryName = "Please choose the category first!";
     }
 
     if (!formValues.subCategoryName) {
-      setErrors((prevState) => ({
-        ...prevState,
-        subCategoryName: "Fill the category first!",
-      }));
+      // setErrors((prevState) => ({
+      //   ...prevState,
+      //   subCategoryName: "Fill the category first!",
+      // }));
+
+      newErrors.subCategoryName = "Please choose the sub category first!";
     }
 
     if (!formValues.typeProductName) {
@@ -152,33 +156,31 @@ const AddProductForm = () => {
         "The total of good and bad condition must be equal to quantity!";
     }
 
-    if (Object.keys(newErrors).length === 0) {
-      // add product api
-      await api
-        .post("/v1/im/products", formValues, {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-        .then((res) => {
-          console.log(res.data);
+    // add product api
+    await api
+      .post("/v1/im/products", formValues, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((res) => {
+        console.log(res.data);
 
-          setErrors({});
-          setSuccessMessage(res.data.msg);
-          setShowPopupSuccess(true);
-          resetForm();
-          setTimeout(() => {
-            setShowPopupSuccess(false);
-          }, 3500);
-        })
-        .catch((err) => {
-          console.log(err, err.message);
+        setErrors({});
+        setSuccessMessage(res.data.msg);
+        setShowPopupSuccess(true);
+        resetForm();
+        setTimeout(() => {
+          setShowPopupSuccess(false);
+        }, 3500);
+      })
+      .catch((err) => {
+        console.log(err, err.message);
 
-          setErrors(newErrors);
-          setSuccessMessage("");
-        });
-    } else {
-      setErrors(newErrors);
-      setSuccessMessage("");
-    }
+        setErrors(newErrors);
+        // setTimeout(() => {
+        //   setErrors({});
+        // }, 3500);
+        setSuccessMessage("");
+      });
   };
 
   const getLoggedIn = () => {
