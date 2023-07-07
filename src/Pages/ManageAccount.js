@@ -16,10 +16,9 @@ const ManageAccount = () => {
   // const [users, setUsers] = useState(user);
   const [users, setUsers] = useState([]);
   const [keyword, setKeyword] = useState("");
-  const location = useLocation();
 
-  const filterUser = (event) => {
-    const keyword = event.target.value.toLowerCase();
+  const filterUser = (e) => {
+    const keyword = e.target.value.toLowerCase();
     const filteredUser =
       keyword !== ""
         ? users.filter(
@@ -60,9 +59,9 @@ const ManageAccount = () => {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     tableInstance;
 
-  const handleRowClick = (user, event) => {
-    if (event.target.tagName !== "SELECT") {
-      navigate(`${location.pathname}/${user["id"]}`);
+  const handleRowClick = (user, e) => {
+    if (e.target.tagName !== "SELECT") {
+      navigate(`/manage-account/${user._id}`);
     }
   };
 
@@ -187,9 +186,7 @@ const ManageAccount = () => {
                       return (
                         <tr
                           {...row.getRowProps()}
-                          onClick={(event) =>
-                            handleRowClick(row.original, event)
-                          }
+                          onClick={(e) => handleRowClick(row.original, e)}
                         >
                           {row.cells.map((cell) => {
                             return (
@@ -201,9 +198,10 @@ const ManageAccount = () => {
                                 {cell.column.id === "role" ? (
                                   <select
                                     className="select-role-option"
+                                    name="role"
                                     value={row.original.role}
-                                    onChange={(event) => {
-                                      const newRole = event.target.value;
+                                    onChange={(e) => {
+                                      const newRole = e.target.value;
                                       setUsers(
                                         users.map((v) =>
                                           v.id === row.original.id

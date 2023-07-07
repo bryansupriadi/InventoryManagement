@@ -16,14 +16,30 @@ function ManageAccountDetail() {
   const [filteredUser, setFilteredUser] = useState([]);
   const [showPopupDelete, setShowPopupDelete] = useState(false);
 
-  const togglePopupDelete = () => {
+  const toggleCancelPopupDelete = () => {
     setShowPopupDelete(!showPopupDelete);
   };
 
-  const handleDelete = (id) => {
+  const togglePopupDelete = () => {
+    setShowPopupDelete(showPopupDelete);
+  };
+
+  const handleDelete = async (id) => {
     console.log("Delete user with ID:", id);
 
-    setShowPopupDelete(!showPopupDelete);
+    // api handle delete user
+    await api
+      .delete(`/v1/im/users/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((res) => {
+        console.log(res.data);
+
+        navigate("/manage-account");
+      })
+      .catch((err) => {
+        console.log(err, err.message);
+      });
   };
 
   const handleSignOut = async () => {
@@ -79,7 +95,7 @@ function ManageAccountDetail() {
       <div className="popup-delete-container">
         <h3>Are you sure you want to delete this user?</h3>
         <div className="button-container">
-          <button className="cancel-button" onClick={togglePopupDelete}>
+          <button className="cancel-button" onClick={toggleCancelPopupDelete}>
             Cancel
           </button>
           <button
