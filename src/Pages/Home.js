@@ -1,16 +1,19 @@
-import React, { useEffect, useState } from "react";
-import { useMemo } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTable } from "react-table";
+
 import { Icon } from "@iconify/react";
 import logo from "../Assets/logo.png";
+
 import SideBar from "../Components/SideBar";
 import Carousel from "../Components/Carousel";
 import Dropdown from "../Components/Dropdown";
-import SearchBar from "../Components/SearchBar";
-import { COLUMNS } from "../Components/Table";
 
-import product from "../Components/data/product";
+import SearchBar from "../Components/SearchBar";
+
+// import { COLUMNS } from "../Components/Table";
+
+// import product from "../Components/data/product";
 
 import api from "../api";
 
@@ -22,32 +25,33 @@ const Home = () => {
 
   const [selected, setSelected] = useState("All time");
 
+  const [product, setProduct] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState(product);
-
-  const data = useMemo(() => filteredProducts, [filteredProducts]);
-  const [products, setProducts] = useState(product);
-  const [keyword, setKeyword] = useState("");
 
   const COLUMNS = [
     {
       Header: "Name",
-      accessor: "Name",
+      accessor: "typeProductName",
     },
     {
       Header: "Qty",
       accessor: (row) => {
-        const product = products.find((item) => item.Name === row.Name);
-        return product ? product["Sub Data"].length : 0;
+        const product = products.find(
+          (item) => item.typeProductName === row.typeProductName
+        );
+        return product ? products.length : 0;
       },
     },
     {
       Header: "Price",
       accessor: (row) => {
-        const product = products.find((item) => item.Name === row.Name);
+        const product = products.find(
+          (item) => item.typeProductName === row.typeProductName
+        );
         let totalPrice = 0;
         if (product) {
-          product["Sub Data"].forEach((subItem) => {
-            totalPrice += subItem.Price;
+          product.forEach((subItem) => {
+            totalPrice += subItem.eachPrice;
           });
         }
         return totalPrice;
@@ -55,20 +59,22 @@ const Home = () => {
     },
     {
       Header: "Group",
-      accessor: "Group",
+      accessor: "group",
     },
   ];
 
+  const [products, setProducts] = useState(product);
+  const [keyword, setKeyword] = useState("");
   const [columns, setColumns] = useState(COLUMNS);
 
-  const filterProduct = (event) => {
-    const keyword = event.target.value.toLowerCase();
+  const filterProduct = (e) => {
+    const keyword = e.target.value.toLowerCase();
     const filteredProduct =
       keyword !== ""
         ? products.filter(
             (product) =>
-              product.Name.toLowerCase().indexOf(keyword) > -1 ||
-              product.Group.toLowerCase().indexOf(keyword) > -1
+              product.typeProductName.toLowerCase().indexOf(keyword) > -1 ||
+              product.group.toLowerCase().indexOf(keyword) > -1
           )
         : products;
 
@@ -76,7 +82,7 @@ const Home = () => {
     setKeyword(keyword);
 
     if (keyword === "") {
-      setFilteredProducts(product);
+      setFilteredProducts(filteredProducts);
       setProducts(product);
     }
   };
@@ -88,44 +94,44 @@ const Home = () => {
       const lastYear = new Date();
       lastYear.setFullYear(lastYear.getFullYear() - 1);
       const filtered = product.map((item) => {
-        const subData = item["Sub Data"].filter((subItem) => {
-          const subItemDate = new Date(subItem.Date);
+        const subData = item.filter((subItem) => {
+          const subItemDate = new Date(subItem.purchaseDate);
           return subItemDate >= lastYear;
         });
         return { ...item, "Sub Data": subData };
       });
       setFilteredProducts(filtered);
-      setProducts(filtered); // Perbarui nilai products
+      setProducts(filtered);
     } else if (option === "Last 3 years") {
       const last3Years = new Date();
       last3Years.setFullYear(last3Years.getFullYear() - 3);
       const filtered = product.map((item) => {
-        const subData = item["Sub Data"].filter((subItem) => {
-          const subItemDate = new Date(subItem.Date);
+        const subData = item.filter((subItem) => {
+          const subItemDate = new Date(subItem.purchaseDate);
           return subItemDate >= last3Years;
         });
         return { ...item, "Sub Data": subData };
       });
       setFilteredProducts(filtered);
-      setProducts(filtered); // Perbarui nilai products
+      setProducts(filtered);
     } else if (option === "Last 5 years") {
       const last5Years = new Date();
       last5Years.setFullYear(last5Years.getFullYear() - 5);
       const filtered = product.map((item) => {
-        const subData = item["Sub Data"].filter((subItem) => {
-          const subItemDate = new Date(subItem.Date);
+        const subData = item.filter((subItem) => {
+          const subItemDate = new Date(subItem.purchaseDate);
           return subItemDate >= last5Years;
         });
         return { ...item, "Sub Data": subData };
       });
       setFilteredProducts(filtered);
-      setProducts(filtered); // Perbarui nilai products
     } else if (option === "All time") {
-      setFilteredProducts(product);
-      setProducts(product); // Perbarui nilai products
+      setFilteredProducts(filteredProducts);
+      setProducts(product);
     }
   };
 
+  const data = useMemo(() => filteredProducts, [filteredProducts]);
   const tableInstance = useTable({ columns, data });
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
@@ -135,40 +141,49 @@ const Home = () => {
     if (token) {
       setIsLoggedIn(true);
     } else {
-      navigate("/");
+      navigate("/sign-in");
     }
   };
 
-  // const getProductData = async () => {
-  //   await api
-  //     .get("/v1/im/products/", {
-  //       headers: { Authorization: `Bearer ${token}` },
-  //     })
-  //     .then((res) => {
-  //       console.log(res.data);
-  //       setProductData(res.data.data);
-  //     });
-  // };
+  const getProductData = async () => {
+    await api
+      .get("/v1/im/products/", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((res) => {
+        console.log(res.data);
+        setProduct(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err, err.message);
+      });
+  };
 
   useEffect(() => {
     getLoggedIn();
-    // getProductData();
+    getProductData();
 
     const updatedColumns = [...columns];
     updatedColumns[1].accessor = (row) => {
-      const product = filteredProducts.find((item) => item.Name === row.Name);
-      return product ? product["Sub Data"].length : 0;
+      const product = filteredProducts.find(
+        (item) => item.typeProductName === row.typeProductName
+      );
+      return product ? product.length : 0;
     };
+
     updatedColumns[2].accessor = (row) => {
-      const product = filteredProducts.find((item) => item.Name === row.Name);
+      const product = filteredProducts.find(
+        (item) => item.typeProductName === row.typeProductName
+      );
       let totalPrice = 0;
       if (product) {
-        product["Sub Data"].forEach((subItem) => {
-          totalPrice += subItem.Price;
+        product.forEach((subItem) => {
+          totalPrice += subItem.eachPrice;
         });
       }
       return totalPrice;
     };
+
     setColumns(updatedColumns);
   }, [filteredProducts, columns, navigate]);
 
@@ -228,10 +243,10 @@ const Home = () => {
                   <tbody {...getTableBodyProps()}>
                     {rows.map((row, index) => {
                       prepareRow(row);
-                      const qty = row.cells[1].value;
-                      const price = row.cells[2].value;
+                      const quantity = row.cells[1].value;
+                      const eachPrice = row.cells[2].value;
 
-                      if (qty !== 0 && price !== 0) {
+                      if (quantity !== 0 && eachPrice !== 0) {
                         return (
                           <tr {...row.getRowProps()} key={index}>
                             {row.cells.map((cell, index) => {
@@ -259,7 +274,7 @@ const Home = () => {
       </div>
     </div>
   ) : (
-    navigate("/")
+    navigate("/sign-in")
   );
 };
 
