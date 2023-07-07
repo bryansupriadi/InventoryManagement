@@ -1,16 +1,16 @@
-import React from 'react';
+import React from "react";
 
-function ProductTemp(props) {
+function ProductTemp({ subCategoryName, subCategoryImage }) {
   return (
     <div className="card">
       <img
-      className='product--image'
-      src={props.icon}
-      alt=''
+        className="product--image"
+        src={subCategoryImage}
+        alt={subCategoryName}
       />
-      <h2>{props.name}</h2>
+      <h2>{subCategoryName}</h2>
     </div>
-  )
+  );
 }
 
 export default ProductTemp;
