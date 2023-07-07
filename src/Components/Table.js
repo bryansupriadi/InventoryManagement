@@ -19,19 +19,19 @@ export const COLUMNS = [
 
 export const TABLE = [
   {
-    Header: "No",
-    accessor: "No",
-  },
-  {
-    Header: "Email",
-    accessor: "Email",
+    Header: "ID",
+    accessor: "userId",
   },
   {
     Header: "Name",
-    accessor: "Name",
+    accessor: "username",
+  },
+  {
+    Header: "Email",
+    accessor: "emailAddress",
   },
   {
     Header: "Role",
-    accessor: "Role",
+    accessor: "role",
   },
 ];
