@@ -1,27 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
+
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 
 import SideBar from "../Components/SideBar";
-import {
-  ComputerDevices,
-  HouseholdAppliances,
-  Furniture,
-  OfficeSupplies,
-} from "../Components/Slider/SubCategory";
 
 import api from "../api";
 
 function VendorProduct() {
+  const { vendorSlug } = useParams();
   const navigate = useNavigate();
-  const { name } = useParams();
-
   const token = localStorage.getItem("token");
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  // const [data, setData] = useState([]);
 
   const responsive = {
     superLargeDesktop: {
@@ -42,64 +34,19 @@ function VendorProduct() {
     },
   };
 
-  const vendorData = [
-    {
-      Id: "1",
-      "Sub Category": "Monitor",
-      "Brand Name": "Samsung",
-      Vendor: "Tokopedia",
-      Qty: 3,
-      "Total Price": "$590",
-    },
-    {
-      Id: "2",
-      "Sub Category": "Monitor",
-      "Brand Name": "Samsung",
-      Vendor: "Shopee",
-      Qty: 3,
-      "Total Price": "$600",
-    },
-    {
-      Id: "3",
-      "Sub Category": "Monitor",
-      "Brand Name": "LG",
-      Vendor: "Tokopedia",
-      Qty: 4,
-      "Total Price": "$500",
-    },
-    {
-      Id: "4",
-      "Sub Category": "Table",
-      "Brand Name": "Adils",
-      Vendor: "IKEA",
-      Qty: 11,
-      "Total Price": "$616",
-    },
-    {
-      Id: "5",
-      "Sub Category": "Sofa",
-      "Brand Name": "Willy",
-      Vendor: "Shopee",
-      Qty: 2,
-      "Total Price": "$460",
-    },
-  ];
-
-  const itemNames = [
-    ...ComputerDevices.map((item) => item.name),
-    ...HouseholdAppliances.map((item) => item.name),
-    ...Furniture.map((item) => item.name),
-    ...OfficeSupplies.map((item) => item.name),
-  ];
+  const [data, setData] = useState([]);
+  const [selectedSubCategory, setSelectedSubCategory] = useState("");
 
   const [filteredItems, setFilteredItems] = useState([]);
-  const [selectedSubCategory, setSelectedSubCategory] = useState("");
+
   const [vendorItems, setVendorItems] = useState([]);
 
   const handleSubCategoryClick = (subCategory) => {
     setSelectedSubCategory(subCategory);
-    const filteredItems = vendorData.filter(
-      (item) => item["Sub Category"] === subCategory && item["Vendor"] === name
+
+    const filteredItems = data.filter(
+      (item) =>
+        item.subCategoryName === subCategory && item.vendorName === vendorSlug
     );
     setVendorItems(filteredItems);
   };
@@ -113,56 +60,32 @@ function VendorProduct() {
     }
   };
 
-  // const getData = async () => {
-  //   await api
-  //     .get(`/v1/im/vendors/${name}`, {
-  //       headers: { Authorization: `Bearer ${token}` },
-  //     })
-  //     .then((res) => {
-  //       console.log(res.data);
-  //       setData(res.data.data);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err, err.message);
-  //     });
-  // };
+  const getData = async () => {
+    await api
+      .get(
+        `/v1/im/products?vendor.vendorSlug=${vendorSlug}&subCategory.subCategorySlug=${data.subCategory.subCategorySlug}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
+      .then((res) => {
+        console.log(res.data);
+        setData(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err, err.message);
+      });
+  };
 
   useEffect(() => {
     getLoggedIn();
-    // getData();
+    getData();
 
-    setFilteredItems(vendorData.filter((item) => item["Vendor"] === name));
-    setVendorItems(vendorData.filter((item) => item["Vendor"] === name));
+    setFilteredItems(data.filter((item) => item.vendorName === vendorSlug));
+    setVendorItems(data.filter((item) => item.vendorName === vendorSlug));
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [navigate, name]);
-
-  const items = (
-    <ul className="list-brands-container">
-      {vendorItems.map((info) => (
-        <li key={`${info["Brand Name"]}-${info["Total Price"]}`}>
-          <Link
-            to={{
-              pathname: `/vendor-list/${name}/${info["Sub Category"]}/${info["Brand Name"]}`,
-              state: {
-                subCategory: info["Sub Category"],
-                brandName: info["Brand Name"],
-              },
-            }}
-            style={{ textDecoration: "none", color: "white" }}
-            className="list-brands"
-          >
-            <div className="brand-info">
-              <h3>{info["Brand Name"]}</h3>
-              <h6>Quantity: {info["Qty"]}</h6>
-            </div>
-            <div className="price-info">
-              <h6>{info["Total Price"]}</h6>
-            </div>
-          </Link>
-        </li>
-      ))}
-    </ul>
-  );
+  }, [navigate, vendorSlug]);
 
   const itemStyle = {
     margin: "20px", // Atur jarak antara komponen
@@ -177,32 +100,70 @@ function VendorProduct() {
     color: "#fff",
   };
 
-  return (
+  return isLoggedIn ? (
     <div className="App">
       <div className="vendor-product-page-container">
         <div className="navbar-container">
-          <h1>{name}</h1>
+          <h1>{vendorSlug}</h1>
           <SideBar />
         </div>
+
         <Carousel responsive={responsive} showDots={false} arrows={false}>
-          {itemNames
+          {data
             .sort((a, b) => a.localeCompare(b))
             .map((item, index) => (
               <div
-                key={index}
+                key={item._id}
                 style={
-                  selectedSubCategory === item ? selectedItemStyle : itemStyle
+                  selectedSubCategory === item.subCategory.subCategoryName
+                    ? selectedItemStyle
+                    : itemStyle
                 }
                 className="slider-sub-category"
                 onClick={() => handleSubCategoryClick(item)}
               >
-                {item}
+                {item.subCategory.subCategoryName}
               </div>
             ))}
         </Carousel>
-        <div className="vendor-content-container">{items}</div>
+
+        <div className="vendor-content-container">
+          {data.length > 0 ? (
+            <>
+              {data.map((info) => (
+                <ul className="list-brands-container">
+                  <li key={`${info.brandName}-${info.eachPrice}`}>
+                    <Link
+                      to={{
+                        pathname: `/vendor-list/${vendorSlug}/${info.subCategory.subCategorySlug}/${info.brandName}`,
+                        state: {
+                          subCategoryName: info.subCategoryName,
+                          brandName: info.brandName,
+                        },
+                      }}
+                      style={{ textDecoration: "none", color: "white" }}
+                      className="list-brands"
+                    >
+                      <div className="brand-info">
+                        <h3>{info.brandName}</h3>
+                        <h6>Quantity: {info.quantityProduct}</h6>
+                      </div>
+                      <div className="price-info">
+                        <h6>{info.eachPrice}</h6>
+                      </div>
+                    </Link>
+                  </li>
+                </ul>
+              ))}
+            </>
+          ) : (
+            <p>No data found</p>
+          )}
+        </div>
       </div>
     </div>
+  ) : (
+    navigate("/sign-in")
   );
 }
 
