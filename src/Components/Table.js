@@ -1,19 +1,19 @@
 export const COLUMNS = [
   {
     Header: "Name",
-    accessor: "Name",
+    accessor: "brandName",
   },
   {
     Header: "Qty",
-    accessor: "Qty",
+    accessor: "quantity",
   },
   {
     Header: "Price",
-    accessor: "Total Price",
+    accessor: "eachPrice",
   },
   {
     Header: "Group",
-    accessor: "Group",
+    accessor: "group",
   },
 ];
 
