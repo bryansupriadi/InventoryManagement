@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useMemo } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useTable } from "react-table";
+
 import logo from "../Assets/logo.png";
 
-import { user } from "../Components/data/userdata";
 import api from "../api";
 
 const ManageAccount = () => {
@@ -13,8 +13,9 @@ const ManageAccount = () => {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  // const [users, setUsers] = useState(user);
   const [users, setUsers] = useState([]);
+  const [role, setRole] = useState("");
+
   const [keyword, setKeyword] = useState("");
 
   const filterUser = (e) => {
@@ -35,6 +36,10 @@ const ManageAccount = () => {
 
   const columns = useMemo(
     () => [
+      // {
+      //   Header: "_id",
+      //   accessor: "_id",
+      // },
       {
         Header: "ID",
         accessor: "userId",
@@ -50,14 +55,30 @@ const ManageAccount = () => {
       {
         Header: "Role",
         accessor: "role",
+        Cell: ({ row, value }) => (
+          <select
+            className="select-role-option"
+            name="role"
+            value={value}
+            onChange={(e) => handleChange(row, "role", e.target.value)}
+          >
+            <option value="User">User</option>
+            <option value="Admin">Admin</option>
+          </select>
+        ),
       },
     ],
     []
   );
 
-  const tableInstance = useTable({ columns, data });
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    tableInstance;
+    useTable({ columns, data });
+
+  const handleChange = (row, key, selectedValue) => {
+    const updatedData = [...users];
+    updatedData[row.index][key] = selectedValue;
+    setUsers(updatedData);
+  };
 
   const handleRowClick = (user, e) => {
     if (e.target.tagName !== "SELECT") {
@@ -85,11 +106,9 @@ const ManageAccount = () => {
     console.log(id);
 
     await api
-      .patch(
-        `/v1/im/users/${id}`,
-        { role: users.role },
-        { headers: { Authorization: `Bearer ${token}` } }
-      )
+      .patch(`/v1/im/users/${id}`, users, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .then((res) => {
         console.log(res.data);
 
@@ -195,7 +214,8 @@ const ManageAccount = () => {
                                 className="table-body-cell"
                                 {...cell.getCellProps()}
                               >
-                                {cell.column.id === "role" ? (
+                                {cell.render("Cell")}
+                                {/* {cell.column.id === "role" ? (
                                   <select
                                     className="select-role-option"
                                     name="role"
@@ -211,12 +231,12 @@ const ManageAccount = () => {
                                       );
                                     }}
                                   >
-                                    <option value="user">User</option>
-                                    <option value="admin">Admin</option>
+                                    <option value="User">User</option>
+                                    <option value="Admin">Admin</option>
                                   </select>
                                 ) : (
                                   cell.render("Cell")
-                                )}
+                                )} */}
                               </td>
                             );
                           })}
