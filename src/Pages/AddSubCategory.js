@@ -140,7 +140,7 @@ export function AddSubCategoryActive() {
               <Popup
                 message={successMessage}
               />
-            )}            
+            )}          
         </div>
     </div>
     );

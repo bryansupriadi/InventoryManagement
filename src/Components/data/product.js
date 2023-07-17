@@ -249,7 +249,7 @@ const product = [
             },
             {
                 "Product Id": "001030101002",
-                "Date": "07/06/2022",
+                "Date": "12/12/2022",
                 "Price": 230,
                 "Type": "Black Color",
                 "Vendor": "Shopee",

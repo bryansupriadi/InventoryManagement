@@ -11,7 +11,10 @@ const ManageAccount = () => {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [users, setUsers] = useState(user);
+  const [hasChanges, setHasChanges] = useState(false);
   const [keyword, setKeyword] = useState("");
+  const [showPopupSuccess, setShowPopupSuccess] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('')
   const location = useLocation();
 
   const filterUser = (event) => {
@@ -61,56 +64,84 @@ const ManageAccount = () => {
         navigate(`${location.pathname}/${user['id']}`);
       }
     }
+
+    const handleChangeRole = (userId, newRole) => {
+      const updatedUsers = users.map((user) =>
+        user.id === userId ? { ...user, role: newRole } : user
+      );
+      setUsers(updatedUsers);
+      setHasChanges(true);
+    };
+    
+    const handleSaveChanges = () => {
+      setSuccessMessage('Role has been successfully updated!')
+      setShowPopupSuccess(true);
+      setTimeout(() => {
+        setShowPopupSuccess(false);
+        setHasChanges(false);
+      },3500);
+    }
+
+    const Popup = ({ message }) => {
+      return (
+        <div className="popup-success">
+          <div className="popup-success-content">
+            <div className="popup-success-message">{message}</div>
+          </div>
+        </div>
+      );
+    };
     
 
-  const handleSignOut = async () => {
-    await axios
-      .get("http://localhost:5000/v1/im/users/signOut")
-      .then((res) => {
-        console.log(res.data);
-        console.log(res.data.msg);
+  // const handleSignOut = async () => {
+  //   await axios
+  //     .get("http://localhost:5000/v1/im/users/signOut")
+  //     .then((res) => {
+  //       console.log(res.data);
+  //       console.log(res.data.msg);
 
-        localStorage.removeItem("token");
+  //       localStorage.removeItem("token");
 
-        navigate("/");
-      })
-      .catch((err) => {
-        console.log(err, err.message);
-      });
-  };
+  //       navigate("/");
+  //     })
+  //     .catch((err) => {
+  //       console.log(err, err.message);
+  //     });
+  // };
 
-  const getLoggedIn = () => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      setIsLoggedIn(true);
-    } else {
-      navigate("/");
-    }
-  };
+  // const getLoggedIn = () => {
+  //   const token = localStorage.getItem("token");
+  //   if (token) {
+  //     setIsLoggedIn(true);
+  //   } else {
+  //     navigate("/");
+  //   }
+  // };
 
-  const getUsers = async () => {
-    const token = localStorage.getItem("token");
+  // const getUsers = async () => {
+  //   const token = localStorage.getItem("token");
 
-    if (token) {
-      await axios
-        .get("http://localhost:5000/v1/im/users/", {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-        .then((res) => {
-          console.log(res.data);
-          console.log(res.data.msg);
+  //   if (token) {
+  //     await axios
+  //       .get("http://localhost:5000/v1/im/users/", {
+  //         headers: { Authorization: `Bearer ${token}` },
+  //       })
+  //       .then((res) => {
+  //         console.log(res.data);
+  //         console.log(res.data.msg);
 
-          setUsers(res.data.data);
-        });
-    }
-  };
+  //         setUsers(res.data.data);
+  //       });
+  //   }
+  // };
 
-  useEffect(() => {
-    getLoggedIn();
-    // getUsers();
-  }, [navigate]);
+  // useEffect(() => {
+  //   getLoggedIn();
+  //   // getUsers();
+  // }, [navigate]);
 
-  return isLoggedIn ? (
+  // return isLoggedIn ? 
+  return (
     <div className="App">
       <div className="manage-account-page-container">
         <div className="navbar-super-admin-container">
@@ -183,6 +214,7 @@ const ManageAccount = () => {
                                 value={row.original.role}
                                 onChange={(event) => {
                                   const newRole = event.target.value;
+                                  handleChangeRole(row.original.id, newRole)
                                   setUsers(
                                     users.map((v) =>
                                       v.id === row.original.id
@@ -209,14 +241,22 @@ const ManageAccount = () => {
             </div>
             </div>
           )}
-        <button type="submit" className="btn-manage-acc">
-          Save
-        </button>
+          {hasChanges && (
+            <button type="submit" className="btn-manage-acc" onClick={handleSaveChanges}>
+              Save
+            </button>
+          )}          
         </div>
+        {showPopupSuccess && (
+          <Popup
+            message={successMessage}
+          />
+        )} 
       </div>
     </div>
-  ) : (
-    navigate("/")
+  // ) : (
+  //   navigate("/")
+  // );
   );
 };
 

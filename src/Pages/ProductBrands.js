@@ -39,7 +39,7 @@ function ProductBrands() {
               {info.quantity && <h6>Quantity: {info.quantity}</h6>}
             </div>
             <div className='price-info'>
-              <h6>{info.price}</h6>
+              <h6>${info.price}</h6>
             </div>
           </Link>
         </li>

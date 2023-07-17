@@ -148,20 +148,21 @@ useEffect(() => {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     tableInstance;
 
-  const getLoggedIn = () => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      setIsLoggedIn(true);
-    } else {
-      navigate("/");
-    }
-  };
+  // const getLoggedIn = () => {
+  //   const token = localStorage.getItem("token");
+  //   if (token) {
+  //     setIsLoggedIn(true);
+  //   } else {
+  //     navigate("/");
+  //   }
+  // };
 
-  useEffect(() => {
-    getLoggedIn();
-  }, [navigate]);
+  // useEffect(() => {
+  //   getLoggedIn();
+  // }, [navigate]);
 
-   return isLoggedIn ? (
+  //  return isLoggedIn ? 
+  return (
     <div className="App">
       <div className="home-page-container">
         <div className="navbar-container">
@@ -243,8 +244,9 @@ useEffect(() => {
         </div>
       </div>
     </div>
-  ) : (
-    navigate("/")
+  // ) : (
+  //   navigate("/")
+  // );
   );
 };
 
