@@ -81,7 +81,7 @@ const router = createBrowserRouter([
     element: <PassiveCategory />,
   },
   {
-    path: "/:groupSlug-category/:subCategorySlug",
+    path: "/:groupSlug-category/:categorySlug",
     element: <ProductSeeAll />,
   },
   {
@@ -117,7 +117,7 @@ const router = createBrowserRouter([
     element: <ProductBrands />,
   },
   {
-    path: "/:groupSlug-category/:categorySlug/:subCategorySlug/:productSlug/:id",
+    path: "/:groupSlug-category/:categorySlug/:subCategorySlug/:productSlug",
     element: <ProductBrandsDetail />,
   },
   {
@@ -129,12 +129,12 @@ const router = createBrowserRouter([
     element: <ProductDetail />,
   },
   {
-    path: "/:groupSlug-category/:categorySlug/:subCategorySlug/:productSlug/add-product-type",
-    element: <AddProductType />,
-  },
-  {
     path: "/vendor-list/:vendorSlug/:subCategorySlug/:productSlug",
     element: <VendorTable />,
+  },
+  {
+    path: "/:groupSlug-category/:categorySlug/:subCategorySlug/:productSlug/add-product-type",
+    element: <AddProductType />,
   },
   {
     path: "/:groupSlug-category/:categorySlug/:subCategorySlug/:productSlug/:id/edit-product",
