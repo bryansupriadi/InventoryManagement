@@ -40,10 +40,6 @@ const ManageAccount = () => {
 
   const columns = useMemo(
     () => [
-      // {
-      //   Header: "_id",
-      //   accessor: "_id",
-      // },
       {
         Header: "ID",
         accessor: "userId",
@@ -64,14 +60,15 @@ const ManageAccount = () => {
             className="select-role-option"
             name="role"
             value={value}
-            // onChange={(e) => handleChange(row, "role", e.target.value)}
             onChange={(e) => {
               const newRole = e.target.value;
               setUsers(
                 users.map((v) =>
-                  v.id === row.original.id ? { ...v, role: newRole } : v
+                  v._id === row.original._id ? { ...v, role: newRole } : v
                 )
               );
+
+              setHasChanges(true);
             }}
           >
             <option value="User">User</option>
@@ -112,13 +109,13 @@ const ManageAccount = () => {
       });
   };
 
-  const handleChangeRole = (userId, newRole) => {
-    const updatedUsers = users.map((user) =>
-      user.id === userId ? { ...user, role: newRole } : user
-    );
-    setUsers(updatedUsers);
-    setHasChanges(true);
-  };
+  // const handleChangeRole = (userId, newRole) => {
+  //   const updatedUsers = users.map((user) =>
+  //     user.id === userId ? { ...user, role: newRole } : user
+  //   );
+  //   setUsers(updatedUsers);
+  //   setHasChanges(true);
+  // };
 
   const handleSubmit = async (id) => {
     console.log(id);
@@ -161,6 +158,8 @@ const ManageAccount = () => {
         .then((res) => {
           console.log(res.data);
           console.log(res.data.msg);
+
+          setUsers(res.data.data);
         })
         .catch((err) => {
           console.log(err, err.message);
@@ -169,6 +168,8 @@ const ManageAccount = () => {
   };
 
   useEffect(() => {
+    document.title = "Inventory Management - Account Management";
+
     getLoggedIn();
     getUsers();
   }, [navigate]);
@@ -209,6 +210,7 @@ const ManageAccount = () => {
             className="search-user"
           />
         </div>
+
         <div className="user-list-container">
           {users.length === 0 ? (
             <p>No data available</p>
@@ -241,9 +243,7 @@ const ManageAccount = () => {
                       return (
                         <tr
                           {...row.getRowProps()}
-                          onClick={(event) =>
-                            handleRowClick(row.original, event)
-                          }
+                          onClick={(e) => handleRowClick(row.original, e)}
                         >
                           {row.cells.map((cell) => {
                             return (
@@ -252,31 +252,7 @@ const ManageAccount = () => {
                                 className="table-body-cell"
                                 {...cell.getCellProps()}
                               >
-                                {cell.column.id === "role" ? (
-                                  <select
-                                    className="select-role-option"
-                                    value={row.original.role}
-                                    onChange={(event) => {
-                                      const newRole = event.target.value;
-                                      handleChangeRole(
-                                        row.original.id,
-                                        newRole
-                                      );
-                                      setUsers(
-                                        users.map((v) =>
-                                          v.id === row.original.id
-                                            ? { ...v, role: newRole }
-                                            : v
-                                        )
-                                      );
-                                    }}
-                                  >
-                                    <option value="user">User</option>
-                                    <option value="admin">Admin</option>
-                                  </select>
-                                ) : (
-                                  cell.render("Cell")
-                                )}
+                                {cell.render("Cell")}
                               </td>
                             );
                           })}
