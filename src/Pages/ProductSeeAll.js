@@ -7,7 +7,7 @@ import api from "../api";
 
 function ProductSeeAll() {
   const navigate = useNavigate();
-  const { groupSlug, categorySlug, subCategorySlug } = useParams();
+  const { groupSlug, categorySlug } = useParams();
 
   const token = localStorage.getItem("token");
 
@@ -16,9 +16,9 @@ function ProductSeeAll() {
   const [products, setProducts] = useState([]);
   const [selectedSubCategory, setSelectedSubCategory] = useState([]);
 
-  const subCategory = products.map(
-    (product) => product.subCategory.subCategorySlug
-  );
+  const subCategory = products.map((product) => product.subCategorySlug);
+
+  console.log(subCategory);
 
   const handleSubCategoryClick = (subCategory) => {
     setSelectedSubCategory(subCategory);
@@ -34,7 +34,7 @@ function ProductSeeAll() {
 
   const getAllProducts = async () => {
     await api
-      .get("/v1/im/products/", {
+      .get(`/v1/im/products?categorySlug=${categorySlug}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
@@ -53,31 +53,23 @@ function ProductSeeAll() {
     getLoggedIn();
     getAllProducts();
 
-    // Filter products based on the urlCategory
-    let filteredProducts = [];
-    if (categorySlug === products.category.categorySlug) {
-      filteredProducts = products.category.categorySlug;
-    }
-
-    setProducts(filteredProducts);
-
     // Reset selected sub-category when urlCategory changes
     setSelectedSubCategory(null);
-  }, [groupSlug, categorySlug, subCategorySlug, navigate]);
+  }, [groupSlug, categorySlug, navigate]);
 
   return isLoggedIn ? (
     <div className="App">
       <div className="see-all-page-container">
         <div className="navbar-container">
-          <h1>{products.group}</h1>
+          <h1>{groupSlug}</h1>
           <SideBar />
         </div>
         <div className="sub-title-product">
-          <h3>{products.category.categoryName}</h3>
+          <h3>{categorySlug}</h3>
         </div>
         <div className="see-all-list-container">
           <ul className="see-all-list">
-            {subCategory.map((subCategory, index) => (
+            {products.map((subCategory, index) => (
               <li
                 key={subCategory._id}
                 className={`sub-category-item ${
@@ -86,10 +78,10 @@ function ProductSeeAll() {
                 onClick={() => handleSubCategoryClick(subCategory)}
               >
                 <Link
-                  to={`/${groupSlug}-category/${categorySlug}/${subCategorySlug}`}
+                  to={`/${groupSlug}-category/${categorySlug}/${subCategory.subCategorySlug}`}
                   style={{ textDecoration: "none", color: "white" }}
                 >
-                  {subCategory.subCategory.subCategorySlug}
+                  {subCategory.subCategoryName}
                 </Link>
               </li>
             ))}
