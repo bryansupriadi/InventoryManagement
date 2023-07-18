@@ -9,11 +9,7 @@ import SideBar from "../Components/SideBar";
 import Carousel from "../Components/Carousel";
 import Dropdown from "../Components/Dropdown";
 
-import SearchBar from "../Components/SearchBar";
-
-// import { COLUMNS } from "../Components/Table";
-
-// import product from "../Components/data/product";
+// import SearchBar from "../Components/SearchBar";
 
 import api from "../api";
 
@@ -31,13 +27,13 @@ const Home = () => {
   const COLUMNS = [
     {
       Header: "Name",
-      accessor: "typeProductName",
+      accessor: "brandName",
     },
     {
       Header: "Qty",
       accessor: (row) => {
         const product = products.find(
-          (item) => item.typeProductName === row.typeProductName
+          (item) => item.brandName === row.brandName
         );
         return product ? products.length : 0;
       },
@@ -46,7 +42,7 @@ const Home = () => {
       Header: "Price",
       accessor: (row) => {
         const product = products.find(
-          (item) => item.typeProductName === row.typeProductName
+          (item) => item.brandName === row.brandName
         );
         let totalPrice = 0;
         if (product) {
@@ -92,7 +88,9 @@ const Home = () => {
 
     if (option === "Last year") {
       const lastYear = new Date();
+
       lastYear.setFullYear(lastYear.getFullYear() - 1);
+
       const filtered = product.map((item) => {
         const subData = item.filter((subItem) => {
           const subItemDate = new Date(subItem.purchaseDate);
@@ -100,11 +98,14 @@ const Home = () => {
         });
         return { ...item, "Sub Data": subData };
       });
+
       setFilteredProducts(filtered);
       setProducts(filtered);
     } else if (option === "Last 3 years") {
       const last3Years = new Date();
+
       last3Years.setFullYear(last3Years.getFullYear() - 3);
+
       const filtered = product.map((item) => {
         const subData = item.filter((subItem) => {
           const subItemDate = new Date(subItem.purchaseDate);
@@ -112,11 +113,14 @@ const Home = () => {
         });
         return { ...item, "Sub Data": subData };
       });
+
       setFilteredProducts(filtered);
       setProducts(filtered);
     } else if (option === "Last 5 years") {
       const last5Years = new Date();
+
       last5Years.setFullYear(last5Years.getFullYear() - 5);
+
       const filtered = product.map((item) => {
         const subData = item.filter((subItem) => {
           const subItemDate = new Date(subItem.purchaseDate);
@@ -124,6 +128,7 @@ const Home = () => {
         });
         return { ...item, "Sub Data": subData };
       });
+
       setFilteredProducts(filtered);
     } else if (option === "All time") {
       setFilteredProducts(filteredProducts);
@@ -132,6 +137,7 @@ const Home = () => {
   };
 
   const data = useMemo(() => filteredProducts, [filteredProducts]);
+
   const tableInstance = useTable({ columns, data });
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
@@ -152,7 +158,10 @@ const Home = () => {
       })
       .then((res) => {
         console.log(res.data);
-        setProduct(res.data.data);
+
+        const { data } = res.data;
+
+        setProduct(data);
       })
       .catch((err) => {
         console.log(err, err.message);
@@ -160,20 +169,25 @@ const Home = () => {
   };
 
   useEffect(() => {
+    document.title = "Inventory Management - Home";
+
     getLoggedIn();
     getProductData();
 
     const updatedColumns = [...columns];
+
+    console.log(updatedColumns);
+
     updatedColumns[1].accessor = (row) => {
       const product = filteredProducts.find(
-        (item) => item.typeProductName === row.typeProductName
+        (item) => item.brandName === row.brandName
       );
       return product ? product.length : 0;
     };
 
     updatedColumns[2].accessor = (row) => {
       const product = filteredProducts.find(
-        (item) => item.typeProductName === row.typeProductName
+        (item) => item.brandName === row.brandName
       );
       let totalPrice = 0;
       if (product) {
@@ -184,7 +198,7 @@ const Home = () => {
       return totalPrice;
     };
 
-    setColumns(updatedColumns);
+    // setColumns(updatedColumns);
   }, [filteredProducts, columns, navigate]);
 
   return isLoggedIn ? (
