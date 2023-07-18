@@ -115,6 +115,8 @@ function EditProduct() {
   };
 
   useEffect(() => {
+    document.title = "Inventory Management - Edit Product";
+
     getLoggedIn();
     getProductById();
 
