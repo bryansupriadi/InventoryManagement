@@ -1,14 +1,32 @@
 import React, { useState, useEffect } from "react";
-import { BrowserMultiFormatReader } from "@zxing/library";
 import { useNavigate } from "react-router-dom";
+
+import { BrowserMultiFormatReader } from "@zxing/library";
+
 import SideBar from "../Components/SideBar";
 
 function Scanner() {
-  const [scanResult, setScanResult] = useState("");
   const navigate = useNavigate();
 
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const [scanResult, setScanResult] = useState("");
+
+  const getLoggedIn = () => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      setIsLoggedIn(true);
+    } else {
+      navigate("/sign-in");
+    }
+  };
+
   useEffect(() => {
+    document.title = "Inventory Management - Scanner";
+    getLoggedIn();
+
     const codeReader = new BrowserMultiFormatReader();
+
     codeReader
       .decodeFromInputVideoDevice(undefined, "video", {
         videoFacingMode: "environment",
@@ -19,15 +37,13 @@ function Scanner() {
       .catch((err) => {
         console.error(err);
       });
-  }, []);
 
-  useEffect(() => {
     if (scanResult) {
       navigate(scanResult);
     }
   }, [scanResult, navigate]);
 
-  return (
+  return isLoggedIn ? (
     <div className="App">
       <div className="scanner-page-container">
         <div className="navbar-container">
@@ -46,6 +62,8 @@ function Scanner() {
         </div>
       </div>
     </div>
+  ) : (
+    navigate("/sign-in")
   );
 }
 
