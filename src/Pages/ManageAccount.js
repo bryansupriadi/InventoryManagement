@@ -83,12 +83,6 @@ const ManageAccount = () => {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({ columns, data });
 
-  // const handleChange = (row, key, selectedValue) => {
-  //   const updatedData = [...users];
-  //   updatedData[row.index][key] = selectedValue;
-  //   setUsers(updatedData);
-  // };
-
   const handleRowClick = (user, e) => {
     if (e.target.tagName !== "SELECT") {
       navigate(`/manage-account/${user._id}`);
