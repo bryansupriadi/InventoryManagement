@@ -1,9 +1,14 @@
-import React from "react";
-import verifsuccess from "../Assets/verified.png";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
+
+import verifsuccess from "../Assets/verified.png";
 
 function OtpSuccess() {
   const fontWeight = "bold";
+
+  useEffect(() => {
+    document.title = "Inventory Management - OTP Successful";
+  }, []);
 
   return (
     <div className="App">

@@ -1,9 +1,14 @@
-import React from "react";
-import veriffailed from "../Assets/warning.png";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
+
+import veriffailed from "../Assets/warning.png";
 
 function OtpFailed() {
   const fontWeight = "bold";
+
+  useEffect(() => {
+    document.title = "Inventory Management - OTP Failed";
+  }, []);
 
   return (
     <div className="App">
