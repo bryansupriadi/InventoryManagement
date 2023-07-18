@@ -76,7 +76,7 @@ function Otp() {
         setShowPopupResend(true);
         setTimeout(() => {
           setShowPopupResend(false);
-        }, 4000)
+        }, 4000);
 
         if (resendAttemps >= 3) {
           navigate("/otp-failed");
@@ -155,6 +155,7 @@ function Otp() {
   // };
 
   useEffect(() => {
+    document.title = "Inventory Management - OTP";
     if (resendAttemps === 1) {
       setFailedAttempts(0);
     }
