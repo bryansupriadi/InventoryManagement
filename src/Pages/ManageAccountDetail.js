@@ -81,6 +81,7 @@ function ManageAccountDetail() {
   };
 
   useEffect(() => {
+    document.title = "Inventory Management - User Management Detail";
     getLoggedIn();
     getUserData();
 
