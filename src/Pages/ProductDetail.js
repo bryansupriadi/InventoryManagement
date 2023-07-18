@@ -10,6 +10,10 @@ import api from "../api";
 
 const ProductDetail = () => {
   const navigate = useNavigate();
+
+  const { groupSlug, categorySlug, subCategorySlug, productSlug, id } =
+    useParams();
+
   const token = localStorage.getItem("token");
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -18,8 +22,6 @@ const ProductDetail = () => {
   const [successMessage, setSuccessMessage] = useState("");
 
   const [productData, setProductData] = useState([]);
-
-  const { subCategorySlug, productSlug, id } = useParams();
 
   const [filteredProducts, setFilteredProducts] = useState([]);
 
@@ -58,8 +60,8 @@ const ProductDetail = () => {
     const filteredProducts = productData.filter((item) => {
       const subData = item || [];
       return (
-        item.subCategory === subCategorySlug &&
-        item.brandName === productSlug &&
+        item.subCategorySlug === subCategorySlug &&
+        item.productSlug === productSlug &&
         subData.some((subItem) => subItem._id === id)
       );
     });
@@ -84,7 +86,15 @@ const ProductDetail = () => {
         clearTimeout(timer);
       };
     }
-  }, [subCategorySlug, productSlug, id, navigate, showPopupSuccess]);
+  }, [
+    groupSlug,
+    categorySlug,
+    subCategorySlug,
+    productSlug,
+    id,
+    navigate,
+    showPopupSuccess,
+  ]);
 
   const Popup = ({ message }) => {
     return (
