@@ -1,63 +1,98 @@
-import React, { useMemo } from "react";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import React, { useState, useEffect, useMemo } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+
 import { useTable } from "react-table";
 
-import product from "../Components/data/product";
 import SideBar from "../Components/SideBar";
 import FloatingActionDetail from "../Components/FloatingAction/FloatingActionDetail";
 
+import api from "../api";
+
 function ProductBrandsDetail() {
-  const {
-    group,
-    item,
-    subCategory: urlSubCategory,
-    brandName: urlBrandName,
-  } = useParams();
   const navigate = useNavigate();
-  const location = useLocation();
-  // Filter product array based on subCategory and brandName
-  const tableData = useMemo(() => {
-    // Filter product array based on subCategory and brandName
-    const filteredProducts = product.filter(
-      (item) =>
-        item["Sub Category"] === urlSubCategory &&
-        item["Brand Name"] === urlBrandName
-    );
+  const { groupSlug, categorySlug, subCategorySlug, productSlug, id } =
+    useParams();
 
-    // Mengubah struktur sub data menjadi array objek yang sesuai dengan format tabel
-    const subData =
-      filteredProducts.length > 0 ? filteredProducts[0]["Sub Data"] : [];
+  const token = localStorage.getItem("token");
 
-    return subData.map((item) => ({ ...item }));
-  }, [urlSubCategory, urlBrandName]);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const handleRowClick = (product) => {
-    navigate(`${location.pathname}/${product["Product Id"]}`);
-  };
+  const [product, setProduct] = useState([]);
 
   // Kolom-kolom tabel
   const columns = useMemo(() => [
-    { Header: "Date", accessor: "Date" },
-    { Header: "Price", accessor: "Price" },
-    { Header: "Type", accessor: "Type" },
-    { Header: "Vendor", accessor: "Vendor" },
-    { Header: "Location", accessor: "Location" },
-    { Header: "Condition", accessor: "Condition" },
+    { Header: "Date", accessor: "purchaseDate" },
+    { Header: "Price", accessor: "eachPrice" },
+    { Header: "Type", accessor: "typeProductName" },
+    { Header: "Vendor", accessor: "vendorName" },
+    { Header: "Location", accessor: "location" },
+    { Header: "Condition", accessor: "productCondition" },
   ]);
+
+  // Filter product array based on subCategory and brandName
+  const tableData = useMemo(() => {
+    const filteredProducts = product.filter(
+      (item) =>
+        item.subCategorySlug === subCategorySlug &&
+        item.productSlug === productSlug
+    );
+
+    const subData = filteredProducts.length > 0 ? filteredProducts : [];
+
+    return subData.map((item) => ({ ...item }));
+  }, [subCategorySlug, productSlug]);
+
+  const handleRowClick = (id) => {
+    navigate(
+      `/${groupSlug}-category/${categorySlug}/:${subCategorySlug}/${productSlug}/:${id}`
+    );
+  };
 
   // Create an instance of React Table
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({ columns, data: tableData });
 
-  return (
+  const getLoggedIn = () => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      setIsLoggedIn(true);
+    } else {
+      navigate("/sign-in");
+    }
+  };
+
+  // get product detail
+  const getProductDetail = async () => {
+    await api
+      .get(`/v1/im/products/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((res) => {
+        console.log(res.data);
+
+        setProduct(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err, err.message);
+      });
+  };
+
+  useEffect(() => {
+    document.title = "Inventory Management - Product Brand Detail";
+
+    getLoggedIn();
+    getProductDetail();
+  }, []);
+
+  return isLoggedIn ? (
     <div className="App">
       <div className="product-brands-detail-container">
         <div className="navbar-container">
-          <h1>{urlSubCategory}</h1>
+          <h1>{subCategorySlug}</h1>
           <SideBar />
         </div>
         <div className="sub-title-product">
-          <h3>{urlBrandName}</h3>
+          <h3>{productSlug}</h3>
         </div>
         <div className="product-detail-table-container">
           <table {...getTableProps()} className="product-table">
@@ -107,13 +142,15 @@ function ProductBrandsDetail() {
       </div>
       <div className="fab-btn-1">
         <FloatingActionDetail
-          group={group}
-          item={item}
-          subCategory={urlSubCategory}
-          brandName={urlBrandName}
+          group={groupSlug}
+          item={categorySlug}
+          subCategory={subCategorySlug}
+          brandName={productSlug}
         />
       </div>
     </div>
+  ) : (
+    navigate("/sign-in")
   );
 }
 
