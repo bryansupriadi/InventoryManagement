@@ -1,10 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+
 import "./index.css";
 import App from "./App";
-import * as serviceWorker from "./serviceWorkerRegistration";
-import reportWebVitals from "./reportWebVitals";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import SignUp from "./Pages/SignUp";
@@ -28,7 +27,7 @@ import VendorTable from "./Pages/VendorTable";
 
 import {
   AddSubCategoryActive,
-  // AddSubCategoryPassive,
+  AddSubCategoryPassive,
 } from "./Pages/AddSubCategory";
 
 import ProductBrands from "./Pages/ProductBrands";
@@ -109,16 +108,16 @@ const router = createBrowserRouter([
     path: "/add-sub-category/active",
     element: <AddSubCategoryActive />,
   },
-  // {
-  //   path: "/add-sub-category/passive",
-  //   element: <AddSubCategoryPassive />,
-  // },
+  {
+    path: "/add-sub-category/passive",
+    element: <AddSubCategoryPassive />,
+  },
   {
     path: "/:groupSlug-category/:categorySlug/:subCategorySlug",
     element: <ProductBrands />,
   },
   {
-    path: "/:groupSlug-category/:item/:subCategory/:brandName",
+    path: "/:groupSlug-category/:categorySlug/:subCategorySlug/:productSlug/:id",
     element: <ProductBrandsDetail />,
   },
   {
@@ -134,7 +133,7 @@ const router = createBrowserRouter([
     element: <AddProductType />,
   },
   {
-    path: "/vendor-list/:name/:subCategorySlug/:productSlug",
+    path: "/vendor-list/:vendorSlug/:subCategorySlug/:productSlug",
     element: <VendorTable />,
   },
   {
@@ -152,14 +151,5 @@ const router = createBrowserRouter([
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
+
 root.render(<RouterProvider router={router} />);
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://cra.link/PWA
-serviceWorker.register();
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
