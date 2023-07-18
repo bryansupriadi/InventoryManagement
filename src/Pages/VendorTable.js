@@ -5,11 +5,14 @@ import { useTable } from "react-table";
 
 import SideBar from "../Components/SideBar";
 
+import api from "../api";
+
 function VendorTable() {
-  const { vendorSlug, categorySlug, subCategorySlug, productSlug } =
-    useParams();
+  const { vendorSlug, subCategorySlug, productSlug } = useParams();
 
   const navigate = useNavigate();
+
+  const token = localStorage.getItem("token");
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -19,41 +22,72 @@ function VendorTable() {
     () => [
       { Header: "Date", accessor: "purchaseDate" },
       { Header: "Price", accessor: "eachPrice" },
-      { Header: "Type", accessor: "typeProduct" },
-      { Header: "Location", accessor: "location" },
+      { Header: "Type", accessor: "typeProductName" },
+      { Header: "Location", accessor: "currentLocation" },
       { Header: "Condition", accessor: "productCondition" },
     ],
     []
   );
 
-  const tableData = useMemo(() => {
-    const filteredProducts = product.filter((item) => {
-      const subData = item || [];
-      return (
-        item.subCategory === subCategorySlug &&
-        item.brandName === productSlug &&
-        subData.some((subItem) => subItem.vendor === vendorSlug)
-      );
-    });
+  // const tableData = useMemo(() => {
+  //   const filteredProducts = product.filter((item) => {
+  //     const subData = item || [];
+  //     return (
+  //       item.subCategorySlug === subCategorySlug &&
+  //       item.productSlug === productSlug &&
+  //       subData.some((subItem) => subItem.vendorSlug === vendorSlug)
+  //     );
+  //   });
 
-    const subData = filteredProducts.length > 0 ? filteredProducts : [];
-    const vendorData = subData.filter(
-      (subItem) => subItem.vendor === vendorSlug
-    );
+  //   const subData = filteredProducts.length > 0 ? filteredProducts : [];
 
-    return vendorData.map((item) => ({ ...item }));
-  }, [subCategorySlug, productSlug, vendorSlug]);
+  //   const vendorData = subData.filter(
+  //     (subItem) => subItem.vendorSlug === vendorSlug
+  //   );
+
+  //   return vendorData.map((item) => ({ ...item }));
+  // }, [subCategorySlug, productSlug, vendorSlug]);
 
   const handleRowClick = (id) => {
     navigate(
-      `/vendor-list/${categorySlug}/:${subCategorySlug}/${productSlug}/:${id}`
+      `/vendor-list/${product.categorySlug}/${subCategorySlug}/${productSlug}/${id}`
     );
   };
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable({ columns, data: tableData });
+    useTable({ columns, data: product });
 
-  return (
+  const getLoggedIn = () => {
+    if (token) {
+      setIsLoggedIn(true);
+    } else {
+      navigate("/sign-in");
+    }
+  };
+
+  const getAllProducts = async () => {
+    await api
+      .get(`/v1/im/products?vendor.vendorSlug=${vendorSlug}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((res) => {
+        console.log(res.data);
+
+        setProduct(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err, err.message);
+      });
+  };
+
+  useEffect(() => {
+    document.title = "Inventory Management - Vendor Table";
+
+    getLoggedIn();
+    getAllProducts();
+  }, [navigate, vendorSlug, subCategorySlug, productSlug]);
+
+  return isLoggedIn ? (
     <div className="App">
       <div className="vendor-table-page-container">
         <div className="navbar-container">
@@ -87,7 +121,7 @@ function VendorTable() {
                 return (
                   <tr
                     {...row.getRowProps()}
-                    onClick={() => handleRowClick(row.original)}
+                    onClick={() => handleRowClick(row.original._id)}
                     style={{ cursor: "pointer" }}
                   >
                     {row.cells.map((cell) => (
@@ -111,6 +145,8 @@ function VendorTable() {
         </div>
       </div>
     </div>
+  ) : (
+    navigate("/sign-in")
   );
 }
 
