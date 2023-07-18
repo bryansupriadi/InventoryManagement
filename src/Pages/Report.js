@@ -4,7 +4,6 @@ import { PieChart } from "react-minimal-pie-chart";
 
 import SideBar from "../Components/SideBar";
 import DropdownReport from "../Components/DropdownReport";
-import product from "../Components/data/product";
 
 import api from "../api";
 
@@ -15,7 +14,7 @@ function Report() {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const [reportData, setReportData] = useState([]);
+  const [product, setProduct] = useState([]);
 
   const [selected, setSelected] = useState("All time");
   const [filteredProducts, setFilteredProducts] = useState(product);
@@ -28,9 +27,9 @@ function Report() {
       const lastYear = new Date();
       lastYear.setFullYear(lastYear.getFullYear() - 1);
       filtered = product.filter((item) => {
-        const subData = item["Sub Data"];
+        const subData = item;
         return subData.some((subItem) => {
-          const date = new Date(subItem.Date);
+          const date = new Date(subItem.purchaseDate);
           return date >= lastYear;
         });
       });
@@ -38,9 +37,9 @@ function Report() {
       const last3Years = new Date();
       last3Years.setFullYear(last3Years.getFullYear() - 3);
       filtered = product.filter((item) => {
-        const subData = item["Sub Data"];
+        const subData = item;
         return subData.some((subItem) => {
-          const date = new Date(subItem.Date);
+          const date = new Date(subItem.purchaseDate);
           return date >= last3Years;
         });
       });
@@ -48,9 +47,9 @@ function Report() {
       const last5Years = new Date();
       last5Years.setFullYear(last5Years.getFullYear() - 5);
       filtered = product.filter((item) => {
-        const subData = item["Sub Data"];
+        const subData = item;
         return subData.some((subItem) => {
-          const date = new Date(subItem.Date);
+          const date = new Date(subItem.purchaseDate);
           return date >= last5Years;
         });
       });
@@ -61,35 +60,41 @@ function Report() {
   };
 
   const totalQty = filteredProducts.reduce(
-    (total, item) => total + item.Qty,
+    (total, item) => total + item.quantity,
     0
   );
+
   const totalPrice = filteredProducts.reduce(
-    (total, item) => total + parseInt(item["Total Price"]),
+    (total, item) => total + parseInt(item.eachPrice),
     0
   );
+
   const totalGood = filteredProducts.reduce(
-    (total, item) => total + item.Good,
+    (total, item) => total + item.conditionGood,
     0
   );
+
   const totalBad = filteredProducts.reduce(
-    (total, item) => total + item.Bad,
+    (total, item) => total + item.conditionBad,
     0
   );
+
   const percentGood = ((totalGood / totalQty) * 100).toFixed(2);
+
   const percentBad = ((totalBad / totalQty) * 100).toFixed(2);
-  const data = [
-    {
-      title: "Good",
-      value: totalGood,
-      color: "#3456D0",
-    },
-    {
-      title: "Bad",
-      value: totalBad,
-      color: "#2C428D",
-    },
-  ];
+
+  // const data = [
+  //   {
+  //     title: "Good",
+  //     value: totalGood,
+  //     color: "#3456D0",
+  //   },
+  //   {
+  //     title: "Bad",
+  //     value: totalBad,
+  //     color: "#2C428D",
+  //   },
+  // ];
 
   const getLoggedIn = () => {
     const token = localStorage.getItem("token");
@@ -107,7 +112,7 @@ function Report() {
       })
       .then((res) => {
         console.log(res.data);
-        setReportData(res.data.data);
+        setProduct(res.data.data);
       })
       .catch((err) => {
         console.log(err, err.message);
@@ -115,6 +120,8 @@ function Report() {
   };
 
   useEffect(() => {
+    document.title = "Inventory Management - Report";
+
     getLoggedIn();
     // getReportData();
   }, []);
@@ -160,7 +167,7 @@ function Report() {
         <div className="chart-container">
           <PieChart
             className="pie-chart"
-            data={data}
+            data={product}
             lengthAngle={360}
             label={({ dataEntry }) => {
               const percent =
