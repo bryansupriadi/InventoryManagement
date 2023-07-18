@@ -6,8 +6,9 @@ import SideBar from "../Components/SideBar";
 import api from "../api";
 
 function ProductSeeAll() {
-  const { groupSlug, categorySlug, subCategorySlug } = useParams();
   const navigate = useNavigate();
+  const { groupSlug, categorySlug, subCategorySlug } = useParams();
+
   const token = localStorage.getItem("token");
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -47,6 +48,8 @@ function ProductSeeAll() {
   };
 
   useEffect(() => {
+    document.title = "Inventory Management - Product See All";
+
     getLoggedIn();
     getAllProducts();
 
