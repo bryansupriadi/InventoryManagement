@@ -61,11 +61,26 @@ const AddProductForm = () => {
     setFormValues((prevState) => ({ ...prevState, [name]: selectedOption }));
 
     if (name === "group") {
-      setFormValues((prevState) => ({
-        ...prevState,
-        categoryName: null,
-        subCategoryName: null,
-      }));
+      // setFormValues((prevState) => ({
+      //   ...prevState,
+      //   categoryName: null,
+      //   subCategoryName: null,
+      // }));
+
+      if (formValues.group.value === "active") {
+        console.log("active");
+
+        getAllCategories();
+      } else if (formValues.group.value === "passive") {
+        // code here
+        console.log("passive");
+      }
+    }
+
+    if (name === "categoryName") {
+      if (formValues.categoryName.value) {
+        getAllSubCategories();
+      }
     }
   };
 
@@ -104,21 +119,17 @@ const AddProductForm = () => {
     }
 
     if (!formValues.categoryName) {
-      // setErrors((prevState) => ({
-      //   ...prevState,
-      //   categoryName: "Fill the group first!",
-      // }));
-
-      newErrors.categoryName = "Please choose the category first!";
+      setErrors((prevState) => ({
+        ...prevState,
+        categoryName: "Fill the group first!",
+      }));
     }
 
     if (!formValues.subCategoryName) {
-      // setErrors((prevState) => ({
-      //   ...prevState,
-      //   subCategoryName: "Fill the category first!",
-      // }));
-
-      newErrors.subCategoryName = "Please choose the sub category first!";
+      setErrors((prevState) => ({
+        ...prevState,
+        subCategoryName: "Fill the category first!",
+      }));
     }
 
     if (!formValues.typeProductName) {
@@ -238,8 +249,6 @@ const AddProductForm = () => {
 
   useEffect(() => {
     getLoggedIn();
-    getAllCategories();
-    getAllSubCategories();
     getAllVendors();
   }, [navigate]);
 
