@@ -133,6 +133,8 @@ function AddProductType() {
   };
 
   useEffect(() => {
+    document.title = "Inventory Management - Add Product Type";
+
     getLoggedIn();
     getAllVendors();
   }, [navigate]);
