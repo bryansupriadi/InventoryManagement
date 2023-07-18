@@ -13,6 +13,9 @@ function ProductBrands() {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  const [category, setCategory] = useState("");
+  const [subCategory, setSubCategory] = useState("");
+
   const [product, setProduct] = useState([]);
 
   // Filter produk yang sesuai dengan sub kategori yang dipilih
@@ -62,45 +65,15 @@ function ProductBrands() {
     getAllProductBrands();
   }, [navigate, categorySlug, subCategorySlug]);
 
-  // Tampilkan merek produk, jumlah, dan harga dalam list
-  // Tampilkan merek produk, jumlah, dan harga dalam list
-  // const content = (
-  //   <ul className='list-brands-container'>
-  //     {productsInfo.map(info => (
-  //       <li
-  //         key={`${info.brandName}-${info.price}`}
-  //         className={info.quantity ? 'has-quantity' : 'no-quantity'}
-  //       >
-  //         <Link
-  //           to={{
-  //             pathname: `/${group}-category/${item}/${name}/${info.brandName}`,
-  //             state: { group: group, subCategory: name, brandName: info.brandName }
-  //           }}
-  //           style={{ textDecoration: 'none', color: 'white' }}
-  //           className='list-brands'
-  //         >
-  //           <div className='brand-info'>
-  //             <h3>{info.brandName}</h3>
-  //             {info.quantity && <h6>Quantity: {info.quantity}</h6>}
-  //           </div>
-  //           <div className='price-info'>
-  //             <h6>${info.price}</h6>
-  //           </div>
-  //         </Link>
-  //       </li>
-  //     ))}
-  //   </ul>
-  // );
-
   return isLoggedIn ? (
     <div className="App">
       <div className="product-brand-page-container">
         <div className="navbar-container">
-          <h1>{productsInfo.categoryName}</h1>
+          <h1>{categorySlug}</h1>
           <SideBar />
         </div>
         <div className="sub-title-product">
-          <h3>{productsInfo.brandName}</h3>
+          <h3>{subCategorySlug}</h3>
         </div>
         <div className="content-list">
           <ul className="list-brands-container">
@@ -110,7 +83,7 @@ function ProductBrands() {
                 className={info.quantity ? "has-quantity" : "no-quantity"}
               >
                 <Link
-                  to={`/${info.groupSlug}-category/${categorySlug}/${subCategorySlug}/${info.productSlug}/${info._id}`}
+                  to={`/${info.groupSlug}-category/${categorySlug}/${subCategorySlug}/${info.productSlug}`}
                   style={{ textDecoration: "none", color: "white" }}
                   className="list-brands"
                 >
