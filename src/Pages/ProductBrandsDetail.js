@@ -10,8 +10,7 @@ import api from "../api";
 
 function ProductBrandsDetail() {
   const navigate = useNavigate();
-  const { groupSlug, categorySlug, subCategorySlug, productSlug, id } =
-    useParams();
+  const { groupSlug, categorySlug, subCategorySlug, productSlug } = useParams();
 
   const token = localStorage.getItem("token");
 
@@ -44,7 +43,7 @@ function ProductBrandsDetail() {
 
   const handleRowClick = (id) => {
     navigate(
-      `/${groupSlug}-category/${categorySlug}/:${subCategorySlug}/${productSlug}/:${id}`
+      `/${groupSlug}-category/${categorySlug}/${subCategorySlug}/${productSlug}/${id}`
     );
   };
 
@@ -64,7 +63,7 @@ function ProductBrandsDetail() {
   // get product detail
   const getProductDetail = async () => {
     await api
-      .get(`/v1/im/products/${id}`, {
+      .get(`/v1/im/products/`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
@@ -82,7 +81,7 @@ function ProductBrandsDetail() {
 
     getLoggedIn();
     getProductDetail();
-  }, []);
+  }, [navigate, groupSlug, categorySlug, subCategorySlug, productSlug]);
 
   return isLoggedIn ? (
     <div className="App">
