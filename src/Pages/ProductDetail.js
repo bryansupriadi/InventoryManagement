@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useLocation, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
-import product from "../Components/data/product";
+// import product from "../Components/data/product";
+
 import SideBar from "../Components/SideBar";
 import FloatingActionProduct from "../Components/FloatingAction/FloatingActionProduct";
 
@@ -13,17 +14,14 @@ const ProductDetail = () => {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const [productData, setProductData] = useState([]);
-
-  const {
-    subCategory: urlSubCategory,
-    brandName: urlBrandName,
-    id: urlId,
-  } = useParams();
-  const [filteredProducts, setFilteredProducts] = useState([]);
-  const location = useLocation();
   const [showPopupSuccess, setShowPopupSuccess] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
+
+  const [productData, setProductData] = useState([]);
+
+  const { subCategorySlug, productSlug, id } = useParams();
+
+  const [filteredProducts, setFilteredProducts] = useState([]);
 
   const { Type } = filteredProducts.length > 0 ? filteredProducts[0] : "";
 
@@ -36,7 +34,7 @@ const ProductDetail = () => {
     }
   };
 
-  const getProductDetail = (id) => {
+  const getProductDetail = () => {
     api
       .get(`/v1/im/products/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -51,29 +49,29 @@ const ProductDetail = () => {
   };
 
   useEffect(() => {
+    document.title = "Inventory Management - Product Detail";
+
     getLoggedIn();
     getProductDetail();
 
     // Mencari produk berdasarkan subCategory dan brandName
-    const filteredProducts = product.filter((item) => {
-      const subData = item["Sub Data"] || [];
+    const filteredProducts = productData.filter((item) => {
+      const subData = item || [];
       return (
-        item["Sub Category"] === urlSubCategory &&
-        item["Brand Name"] === urlBrandName &&
-        subData.some((subItem) => subItem["Product Id"] === urlId)
+        item.subCategory === subCategorySlug &&
+        item.brandName === productSlug &&
+        subData.some((subItem) => subItem._id === id)
       );
     });
 
-    const subData =
-      filteredProducts.length > 0 ? filteredProducts[0]["Sub Data"] : [];
-    const productIdData = subData.filter(
-      (subItem) => subItem["Product Id"] === urlId
-    );
+    const subData = filteredProducts.length > 0 ? filteredProducts : [];
+
+    const productIdData = subData.filter((subItem) => subItem._id === id);
 
     setFilteredProducts(productIdData);
 
-    if (location.state && location.state.showPopupSuccess) {
-      setSuccessMessage(location.state.successMessage);
+    if (showPopupSuccess) {
+      setSuccessMessage(successMessage);
       setShowPopupSuccess(true);
     }
 
@@ -86,14 +84,7 @@ const ProductDetail = () => {
         clearTimeout(timer);
       };
     }
-  }, [
-    urlSubCategory,
-    urlBrandName,
-    urlId,
-    navigate,
-    showPopupSuccess,
-    location.state,
-  ]);
+  }, [subCategorySlug, productSlug, id, navigate, showPopupSuccess]);
 
   const Popup = ({ message }) => {
     return (
@@ -109,23 +100,23 @@ const ProductDetail = () => {
     <div className="App">
       <div className="product-detail-page-container">
         <div className="navbar-container">
-          <h1>{urlSubCategory}</h1>
+          <h1>{subCategorySlug}</h1>
           <SideBar />
         </div>
         <div className="sub-title-product-1">
-          <h3>{urlBrandName}</h3>
+          <h3>{productSlug}</h3>
           <h3>{Type}</h3>
         </div>
         <div className="product-type">
           <ul>
             {filteredProducts.map((item) => (
-              <li key={item["Product Id"]}>
-                <p>ID Number : {item["Product Id"]}</p>
-                <p>Vendor : {item["Vendor"]}</p>
-                <p>Purchase Date : {item["Date"]}</p>
-                <p>Price : {item["Price"]}</p>
-                <p>Current Location : {item["Location"]}</p>
-                <p>Condition : {item["Condition"]}</p>
+              <li key={item._id}>
+                <p>ID Number : {item.productId}</p>
+                <p>Vendor : {item.vendorName}</p>
+                <p>Purchase Date : {item.purchaseDate}</p>
+                <p>Price : {item.eachPrice}</p>
+                <p>Current Location : {item.location}</p>
+                <p>Condition : {item.productCondition}</p>
               </li>
             ))}
           </ul>
