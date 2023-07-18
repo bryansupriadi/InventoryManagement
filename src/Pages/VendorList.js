@@ -116,6 +116,8 @@ function VendorList() {
   };
 
   useEffect(() => {
+    document.title = "Inventory Management - Vendor List";
+
     getLoggedIn();
     getDataVendor();
   }, [navigate]);
