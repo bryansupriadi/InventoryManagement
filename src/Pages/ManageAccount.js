@@ -60,7 +60,15 @@ const ManageAccount = () => {
             className="select-role-option"
             name="role"
             value={value}
-            onChange={(e) => handleChange(row, "role", e.target.value)}
+            // onChange={(e) => handleChange(row, "role", e.target.value)}
+            onChange={(e) => {
+              const newRole = e.target.value;
+              setUsers(
+                users.map((v) =>
+                  v.id === row.original.id ? { ...v, role: newRole } : v
+                )
+              );
+            }}
           >
             <option value="User">User</option>
             <option value="Admin">Admin</option>
@@ -74,11 +82,11 @@ const ManageAccount = () => {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({ columns, data });
 
-  const handleChange = (row, key, selectedValue) => {
-    const updatedData = [...users];
-    updatedData[row.index][key] = selectedValue;
-    setUsers(updatedData);
-  };
+  // const handleChange = (row, key, selectedValue) => {
+  //   const updatedData = [...users];
+  //   updatedData[row.index][key] = selectedValue;
+  //   setUsers(updatedData);
+  // };
 
   const handleRowClick = (user, e) => {
     if (e.target.tagName !== "SELECT") {
@@ -143,6 +151,8 @@ const ManageAccount = () => {
   };
 
   useEffect(() => {
+    document.title = "Inventory Management - User Management";
+
     getLoggedIn();
     getUsers();
   }, [navigate]);
