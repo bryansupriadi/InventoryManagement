@@ -35,7 +35,6 @@ function ActiveCategory() {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const [categoryData, setCategoryData] = useState([]);
   const [subCategoryData, setSubCategoryData] = useState([]);
 
   const getLoggedIn = () => {
@@ -46,28 +45,12 @@ function ActiveCategory() {
     }
   };
 
-  const getAllCategoryByGroup = async () => {
+  const getAllSubCategoryByGroup = async (categorySlug) => {
     await api
-      .get("/v1/im/categories/", {
+      .get(`/v1/im/subCategories`, {
         headers: { Authorization: `Bearer ${token}` },
+        // params: { categorySlug: "computer-devices" },
       })
-      .then((res) => {
-        console.log(res.data);
-        setCategoryData(res.data.data);
-      })
-      .catch((err) => {
-        console.log(err, err.message);
-      });
-  };
-
-  const getAllSubCategoryByGroup = async () => {
-    await api
-      .get(
-        `/v1/im/subCategories?category.categorySlug=${categoryData.categorySlug}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      )
       .then((res) => {
         console.log(res.data);
         setSubCategoryData(res.data.data);
@@ -79,13 +62,12 @@ function ActiveCategory() {
 
   useEffect(() => {
     getLoggedIn();
-    getAllCategoryByGroup();
     getAllSubCategoryByGroup();
   }, [navigate]);
 
-  function ProductTemp({ subCategoryName, subCategoryImage }) {
+  function ProductTemp({ id, subCategoryName, subCategoryImage }) {
     return (
-      <div className="card">
+      <div className="card" key={id}>
         <img
           className="product--image"
           src={subCategoryImage}
@@ -104,12 +86,12 @@ function ActiveCategory() {
           <SideBar />
         </div>
         <div className="content-container">
-          {categoryData.map((item) => (
+          {subCategoryData.map((item) => (
             <div className="product-category-container">
               <h4>{item.categoryName}</h4>
               <h6>
                 <Link
-                  to={`/active-category/${item.categorySlug}`}
+                  to={`/${groupSlug}-category/${item.categorySlug}`}
                   style={{
                     textDecoration: "none",
                     color: "#D9C5C5",
@@ -128,10 +110,11 @@ function ActiveCategory() {
                   >
                     {subCategoryData.map((subCategory) => (
                       <Link
-                        to={`/${groupSlug}-category/${subCategory.category.categorySlug}/${subCategory.subCategorySlug}`}
+                        to={`/${groupSlug}-category/${subCategory.categorySlug}/${subCategory.subCategorySlug}`}
                         key={subCategory._id}
                       >
                         <ProductTemp
+                          id={subCategory._id}
                           subCategoryName={subCategory.subCategoryName}
                           subCategoryImage={subCategory.subCategoryImage}
                         />
@@ -146,7 +129,7 @@ function ActiveCategory() {
           ))}
         </div>
         <div className="fab-btn">
-          <FloatingActionCategory type="active" />
+          <FloatingActionCategory type={groupSlug} />
         </div>
       </div>
     </div>
