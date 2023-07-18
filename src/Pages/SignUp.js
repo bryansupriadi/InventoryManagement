@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import LogoIM from "../Assets/logo.png";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -68,6 +68,10 @@ function SignUp() {
     }
     // Lakukan validasi form dan proses login
   };
+
+  useEffect(() => {
+    document.title = "Inventory Management - Sign Up";
+  }, []);
 
   return (
     <div className="App">
