@@ -9,8 +9,9 @@ import SideBar from "../Components/SideBar";
 import api from "../api";
 
 function VendorProduct() {
-  const { vendorSlug } = useParams();
   const navigate = useNavigate();
+  const { vendorSlug } = useParams();
+
   const token = localStorage.getItem("token");
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -46,7 +47,7 @@ function VendorProduct() {
 
     const filteredItems = data.filter(
       (item) =>
-        item.subCategoryName === subCategory && item.vendorName === vendorSlug
+        item.subCategoryName === subCategory && item.vendorSlug === vendorSlug
     );
     setVendorItems(filteredItems);
   };
@@ -62,12 +63,9 @@ function VendorProduct() {
 
   const getData = async () => {
     await api
-      .get(
-        `/v1/im/products?vendor.vendorSlug=${vendorSlug}&subCategory.subCategorySlug=${data.subCategory.subCategorySlug}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      )
+      .get(`/v1/im/products?vendor.vendorSlug=${vendorSlug}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .then((res) => {
         console.log(res.data);
         setData(res.data.data);
@@ -84,6 +82,7 @@ function VendorProduct() {
     getData();
 
     setFilteredItems(data.filter((item) => item.vendorName === vendorSlug));
+
     setVendorItems(data.filter((item) => item.vendorName === vendorSlug));
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -136,19 +135,13 @@ function VendorProduct() {
                 <ul className="list-brands-container">
                   <li key={`${info.brandName}-${info.eachPrice}`}>
                     <Link
-                      to={{
-                        pathname: `/vendor-list/${vendorSlug}/${info.subCategory.subCategorySlug}/${info.brandName}`,
-                        state: {
-                          subCategoryName: info.subCategoryName,
-                          brandName: info.brandName,
-                        },
-                      }}
+                      to={`/vendor-list/${vendorSlug}/${info.subCategory.subCategorySlug}/${info.productSlug}`}
                       style={{ textDecoration: "none", color: "white" }}
                       className="list-brands"
                     >
                       <div className="brand-info">
                         <h3>{info.brandName}</h3>
-                        <h6>Quantity: {info.quantityProduct}</h6>
+                        <h6>Quantity: {info.quantity}</h6>
                       </div>
                       <div className="price-info">
                         <h6>{info.eachPrice}</h6>
