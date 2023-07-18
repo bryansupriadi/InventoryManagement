@@ -143,9 +143,9 @@ function ProductBrandsDetail() {
       <div className="fab-btn-1">
         <FloatingActionDetail
           group={groupSlug}
-          item={categorySlug}
+          category={categorySlug}
           subCategory={subCategorySlug}
-          brandName={productSlug}
+          product={productSlug}
         />
       </div>
     </div>

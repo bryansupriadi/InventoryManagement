@@ -63,32 +63,34 @@ function ProductBrands() {
   }, [navigate, categorySlug, subCategorySlug]);
 
   // Tampilkan merek produk, jumlah, dan harga dalam list
-  // const Content = () => {
-  //   return (
-  //     <ul className="list-brands-container">
-  //       {productsInfo.map((info) => (
-  //         <li
-  //           key={`${info.brandName}-${info.eachPrice}`}
-  //           className={info.quantity ? "has-quantity" : "no-quantity"}
+  // Tampilkan merek produk, jumlah, dan harga dalam list
+  // const content = (
+  //   <ul className='list-brands-container'>
+  //     {productsInfo.map(info => (
+  //       <li
+  //         key={`${info.brandName}-${info.price}`}
+  //         className={info.quantity ? 'has-quantity' : 'no-quantity'}
+  //       >
+  //         <Link
+  //           to={{
+  //             pathname: `/${group}-category/${item}/${name}/${info.brandName}`,
+  //             state: { group: group, subCategory: name, brandName: info.brandName }
+  //           }}
+  //           style={{ textDecoration: 'none', color: 'white' }}
+  //           className='list-brands'
   //         >
-  //           <Link
-  //             to={`/${info.groupSlug}-category/${categorySlug}/${subCategorySlug}/${info.productSlug}`}
-  //             style={{ textDecoration: "none", color: "white" }}
-  //             className="list-brands"
-  //           >
-  //             <div className="brand-info">
-  //               <h3>{info.brandName}</h3>
-  //               {info.quantity && <h6>Quantity: {info.quantity}</h6>}
-  //             </div>
-  //             <div className="price-info">
-  //               <h6>{info.eachPrice}</h6>
-  //             </div>
-  //           </Link>
-  //         </li>
-  //       ))}
-  //     </ul>
-  //   );
-  // };
+  //           <div className='brand-info'>
+  //             <h3>{info.brandName}</h3>
+  //             {info.quantity && <h6>Quantity: {info.quantity}</h6>}
+  //           </div>
+  //           <div className='price-info'>
+  //             <h6>${info.price}</h6>
+  //           </div>
+  //         </Link>
+  //       </li>
+  //     ))}
+  //   </ul>
+  // );
 
   return isLoggedIn ? (
     <div className="App">

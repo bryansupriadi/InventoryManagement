@@ -24,13 +24,6 @@ nav {
   margin: 0rem auto;
 }
 
-@media (max-width: 400px) {
-  .App {
-    width: 100%;
-    height: 100%;
-  }
-}
-
 .login-page-container {
   display: flex;
   flex-direction: column;
@@ -649,8 +642,8 @@ nav {
   position: absolute;
   top: 30px;
   margin: 0 auto;
-  width: 340px;
   height: 250px;
+  max-width: 340px;
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -677,7 +670,6 @@ nav {
 
 .carousel-slide-1 {
   background-color: #2e0249;
-  max-width: 340px;
   height: 190px;
   border-radius: 10px;
   padding: 10px;
@@ -685,7 +677,6 @@ nav {
 
 .carousel-slide-2 {
   background-color: #340850;
-  max-width: 340px;
   height: 190px;
   border-radius: 10px;
   padding: 10px;
@@ -693,7 +684,6 @@ nav {
 
 .carousel-slide-3 {
   background-color: #3b0d57;
-  max-width: 340px;
   height: 190px;
   border-radius: 10px;
   padding: 10px;
@@ -701,7 +691,6 @@ nav {
 
 .carousel-slide-4 {
   background-color: #42135f;
-  max-width: 340px;
   height: 190px;
   border-radius: 10px;
   padding: 10px;
@@ -1101,7 +1090,7 @@ ul {
   align-items: center;
   border-bottom: 3px solid #2980b9;
   justify-content: center;
-  position: sticky;
+  /* position: sticky; */
 }
 
 .table-header-cell {
@@ -1109,10 +1098,10 @@ ul {
 }
 
 .user-list-container td {
-  max-width: 105px; /* batasi lebar maksimum untuk kolom email */
-  overflow: hidden; /* sembunyikan konten yang terlalu panjang */
-  text-overflow: ellipsis; /* tambahkan titik-titik di ujung konten yang terpotong */
-  white-space: nowrap; /* hindari baris baru pada teks panjang */
+  max-width: 105px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   padding: 20px 0;
   justify-content: center;
   align-items: center;
@@ -1708,7 +1697,7 @@ ul {
   justify-content: center;
   border-collapse: collapse;
   padding-top: 20px;
-  max-width: 400px;
+  width: 100%;
 }
 
 .product-detail-table-container th {
@@ -1726,10 +1715,10 @@ ul {
 }
 
 .product-detail-table-container td {
-  max-width: 105px; /* batasi lebar maksimum untuk kolom email */
-  overflow: hidden; /* sembunyikan konten yang terlalu panjang */
-  text-overflow: ellipsis; /* tambahkan titik-titik di ujung konten yang terpotong */
-  white-space: nowrap; /* hindari baris baru pada teks panjang */
+  max-width: 105px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   padding: 20px 0;
   justify-content: center;
   align-items: center;
@@ -2014,4 +2003,338 @@ ul {
   transition: background-color 0.3s ease;
   max-width: 150px;
   margin-left: 17rem;
+}
+
+@media (min-width: 300px) and (max-width: 499px) {
+  .App {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .card {
+    max-width: 100%;
+  }
+
+  .product--image {
+    min-width: 100%;
+    max-height: 150px;
+    padding: 10px;
+  }
+
+  .card h2 {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 500px) {
+  .App {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .login-form-container {
+    padding: 10px;
+  }
+
+  .login-image-container {
+    top: -30px;
+    padding: 30px;
+  }
+
+  .login-image-container img {
+    max-height: 50px;
+    max-width: 50px;
+  }
+
+  .login-form-container h2 {
+    font-size: 20px;
+    top: -30px;
+  }
+
+  .login-form-container h6 {
+    font-size: 10px;
+    top: -30px;
+  }
+
+  .login-form-container input,
+  .login-form-container select {
+    width: 250px;
+    height: 35px;
+    font-size: 14px;
+  }
+
+  .login-form-container button {
+    font-size: 14px;
+    padding: 8px;
+  }
+  /* .carousel-container {
+    width: 300px;
+  }
+
+  .carousel-slide-1,
+  .carousel-slide-2,
+  .carousel-slide-3,
+  .carousel-slide-4 {
+    width: 300px;
+    margin: 0 auto;
+  } */
+}
+
+@media (min-width: 500px) and (max-width: 799px) {
+  .App {
+    min-width: 100%;
+    max-width: none;
+    width: 100%;
+    height: 100%;
+  }
+  .login-form-container,
+  .signup-form-container {
+    padding: 15px;
+  }
+
+  .login-image-container,
+  .signup-image-container {
+    top: -40px;
+    padding: 40px;
+  }
+
+  .login-image-container img,
+  .signup-image-container img {
+    max-height: 60px;
+    max-width: 60px;
+  }
+
+  .login-form-container h2,
+  .signup-form-container h2 {
+    font-size: 22px;
+    top: -40px;
+  }
+
+  .login-form-container h6,
+  .signup-form-container h6 {
+    font-size: 12px;
+    top: -40px;
+  }
+
+  .login-form-container input,
+  .login-form-container select,
+  .signup-form-container input,
+  .signup-form-container select {
+    min-width: 350px;
+    height: 40px;
+    font-size: 15px;
+  }
+
+  .login-form-container button,
+  .signup-form-container button {
+    font-size: 15px;
+    padding: 10px;
+  }
+
+  .login-form-container h5,
+  .signup-form-container h5 {
+    font-size: 15px;
+  }
+
+  .carousel-container {
+    max-width: none;
+    width: 340px;
+  }
+
+  .carousel-slide-1,
+  .carousel-slide-2,
+  .carousel-slide-3,
+  .carousel-slide-4 {
+    width: 340px;
+    margin: 0 auto;
+  }
+
+  .table-header-cell-1 {
+    width: 200px;
+  }
+
+  .table-body-cell-1 {
+    width: 200px;
+  }
+
+  .home-title {
+    max-width: 100%;
+    padding-left: 15px;
+  }
+
+  .title-container {
+    flex-direction: row;
+  }
+
+  .home-title h1 {
+    font-size: 28px;
+    padding-left: 10px;
+  }
+
+  .search-bar-container {
+    padding-right: 20px;
+  }
+
+  .search {
+    width: 100%;
+    min-width: 250px;
+    max-width: 280px;
+  }
+
+  .search-bar-input {
+    width: calc(100% - 40px);
+  }
+
+  .user-list-container td {
+    max-width: none;
+    padding-right: 50px;
+    padding-left: 10px;
+  }
+
+  .floating-action-button-container {
+    bottom: 60px; /* Adjust this value to your liking */
+    right: 10px; /* Adjust this value to your liking */
+    position: fixed;
+  }
+
+  .floating-action-vendor-container-1 {
+    margin-bottom: 60px;
+    margin-right: 10px;
+    position: fixed;
+  }
+
+  .floating-action-type-container {
+    margin-bottom: 60px;
+    margin-right: 10px;
+    position: fixed;
+  }
+}
+
+@media (min-width: 401px) and (max-width: 799px) {
+  .floating-action-button-container {
+    bottom: 60px; /* Adjust this value to your liking */
+    right: 10px; /* Adjust this value to your liking */
+    position: fixed;
+  }
+
+  .floating-action-vendor-container-1 {
+    margin-bottom: 60px;
+    margin-right: 10px;
+    position: fixed;
+  }
+
+  .floating-action-type-container {
+    margin-bottom: 60px;
+    margin-right: 10px;
+    position: fixed;
+  }
+}
+
+@media (min-width: 800px) and (max-width: 1300px) {
+  .App {
+    min-width: 100%;
+    max-width: none;
+    width: 100%;
+    height: 100%;
+  }
+
+  .login-form-container,
+  .signup-form-container {
+    padding: 20px;
+  }
+
+  .login-image-container,
+  .signup-image-container {
+    top: -50px;
+    padding: 50px;
+  }
+
+  .login-image-container img,
+  .signup-image-container img {
+    max-height: 80px;
+    max-width: 80px;
+  }
+
+  .login-form-container h2,
+  .signup-form-container h2 {
+    font-size: 30px;
+    top: -50px;
+  }
+
+  .login-form-container h6,
+  .signup-form-container h6 {
+    font-size: 16px;
+    top: -50px;
+  }
+
+  .login-form-container input,
+  .login-form-container select,
+  .signup-form-container input,
+  .signup-form-container select {
+    min-width: 680px;
+    height: 45px;
+    font-size: 16px;
+  }
+  .login-form-container select {
+    height: 35px;
+    padding: 5px;
+    width: 300px;
+  }
+
+  .login-form-container button,
+  .signup-form-container button {
+    font-size: 16px;
+    padding: 10px;
+  }
+
+  .login-form-container h5,
+  .signup-form-container h5 {
+    font-size: 16px;
+  }
+
+  .carousel-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: auto;
+    gap: 30px;
+    justify-content: center;
+    align-items: center;
+    max-width: none;
+  }
+
+  .carousel-container h3,
+  .carousel-container p {
+    font-size: 16px;
+    padding: none;
+  }
+
+  .carousel-slide-1,
+  .carousel-slide-2,
+  .carousel-slide-3,
+  .carousel-slide-4 {
+    width: 150px;
+    height: 100px;
+    margin: auto;
+  }
+}
+
+@media screen and (min-height: 699px) and (max-height: 768px) {
+  .table-home-page {
+    min-height: none;
+    height: 35vh;
+  }
+  .scroll-table-1 {
+    min-height: 210px;
+  }
+}
+
+@media screen and (min-height: 769px) and (max-height: 1000px) {
+  .table-home-page {
+    min-height: none;
+    height: 50vh;
+  }
+
+  .scroll-table-1 {
+    min-height: 300px;
+  }
 }

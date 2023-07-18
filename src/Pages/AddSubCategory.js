@@ -372,8 +372,8 @@ export function AddSubCategoryPassive() {
               </button>
             </div>
           </form>
-          {showPopupSuccess && <Popup message={successMessage} />}
         </div>
+        {showPopupSuccess && <Popup message={successMessage} />}
       </div>
     </div>
   ) : (

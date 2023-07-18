@@ -32,6 +32,7 @@ function Report() {
           const date = new Date(subItem.purchaseDate);
           return date >= lastYear;
         });
+        return { ...item, "Sub Data": subData };
       });
     } else if (option === "Last 3 years") {
       const last3Years = new Date();
@@ -42,6 +43,7 @@ function Report() {
           const date = new Date(subItem.purchaseDate);
           return date >= last3Years;
         });
+        return { ...item, "Sub Data": subData };
       });
     } else if (option === "Last 5 years") {
       const last5Years = new Date();
@@ -52,10 +54,12 @@ function Report() {
           const date = new Date(subItem.purchaseDate);
           return date >= last5Years;
         });
+        return { ...item, "Sub Data": subData };
       });
     } else if (option === "All time") {
       filtered = product;
     }
+
     setFilteredProducts(filtered);
   };
 
