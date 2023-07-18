@@ -2357,7 +2357,8 @@ border-radius: 5px;
   }
 }
 
-@media screen and (min-height: 687px) and (max-height: 768px) {
+
+@media screen and (min-height: 699px) and (max-height: 768px) {
   .table-home-page{
     min-height: none;
     height:35vh;

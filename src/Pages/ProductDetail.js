@@ -79,7 +79,7 @@ const ProductDetail = () => {
                 <p>ID Number : {item['Product Id']}</p>
                 <p>Vendor : {item['Vendor']}</p>
                 <p>Purchase Date : {item['Date']}</p>
-                <p>Price : {item['Price']}</p>
+                <p>Price : ${item['Price']}</p>
                 <p>Current Location : {item['Location']}</p>
                 <p>Condition : {item['Condition']}</p>
               </li>
