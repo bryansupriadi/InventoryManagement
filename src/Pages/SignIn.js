@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import LogoIM from "../Assets/logo.png";
 import { useNavigate, Link } from "react-router-dom";
 
@@ -43,6 +43,10 @@ function SignIn() {
       })
       .catch((err) => console.log(err, err.message));
   };
+
+  useEffect(() => {
+    document.title = "Inventory Management - Sign In";
+  }, []);
 
   return (
     <div className="App">
