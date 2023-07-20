@@ -18,23 +18,8 @@ const ManageAccount = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const [users, setUsers] = useState([]);
-  const [role, setRole] = useState("");
 
   const [keyword, setKeyword] = useState("");
-
-  const filterUser = (e) => {
-    const keyword = e.target.value.toLowerCase();
-    const filteredUser =
-      keyword !== ""
-        ? users.filter(
-            (userData) =>
-              userData.username.toLowerCase().indexOf(keyword) > -1 ||
-              userData.emailAddress.toLocaleLowerCase().indexOf(keyword) > -1
-          )
-        : users;
-    setUsers(filteredUser);
-    setKeyword(keyword);
-  };
 
   const data = useMemo(() => users, [users]);
 
@@ -55,26 +40,6 @@ const ManageAccount = () => {
       {
         Header: "Role",
         accessor: "role",
-        Cell: ({ row, value }) => (
-          <select
-            className="select-role-option"
-            name="role"
-            value={value}
-            onChange={(e) => {
-              const newRole = e.target.value;
-              setUsers(
-                users.map((v) =>
-                  v._id === row.original._id ? { ...v, role: newRole } : v
-                )
-              );
-
-              setHasChanges(true);
-            }}
-          >
-            <option value="User">User</option>
-            <option value="Admin">Admin</option>
-          </select>
-        ),
       },
     ],
     []
@@ -82,6 +47,26 @@ const ManageAccount = () => {
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({ columns, data });
+
+  const filterUser = (e) => {
+    const keyword = e.target.value.toLowerCase();
+
+    console.log(keyword);
+
+    const filteredUser =
+      keyword !== ""
+        ? users.filter(
+            (userData) =>
+              userData.username.toLowerCase().indexOf(keyword) > -1 ||
+              userData.emailAddress.toLocaleLowerCase().indexOf(keyword) > -1
+          )
+        : users;
+
+    console.log(filteredUser);
+
+    setUsers(filteredUser);
+    setKeyword(keyword);
+  };
 
   const handleRowClick = (user, e) => {
     if (e.target.tagName !== "SELECT") {
@@ -94,7 +79,6 @@ const ManageAccount = () => {
       .get("/v1/im/users/signOut")
       .then((res) => {
         console.log(res.data);
-        console.log(res.data.msg);
 
         navigate("/sign-in");
       })
@@ -103,21 +87,35 @@ const ManageAccount = () => {
       });
   };
 
-  // const handleChangeRole = (userId, newRole) => {
-  //   const updatedUsers = users.map((user) =>
-  //     user.id === userId ? { ...user, role: newRole } : user
-  //   );
-  //   setUsers(updatedUsers);
-  //   setHasChanges(true);
-  // };
+  const handleChange = (e, id) => {
+    const newRole = e.target.value;
 
-  const handleSubmit = async (id) => {
+    handleChangeRole(id, newRole);
+
+    setUsers(users.map((v) => (v._id === id ? { ...v, role: newRole } : v)));
+  };
+
+  const handleChangeRole = (id, newRole) => {
+    const updatedUsers = users.map((user) =>
+      user._id === id ? { ...user, role: newRole } : user
+    );
+
+    setUsers(updatedUsers);
+    setHasChanges(true);
+  };
+
+  const handleSubmit = async (id, newRole) => {
     console.log(id);
+    console.log(newRole);
 
     await api
-      .patch(`/v1/im/users/${id}`, users, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+      .patch(
+        `/v1/im/users/${id}`,
+        { role: newRole },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
       .then((res) => {
         console.log(res.data);
 
@@ -126,9 +124,9 @@ const ManageAccount = () => {
         setTimeout(() => {
           setShowPopupSuccess(false);
           setHasChanges(false);
-        }, 3500);
 
-        getUsers();
+          getUsers();
+        }, 3500);
       })
       .catch((err) => {
         console.log(err, err.message);
@@ -151,7 +149,6 @@ const ManageAccount = () => {
         })
         .then((res) => {
           console.log(res.data);
-          console.log(res.data.msg);
 
           setUsers(res.data.data);
         })
@@ -246,7 +243,21 @@ const ManageAccount = () => {
                                 className="table-body-cell"
                                 {...cell.getCellProps()}
                               >
-                                {cell.render("Cell")}
+                                {cell.column.id === "role" ? (
+                                  <select
+                                    className="select-role-option"
+                                    name="role"
+                                    value={row.original.role}
+                                    onChange={(e) =>
+                                      handleChange(e, row.original._id)
+                                    }
+                                  >
+                                    <option value="User">User</option>
+                                    <option value="Admin">Admin</option>
+                                  </select>
+                                ) : (
+                                  cell.render("Cell")
+                                )}
                               </td>
                             );
                           })}
@@ -262,7 +273,9 @@ const ManageAccount = () => {
             <button
               type="submit"
               className="btn-manage-acc"
-              onClick={() => handleSubmit(users._id)}
+              onClick={() =>
+                handleSubmit(rows[1].original._id, rows[1].original.role)
+              }
             >
               Save
             </button>
