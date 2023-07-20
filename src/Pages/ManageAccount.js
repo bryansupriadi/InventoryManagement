@@ -105,8 +105,8 @@ const ManageAccount = () => {
   };
 
   const handleSubmit = async (id, newRole) => {
-    console.log(id);
-    console.log(newRole);
+    // console.log(id);
+    // console.log(newRole);
 
     await api
       .patch(
@@ -274,7 +274,9 @@ const ManageAccount = () => {
               type="submit"
               className="btn-manage-acc"
               onClick={() =>
-                handleSubmit(rows[1].original._id, rows[1].original.role)
+                rows.forEach((row) => {
+                  handleSubmit(row.original._id, row.original.role);
+                })
               }
             >
               Save
