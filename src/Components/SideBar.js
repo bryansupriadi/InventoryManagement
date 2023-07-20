@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
@@ -16,10 +17,25 @@ import logout from "../Assets/icon/logout.png";
 import api from "../api";
 
 const SideBar = () => {
+  const navigate = useNavigate();
+
   const [userData, setUserData] = useState({
     username: "",
     role: "",
   });
+
+  const handleSignOut = async () => {
+    await api
+      .get("/v1/im/users/signOut")
+      .then((res) => {
+        console.log(res.data);
+
+        navigate("/sign-in");
+      })
+      .catch((err) => {
+        console.log(err, err.message);
+      });
+  };
 
   const getUserData = async () => {
     const token = localStorage.getItem("token");
@@ -47,7 +63,7 @@ const SideBar = () => {
 
   useEffect(() => {
     getUserData();
-  }, []);
+  }, [navigate]);
 
   return (
     <>
@@ -135,7 +151,7 @@ const SideBar = () => {
                     <img src={report} alt="" className="me-2" />
                     Reports
                   </Nav.Link>
-                  <Nav.Link href="/manage-account" className="text-white">
+                  <Nav.Link to="/manage-account" className="text-white">
                     <img src={logout} alt="" className="me-2" />
                     Log out
                   </Nav.Link>
