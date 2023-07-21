@@ -18,7 +18,6 @@ const ManageAccount = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const [users, setUsers] = useState([]);
-
   const [keyword, setKeyword] = useState("");
 
   const data = useMemo(() => users, [users]);
@@ -56,9 +55,9 @@ const ManageAccount = () => {
     const filteredUser =
       keyword !== ""
         ? users.filter(
-            (userData) =>
-              userData.username.toLowerCase().indexOf(keyword) > -1 ||
-              userData.emailAddress.toLocaleLowerCase().indexOf(keyword) > -1
+            (user) =>
+              user.username.toLocaleLowerCase().indexOf(keyword) > -1 ||
+              user.emailAddress.toLocaleLowerCase().indexOf(keyword) > -1
           )
         : users;
 
@@ -105,9 +104,6 @@ const ManageAccount = () => {
   };
 
   const handleSubmit = async (id, newRole) => {
-    // console.log(id);
-    // console.log(newRole);
-
     await api
       .patch(
         `/v1/im/users/${id}`,
