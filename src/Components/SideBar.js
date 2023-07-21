@@ -151,7 +151,7 @@ const SideBar = () => {
                     <img src={report} alt="" className="me-2" />
                     Reports
                   </Nav.Link>
-                  <Nav.Link to="/manage-account" className="text-white">
+                  <Nav.Link href="/manage-account" className="text-white">
                     <img src={logout} alt="" className="me-2" />
                     Log out
                   </Nav.Link>
