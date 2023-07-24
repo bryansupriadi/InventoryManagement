@@ -47,12 +47,12 @@ function PassiveCategory() {
 
   const getAllSubCategoryByGroup = async () => {
     await api
-      .get(`/v1/im/subCategories`, {
+      .get("/v1/im/subCategories/", {
         headers: { Authorization: `Bearer ${token}` },
-        params: { categorySlug: "computer-devices" },
       })
       .then((res) => {
         console.log(res.data);
+
         setSubCategoryData(res.data.data);
       })
       .catch((err) => {
@@ -64,6 +64,7 @@ function PassiveCategory() {
     document.title = "Inventory Management - Passive Category";
 
     getLoggedIn();
+
     getAllSubCategoryByGroup();
   }, [navigate]);
 
@@ -103,29 +104,23 @@ function PassiveCategory() {
                   See All
                 </Link>
               </h6>
-              {subCategoryData.length > 0 ? (
-                <div className="carousel-items">
-                  <Carousel
-                    responsive={responsive}
-                    showDots={false}
-                    arrows={false}
+              <div className="carousel-items">
+                <Carousel
+                  responsive={responsive}
+                  showDots={false}
+                  arrows={false}
+                >
+                  <Link
+                    to={`/${groupSlug}-category/${item.category.categorySlug}/${item.subCategorySlug}`}
                   >
-                    {subCategoryData.map((subCategory) => (
-                      <Link
-                        to={`/${groupSlug}-category/${subCategory.category.categorySlug}/${subCategory.subCategorySlug}`}
-                      >
-                        <ProductTemp
-                          id={subCategory._id}
-                          subCategoryName={subCategory.subCategoryName}
-                          subCategoryImage={subCategory.subCategoryImage}
-                        />
-                      </Link>
-                    ))}
-                  </Carousel>
-                </div>
-              ) : (
-                <p>No data found</p>
-              )}
+                    <ProductTemp
+                      id={item._id}
+                      subCategoryName={item.subCategoryName}
+                      subCategoryImage={item.subCategoryImage}
+                    />
+                  </Link>
+                </Carousel>
+              </div>
             </div>
           ))}
         </div>
