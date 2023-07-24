@@ -16,7 +16,14 @@ function ProductBrandsDetail() {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const [product, setProduct] = useState([]);
+  const [product, setProduct] = useState({
+    purchaseDate: "",
+    eachPrice: "",
+    typeProductName: "",
+    vendorName: "",
+    currentLocation: "",
+    productCondition: "",
+  });
 
   // Kolom-kolom tabel
   const columns = useMemo(() => [
@@ -24,7 +31,7 @@ function ProductBrandsDetail() {
     { Header: "Price", accessor: "eachPrice" },
     { Header: "Type", accessor: "typeProductName" },
     { Header: "Vendor", accessor: "vendorName" },
-    { Header: "Location", accessor: "location" },
+    { Header: "Location", accessor: "currentLocation" },
     { Header: "Condition", accessor: "productCondition" },
   ]);
 
@@ -69,7 +76,16 @@ function ProductBrandsDetail() {
       .then((res) => {
         console.log(res.data);
 
-        setProduct(res.data.data);
+        const { data } = res.data.data;
+
+        setProduct({
+          purchaseDate: data.purchaseDate,
+          eachPrice: data.eachPrice,
+          typeProductName: data.typeProductName,
+          vendorName: data.vendorName,
+          currentLocation: data.currentLocation,
+          productCondition: data.productCondition,
+        });
       })
       .catch((err) => {
         console.log(err, err.message);
