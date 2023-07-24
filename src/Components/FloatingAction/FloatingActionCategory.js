@@ -1,21 +1,25 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import api from "../../api";
 
 function FloatingActionButton(props) {
+  const navigate = useNavigate();
   const token = localStorage.getItem("token");
 
   const [showOptions, setShowOptions] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [showPopupSuccess, setShowPopupSuccess] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
+
   const [errors, setErrors] = useState({});
 
   const [categoryName, setCategoryName] = useState("");
 
   const type = props.type;
   const url = `/add-sub-category/${type}`;
+
+  console.log(type);
 
   const toggleOptions = () => {
     setShowOptions(!showOptions);
@@ -44,7 +48,7 @@ function FloatingActionButton(props) {
     if (Object.keys(newErrors).length === 0) {
       await api
         .post(
-          "/v1/im/categories/",
+          `/v1/im/categories/${type}/`,
           { categoryName },
           { headers: { Authorization: `Bearer ${token}` } }
         )
@@ -58,6 +62,8 @@ function FloatingActionButton(props) {
           resetForm();
           setTimeout(() => {
             setShowPopupSuccess(false);
+
+            navigate(`/${type}-category`);
           }, 3500);
           togglePopup();
         })
