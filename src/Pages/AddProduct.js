@@ -18,11 +18,11 @@ const AddProductForm = () => {
 
   const [formValues, setFormValues] = useState({
     brandName: "",
-    group: null,
-    categoryName: null,
-    subCategoryName: null,
+    group: "",
+    categoryName: "",
+    subCategoryName: "",
     typeProductName: "",
-    vendorName: null,
+    vendorName: "",
     purchaseDate: "",
     quantity: 0,
     eachPrice: 0,
@@ -38,8 +38,8 @@ const AddProductForm = () => {
   const [errors, setErrors] = useState({});
 
   const group = [
-    { value: "active", label: "Active" },
-    { value: "passive", label: "Passive" },
+    { value: "Active", label: "Active" },
+    { value: "Passive", label: "Passive" },
   ];
 
   const categoriesOptions = categories.map((category) => {
@@ -61,25 +61,20 @@ const AddProductForm = () => {
     setFormValues((prevState) => ({ ...prevState, [name]: selectedOption }));
 
     if (name === "group") {
-      // setFormValues((prevState) => ({
-      //   ...prevState,
-      //   categoryName: null,
-      //   subCategoryName: null,
-      // }));
-
-      if (formValues.group.value === "active") {
-        console.log("active");
+      if (formValues.group.value === "Active") {
+        console.log("Active");
 
         getAllCategories();
-      } else if (formValues.group.value === "passive") {
-        // code here
-        console.log("passive");
+      } else if (formValues.group.value === "Passive") {
+        console.log("Passive");
+
+        getAllCategories();
       }
     }
 
     if (name === "categoryName") {
       if (formValues.categoryName.value) {
-        getAllSubCategories();
+        getAllSubCategories(formValues.categoryName.value);
       }
     }
   };
@@ -91,9 +86,9 @@ const AddProductForm = () => {
 
   const resetForm = () => {
     setFormValues((prevState) => ({ ...prevState, brandName: "" }));
-    setFormValues((prevState) => ({ ...prevState, group: null }));
-    setFormValues((prevState) => ({ ...prevState, categoryName: null }));
-    setFormValues((prevState) => ({ ...prevState, subCategoryName: null }));
+    setFormValues((prevState) => ({ ...prevState, group: "" }));
+    setFormValues((prevState) => ({ ...prevState, categoryName: "" }));
+    setFormValues((prevState) => ({ ...prevState, subCategoryName: "" }));
     setFormValues((prevState) => ({ ...prevState, typeProductName: "" }));
     setFormValues((prevState) => ({ ...prevState, vendorName: "" }));
     setFormValues((prevState) => ({ ...prevState, purchaseDate: "" }));
@@ -114,18 +109,18 @@ const AddProductForm = () => {
       newErrors.brandName = "Please enter the product name!";
     }
 
-    if (!formValues.group) {
+    if (!formValues.group.value) {
       newErrors.group = "Please choose the group!";
     }
 
-    if (!formValues.categoryName) {
+    if (!formValues.categoryName.value) {
       setErrors((prevState) => ({
         ...prevState,
         categoryName: "Fill the group first!",
       }));
     }
 
-    if (!formValues.subCategoryName) {
+    if (!formValues.subCategoryName.value) {
       setErrors((prevState) => ({
         ...prevState,
         subCategoryName: "Fill the category first!",
@@ -136,7 +131,7 @@ const AddProductForm = () => {
       newErrors.typeProductName = "Please enter the type of the product!";
     }
 
-    if (!formValues.vendorName) {
+    if (!formValues.vendorName.value) {
       newErrors.vendorName = "Please select the vendor!";
     }
 
@@ -169,9 +164,26 @@ const AddProductForm = () => {
 
     // add product api
     await api
-      .post("/v1/im/products", formValues, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+      .post(
+        "/v1/im/products",
+        {
+          brandName: formValues.brandName,
+          group: formValues.group.value,
+          categoryName: formValues.categoryName.value,
+          subCategoryName: formValues.subCategoryName.value,
+          typeProductName: formValues.typeProductName,
+          vendorName: formValues.vendorName.value,
+          purchaseDate: formValues.purchaseDate,
+          quantity: formValues.quantity,
+          eachPrice: formValues.eachPrice,
+          currentLocation: formValues.currentLocation,
+          conditionGood: formValues.conditionGood,
+          conditionBad: formValues.conditionBad,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
       .then((res) => {
         console.log(res.data);
 
@@ -181,15 +193,23 @@ const AddProductForm = () => {
         resetForm();
         setTimeout(() => {
           setShowPopupSuccess(false);
+
+          const { categorySlug, subCategorySlug } = res.data.data;
+
+          if (formValues.group.value === "Active") {
+            navigate(`/active-category/${categorySlug}/${subCategorySlug}`);
+          } else if (formValues.group.value === "Passive") {
+            navigate(`/passive-category/${categorySlug}/${subCategorySlug}`);
+          }
         }, 3500);
       })
       .catch((err) => {
         console.log(err, err.message);
 
-        setErrors(newErrors);
-        // setTimeout(() => {
-        //   setErrors({});
-        // }, 3500);
+        setTimeout(() => {
+          setErrors({});
+        }, 3500);
+
         setSuccessMessage("");
       });
   };
@@ -217,9 +237,9 @@ const AddProductForm = () => {
       });
   };
 
-  const getAllSubCategories = async () => {
+  const getAllSubCategories = async (categoryName) => {
     await api
-      .get("/v1/im/subCategories/", {
+      .get(`/v1/im/subCategories?categoryName=${categoryName}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
