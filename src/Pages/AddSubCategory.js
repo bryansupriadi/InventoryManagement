@@ -60,7 +60,7 @@ export function AddSubCategoryActive() {
 
     // tambahkan kode untuk melakukan submit form
     await api
-      .post("/v1/im/subCategories", formData, {
+      .post("/v1/im/subCategories/active/", formData, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
@@ -91,6 +91,7 @@ export function AddSubCategoryActive() {
     await api
       .get("/v1/im/categories", {
         headers: { Authorization: `Bearer ${token}` },
+        params: { groupSlug: "active" },
       })
       .then((res) => {
         console.log(res.data);
@@ -103,7 +104,7 @@ export function AddSubCategoryActive() {
   };
 
   useEffect(() => {
-    document.title = "Inventory Management - Add Sub Category Product";
+    document.title = "Inventory Management - Add Active Sub Category Product";
 
     getLoggedIn();
     getAllCategories();
@@ -251,7 +252,7 @@ export function AddSubCategoryPassive() {
 
     // tambahkan kode untuk melakukan submit form
     await api
-      .post("/v1/im/subCategories", formData, {
+      .post("/v1/im/subCategories/passive/", formData, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
@@ -282,6 +283,7 @@ export function AddSubCategoryPassive() {
     await api
       .get("/v1/im/categories", {
         headers: { Authorization: `Bearer ${token}` },
+        params: { groupSlug: "passive" },
       })
       .then((res) => {
         console.log(res.data);
@@ -294,7 +296,7 @@ export function AddSubCategoryPassive() {
   };
 
   useEffect(() => {
-    document.title = "Inventory Management - Add Sub Category Product";
+    document.title = "Inventory Management - Add Passive Sub Category Product";
 
     getLoggedIn();
     getAllCategories();
