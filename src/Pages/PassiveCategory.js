@@ -31,8 +31,6 @@ function PassiveCategory() {
     },
   };
 
-  const groupSlug = "passive";
-
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const [subCategoryData, setSubCategoryData] = useState([]);
@@ -47,8 +45,9 @@ function PassiveCategory() {
 
   const getAllSubCategoryByGroup = async () => {
     await api
-      .get("/v1/im/subCategories/", {
+      .get("/v1/im/subCategories", {
         headers: { Authorization: `Bearer ${token}` },
+        params: { groupSlug: "passive" },
       })
       .then((res) => {
         console.log(res.data);
@@ -94,7 +93,7 @@ function PassiveCategory() {
               <h4>{item.categoryName}</h4>
               <h6>
                 <Link
-                  to={`/${groupSlug}-category/${item.categorySlug}`}
+                  to={`/${item.groupSlug}-category/${item.categorySlug}`}
                   style={{
                     textDecoration: "none",
                     color: "#D9C5C5",
@@ -110,22 +109,24 @@ function PassiveCategory() {
                   showDots={false}
                   arrows={false}
                 >
-                  <Link
-                    to={`/${groupSlug}-category/${item.category.categorySlug}/${item.subCategorySlug}`}
-                  >
-                    <ProductTemp
-                      id={item._id}
-                      subCategoryName={item.subCategoryName}
-                      subCategoryImage={item.subCategoryImage}
-                    />
-                  </Link>
+                  {subCategoryData.map((item) => (
+                    <Link
+                      to={`/${item.groupSlug}-category/${item.category.categorySlug}/${item.subCategorySlug}`}
+                    >
+                      <ProductTemp
+                        id={item._id}
+                        subCategoryName={item.subCategoryName}
+                        subCategoryImage={item.subCategoryImage}
+                      />
+                    </Link>
+                  ))}
                 </Carousel>
               </div>
             </div>
           ))}
         </div>
         <div className="fab-btn">
-          <FloatingActionCategory type={groupSlug} />
+          <FloatingActionCategory type="passive" />
         </div>
       </div>
     </div>

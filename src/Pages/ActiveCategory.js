@@ -31,8 +31,6 @@ function ActiveCategory() {
     },
   };
 
-  const groupSlug = "active";
-
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const [subCategoryData, setSubCategoryData] = useState([]);
@@ -47,8 +45,9 @@ function ActiveCategory() {
 
   const getAllSubCategoryByGroup = async () => {
     await api
-      .get("/v1/im/subCategories/", {
+      .get("/v1/im/subCategories", {
         headers: { Authorization: `Bearer ${token}` },
+        params: { groupSlug: "active" },
       })
       .then((res) => {
         console.log(res.data);
@@ -89,44 +88,50 @@ function ActiveCategory() {
           <SideBar />
         </div>
         <div className="content-container">
-          {subCategoryData.map((item) => (
-            <div className="product-category-container">
-              <h4>{item.categoryName}</h4>
-              <h6>
-                <Link
-                  to={`/${groupSlug}-category/${item.categorySlug}`}
-                  style={{
-                    textDecoration: "none",
-                    color: "#D9C5C5",
-                    fontWeight: "lighter",
-                  }}
-                >
-                  See All
-                </Link>
-              </h6>
-              <div className="carousel-items">
-                <Carousel
-                  responsive={responsive}
-                  showDots={false}
-                  arrows={false}
-                >
+          {subCategoryData ? (
+            subCategoryData.map((item) => (
+              <div className="product-category-container">
+                <h4>{item.categoryName}</h4>
+                <h6>
                   <Link
-                    to={`/${groupSlug}-category/${item.categorySlug}/${item.subCategorySlug}`}
-                    key={item._id}
+                    to={`/${item.groupSlug}-category/${item.categorySlug}`}
+                    style={{
+                      textDecoration: "none",
+                      color: "#D9C5C5",
+                      fontWeight: "lighter",
+                    }}
                   >
-                    <ProductTemp
-                      id={item._id}
-                      subCategoryName={item.subCategoryName}
-                      subCategoryImage={item.subCategoryImage}
-                    />
+                    See All
                   </Link>
-                </Carousel>
+                </h6>
+                <div className="carousel-items">
+                  <Carousel
+                    responsive={responsive}
+                    showDots={false}
+                    arrows={false}
+                  >
+                    {subCategoryData.map((item) => (
+                      <Link
+                        to={`/${item.groupSlug}-category/${item.categorySlug}/${item.subCategorySlug}`}
+                        key={item._id}
+                      >
+                        <ProductTemp
+                          id={item._id}
+                          subCategoryName={item.subCategoryName}
+                          subCategoryImage={item.subCategoryImage}
+                        />
+                      </Link>
+                    ))}
+                  </Carousel>
+                </div>
               </div>
-            </div>
-          ))}
+            ))
+          ) : (
+            <p>No data found.</p>
+          )}
         </div>
         <div className="fab-btn">
-          <FloatingActionCategory type={groupSlug} />
+          <FloatingActionCategory type="active" />
         </div>
       </div>
     </div>
