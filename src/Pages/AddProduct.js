@@ -18,7 +18,7 @@ const AddProductForm = () => {
 
   const [formValues, setFormValues] = useState({
     brandName: "",
-    group: "",
+    groupName: "",
     categoryName: "",
     subCategoryName: "",
     typeProductName: "",
@@ -31,16 +31,16 @@ const AddProductForm = () => {
     conditionBad: 0,
   });
 
+  const [groups, setGroups] = useState([]);
   const [categories, setCategories] = useState([]);
   const [subCategories, setSubCategories] = useState([]);
   const [vendors, setVendors] = useState([]);
 
   const [errors, setErrors] = useState({});
 
-  const group = [
-    { value: "Active", label: "Active" },
-    { value: "Passive", label: "Passive" },
-  ];
+  const groupOptions = groups.map((group) => {
+    return { value: group.groupName, label: group.groupName };
+  });
 
   const categoriesOptions = categories.map((category) => {
     return { value: category.categoryName, label: category.categoryName };
@@ -60,12 +60,12 @@ const AddProductForm = () => {
   const handleSelectChange = (name, selectedOption) => {
     setFormValues((prevState) => ({ ...prevState, [name]: selectedOption }));
 
-    if (name === "group") {
-      if (formValues.group.value === "Active") {
+    if (name === "groupName") {
+      if (formValues.groupName.value === "Active") {
         console.log("Active");
 
         getAllCategories();
-      } else if (formValues.group.value === "Passive") {
+      } else if (formValues.groupName.value === "Passive") {
         console.log("Passive");
 
         getAllCategories();
@@ -86,7 +86,7 @@ const AddProductForm = () => {
 
   const resetForm = () => {
     setFormValues((prevState) => ({ ...prevState, brandName: "" }));
-    setFormValues((prevState) => ({ ...prevState, group: "" }));
+    setFormValues((prevState) => ({ ...prevState, groupName: "" }));
     setFormValues((prevState) => ({ ...prevState, categoryName: "" }));
     setFormValues((prevState) => ({ ...prevState, subCategoryName: "" }));
     setFormValues((prevState) => ({ ...prevState, typeProductName: "" }));
@@ -109,8 +109,8 @@ const AddProductForm = () => {
       newErrors.brandName = "Please enter the product name!";
     }
 
-    if (!formValues.group.value) {
-      newErrors.group = "Please choose the group!";
+    if (!formValues.groupName.value) {
+      newErrors.groupName = "Please choose the group!";
     }
 
     if (!formValues.categoryName.value) {
@@ -222,6 +222,21 @@ const AddProductForm = () => {
     }
   };
 
+  const getAllGroups = async () => {
+    await api
+      .get("/v1/im/groups/", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((res) => {
+        console.log(res.data);
+
+        setGroups(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err, err.message);
+      });
+  };
+
   const getAllCategories = async () => {
     await api
       .get("/v1/im/categories/", {
@@ -269,6 +284,7 @@ const AddProductForm = () => {
 
   useEffect(() => {
     getLoggedIn();
+    getAllGroups();
     getAllVendors();
   }, [navigate]);
 
@@ -312,11 +328,11 @@ const AddProductForm = () => {
               <label className="form-field">
                 Group
                 <Select
-                  options={group}
-                  name="group"
-                  value={formValues.group}
+                  options={groupOptions}
+                  name="groupName"
+                  value={formValues.groupName}
                   onChange={(selectedOption) =>
-                    handleSelectChange("group", selectedOption)
+                    handleSelectChange("groupName", selectedOption)
                   }
                   className="select-form"
                 />
