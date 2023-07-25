@@ -89,14 +89,6 @@ const router = createBrowserRouter([
     element: <AddProductForm />,
   },
   {
-    path: "/vendor-list",
-    element: <VendorList />,
-  },
-  {
-    path: "/vendor-list/:vendorSlug",
-    element: <VendorProduct />,
-  },
-  {
     path: "/manage-account",
     element: <ManageAccount />,
   },
@@ -125,20 +117,28 @@ const router = createBrowserRouter([
     element: <ProductDetail />,
   },
   {
-    path: "/vendor-list/:categorySlug/:subCategorySlug/:productSlug/:id",
-    element: <ProductDetail />,
-  },
-  {
-    path: "/vendor-list/:vendorSlug/:subCategorySlug/:productSlug",
-    element: <VendorTable />,
-  },
-  {
     path: "/:groupSlug-category/:categorySlug/:subCategorySlug/:productSlug/add-product-type",
     element: <AddProductType />,
   },
   {
     path: "/:groupSlug-category/:categorySlug/:subCategorySlug/:productSlug/:id/edit-product",
     element: <EditProduct />,
+  },
+  {
+    path: "/vendor-list",
+    element: <VendorList />,
+  },
+  {
+    path: "/vendor-list/:vendorSlug",
+    element: <VendorProduct />,
+  },
+  {
+    path: "/vendor-list/:categorySlug/:subCategorySlug/:productSlug/:id",
+    element: <ProductDetail />,
+  },
+  {
+    path: "/vendor-list/:vendorSlug/:subCategorySlug/:productSlug",
+    element: <VendorTable />,
   },
   {
     path: "/scanner",
