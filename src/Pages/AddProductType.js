@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Select from "react-select";
 
 import SideBar from "../Components/SideBar";
@@ -8,6 +8,9 @@ import api from "../api";
 
 function AddProductType() {
   const navigate = useNavigate();
+
+  const { groupSlug, categorySlug, subCategorySlug, productSlug } = useParams();
+
   const token = localStorage.getItem("token");
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -15,14 +18,13 @@ function AddProductType() {
 
   const [formValues, setFormValues] = useState({
     type: "",
-    vendorName: null,
+    vendorName: "",
     purchaseDateProductType: "",
     quantityProductType: "",
     eachPriceProductType: "",
     currentLocationProductType: "",
     conditionGoodProductType: 0,
     conditionBadProductType: 0,
-    condition: "",
   });
 
   const [vendors, setVendors] = useState([]);
@@ -42,7 +44,7 @@ function AddProductType() {
   const handleSelectChange = (name, selectedOption) => {
     setFormValues((prevValues) => ({
       ...prevValues,
-      [name]: selectedOption.value,
+      [name]: selectedOption,
     }));
   };
 
@@ -56,7 +58,7 @@ function AddProductType() {
       newErrors.type = "Please enter the type of the product!";
     }
 
-    if (!formValues.vendorName) {
+    if (!formValues.vendorName.value) {
       newErrors.vendorName = "Please select the vendor!";
     }
 
@@ -93,15 +95,29 @@ function AddProductType() {
 
     // add api
     await api
-      .post("/v1/im/productTypes/", formValues, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+      .post(
+        "/v1/im/productTypes",
+        {
+          type: formValues.type,
+          vendorName: formValues.vendorName.value,
+          quantityProductType: formValues.quantityProductType,
+          eachPriceProductType: formValues.eachPriceProductType,
+          currentLocationProductType: formValues.currentLocationProductType,
+          conditionGoodProductType: formValues.conditionGoodProductType,
+          conditionBadProductType: formValues.conditionBadProductType,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
       .then((res) => {
         console.log(res.data);
         setErrors({});
 
         // redirect to product list
-        // navigate("/");
+        navigate(
+          `/${groupSlug}-category/${categorySlug}/${subCategorySlug}/${productSlug}`
+        );
       })
       .catch((err) => {
         console.log(err, err.message);
@@ -139,6 +155,8 @@ function AddProductType() {
     getAllVendors();
   }, [navigate]);
 
+  console.log(formValues);
+
   return isLoggedIn ? (
     <div className="App">
       <div className="add-product-type-container">
@@ -169,9 +187,9 @@ function AddProductType() {
                 <Select
                   options={vendorOptions}
                   name="vendorName"
-                  defaultValue={formValues.vendorName}
+                  value={formValues.vendorName}
                   onChange={(selectedOption) =>
-                    handleSelectChange("vendor", selectedOption)
+                    handleSelectChange("vendorName", selectedOption)
                   }
                   className="select-form"
                 />
@@ -185,7 +203,7 @@ function AddProductType() {
                 Purchase Date
                 <input
                   type="date"
-                  name="purchaseDate"
+                  name="purchaseDateProductType"
                   value={formValues.purchaseDateProductType}
                   onChange={handleInputChange}
                   className="input-form"
@@ -202,7 +220,7 @@ function AddProductType() {
                 Quantity
                 <input
                   type="number"
-                  name="quantity"
+                  name="quantityProductType"
                   value={formValues.quantityProductType}
                   onChange={handleInputChange}
                   className="input-form"
@@ -219,7 +237,7 @@ function AddProductType() {
                 Each Price
                 <input
                   type="number"
-                  name="eachPrice"
+                  name="eachPriceProductType"
                   value={formValues.eachPriceProductType}
                   onChange={handleInputChange}
                   className="input-form"
@@ -236,7 +254,7 @@ function AddProductType() {
                 Current Location
                 <input
                   type="text"
-                  name="currentLocation"
+                  name="currentLocationProductType"
                   value={formValues.currentLocationProductType}
                   onChange={handleInputChange}
                   className="input-form"
@@ -255,7 +273,7 @@ function AddProductType() {
                   <span>Good</span>
                   <input
                     type="number"
-                    name="conditionGood"
+                    name="conditionGoodProductType"
                     value={formValues.conditionGoodProductType}
                     onChange={handleInputChange}
                     className="good"
@@ -263,7 +281,7 @@ function AddProductType() {
                   <span>Bad</span>
                   <input
                     type="number"
-                    name="conditionBad"
+                    name="conditionBadProductType"
                     value={formValues.conditionBadProductType}
                     onChange={handleInputChange}
                     className="bad"
