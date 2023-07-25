@@ -18,16 +18,14 @@ function VendorTable() {
 
   const [product, setProduct] = useState([]);
 
-  const columns = useMemo(
-    () => [
-      { Header: "Date", accessor: "purchaseDate" },
-      { Header: "Price", accessor: "eachPrice" },
-      { Header: "Type", accessor: "typeProductName" },
-      { Header: "Location", accessor: "currentLocation" },
-      { Header: "Condition", accessor: "productCondition" },
-    ],
-    []
-  );
+  const columns = useMemo(() => [
+    { Header: "Date", accessor: "purchaseDateProductType" },
+    { Header: "Price", accessor: "eachPriceProductType" },
+    { Header: "Type", accessor: "type" },
+    { Header: "Vendor", accessor: "vendorName" },
+    { Header: "Location", accessor: "currentLocationProductType" },
+    { Header: "Condition", accessor: "productTypeCondition" },
+  ]);
 
   // const tableData = useMemo(() => {
   //   const filteredProducts = product.filter((item) => {
@@ -67,7 +65,7 @@ function VendorTable() {
 
   const getAllProducts = async () => {
     await api
-      .get(`/v1/im/products?vendor.vendorSlug=${vendorSlug}`, {
+      .get(`/v1/im/productTypes?vendor.vendorSlug=${vendorSlug}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
