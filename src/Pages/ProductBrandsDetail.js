@@ -18,28 +18,20 @@ function ProductBrandsDetail() {
 
   const [product, setProduct] = useState([]);
 
+  const data = useMemo(() => product, [product]);
+
   // Kolom-kolom tabel
-  const columns = useMemo(() => [
-    { Header: "Date", accessor: "purchaseDateProductType" },
-    { Header: "Price", accessor: "eachPriceProductType" },
-    { Header: "Type", accessor: "type" },
-    { Header: "Vendor", accessor: "vendorName" },
-    { Header: "Location", accessor: "currentLocationProductType" },
-    { Header: "Condition", accessor: "productTypeCondition" },
-  ]);
-
-  // Filter product array based on subCategory and brandName
-  // const tableData = useMemo(() => {
-  //   const filteredProducts = product.filter(
-  //     (item) =>
-  //       item.subCategorySlug === subCategorySlug &&
-  //       item.productSlug === productSlug
-  //   );
-
-  //   const subData = filteredProducts.length > 0 ? filteredProducts : [];
-
-  //   return subData.map((item) => ({ ...item }));
-  // }, [subCategorySlug, productSlug]);
+  const columns = useMemo(
+    () => [
+      { Header: "Date", accessor: "purchaseDateProductType" },
+      { Header: "Price", accessor: "eachPriceProductType" },
+      { Header: "Type", accessor: "type" },
+      { Header: "Vendor", accessor: "vendorName" },
+      { Header: "Location", accessor: "currentLocationProductType" },
+      { Header: "Condition", accessor: "productTypeCondition" },
+    ],
+    []
+  );
 
   const handleRowClick = (id) => {
     navigate(
@@ -51,7 +43,7 @@ function ProductBrandsDetail() {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({
       columns,
-      data: product,
+      data,
     });
 
   const getLoggedIn = () => {
@@ -119,7 +111,7 @@ function ProductBrandsDetail() {
                 return (
                   <tr
                     {...row.getRowProps()}
-                    onClick={() => handleRowClick(row.original)}
+                    onClick={() => handleRowClick(row.original._id)}
                     style={{ cursor: "pointer" }}
                   >
                     {row.cells.map((cell) => (
