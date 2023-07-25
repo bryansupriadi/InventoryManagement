@@ -24,44 +24,85 @@ const Home = () => {
   const [product, setProduct] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState(product);
 
-  const COLUMNS = [
-    {
-      Header: "Name",
-      accessor: "brandName",
-    },
-    {
-      Header: "Qty",
-      accessor: (row) => {
-        const product = products.find(
-          (item) => item.brandName === row.brandName
-        );
-        return product ? products.length : 0;
+  const columns = useMemo(
+    () => [
+      {
+        Header: "Name",
+        accessor: "brandName",
       },
-    },
-    {
-      Header: "Price",
-      accessor: (row) => {
-        const product = products.find(
-          (item) => item.brandName === row.brandName
-        );
-        let totalPrice = 0;
-        if (product) {
-          product.forEach((subItem) => {
-            totalPrice += subItem.eachPrice;
-          });
-        }
-        return totalPrice;
+      {
+        Header: "Qty",
+        accessor: "quantity",
+        // accessor: (row) => {
+        //   const product = products.find(
+        //     (item) => item.brandName === row.brandName
+        //   );
+        //   return product ? products.length : 0;
+        // },
       },
-    },
-    {
-      Header: "Group",
-      accessor: "group",
-    },
-  ];
+      {
+        Header: "Price",
+        accessor: "eachPrice",
+        // accessor: (row) => {
+        //   const product = products.find(
+        //     (item) => item.brandName === row.brandName
+        //   );
+        //   let totalPrice = 0;
+        //   if (product) {
+        //     product.forEach((subItem) => {
+        //       totalPrice += subItem.eachPrice;
+        //     });
+        //   }
+        //   return totalPrice;
+        // },
+      },
+      {
+        Header: "Group",
+        accessor: "group",
+      },
+    ],
+    []
+  );
+
+  // const COLUMNS = [
+  //   {
+  //     Header: "Name",
+  //     accessor: "brandName",
+  //   },
+  //   {
+  //     Header: "Qty",
+  //     accessor: "quantity",
+  //     // accessor: (row) => {
+  //     //   const product = products.find(
+  //     //     (item) => item.brandName === row.brandName
+  //     //   );
+  //     //   return product ? products.length : 0;
+  //     // },
+  //   },
+  //   {
+  //     Header: "Price",
+  //     accessor: "eachPrice",
+  //     // accessor: (row) => {
+  //     //   const product = products.find(
+  //     //     (item) => item.brandName === row.brandName
+  //     //   );
+  //     //   let totalPrice = 0;
+  //     //   if (product) {
+  //     //     product.forEach((subItem) => {
+  //     //       totalPrice += subItem.eachPrice;
+  //     //     });
+  //     //   }
+  //     //   return totalPrice;
+  //     // },
+  //   },
+  //   {
+  //     Header: "Group",
+  //     accessor: "group",
+  //   },
+  // ];
 
   const [products, setProducts] = useState(product);
   const [keyword, setKeyword] = useState("");
-  const [columns, setColumns] = useState(COLUMNS);
 
   const filterProduct = (e) => {
     const keyword = e.target.value.toLowerCase();
@@ -69,7 +110,7 @@ const Home = () => {
       keyword !== ""
         ? products.filter(
             (product) =>
-              product.typeProductName.toLowerCase().indexOf(keyword) > -1 ||
+              product.brandName.toLowerCase().indexOf(keyword) > -1 ||
               product.group.toLowerCase().indexOf(keyword) > -1
           )
         : products;
