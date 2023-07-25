@@ -168,7 +168,7 @@ const AddProductForm = () => {
         "/v1/im/products",
         {
           brandName: formValues.brandName,
-          group: formValues.group.value,
+          groupName: formValues.groupName.value,
           categoryName: formValues.categoryName.value,
           subCategoryName: formValues.subCategoryName.value,
           typeProductName: formValues.typeProductName,
@@ -196,9 +196,9 @@ const AddProductForm = () => {
 
           const { categorySlug, subCategorySlug } = res.data.data;
 
-          if (formValues.group.value === "Active") {
+          if (formValues.groupName.value === "Active") {
             navigate(`/active-category/${categorySlug}/${subCategorySlug}`);
-          } else if (formValues.group.value === "Passive") {
+          } else if (formValues.groupName.value === "Passive") {
             navigate(`/passive-category/${categorySlug}/${subCategorySlug}`);
           }
         }, 3500);
@@ -338,8 +338,8 @@ const AddProductForm = () => {
                 />
               </label>
             </div>
-            {errors.group && (
-              <div className="error-message-ctgry">{errors.group}</div>
+            {errors.groupName && (
+              <div className="error-message-ctgry">{errors.groupName}</div>
             )}
             <div>
               <label className="form-field">
@@ -399,7 +399,7 @@ const AddProductForm = () => {
                 Vendor
                 <Select
                   options={vendorOptions}
-                  name="vendor"
+                  name="vendorName"
                   value={formValues.vendorName}
                   onChange={(selectedOption) =>
                     handleSelectChange("vendorName", selectedOption)
