@@ -18,33 +18,19 @@ function VendorTable() {
 
   const [product, setProduct] = useState([]);
 
-  const columns = useMemo(() => [
-    { Header: "Date", accessor: "purchaseDateProductType" },
-    { Header: "Price", accessor: "eachPriceProductType" },
-    { Header: "Type", accessor: "type" },
-    { Header: "Vendor", accessor: "vendorName" },
-    { Header: "Location", accessor: "currentLocationProductType" },
-    { Header: "Condition", accessor: "productTypeCondition" },
-  ]);
+  const data = useMemo(() => product, [product]);
 
-  // const tableData = useMemo(() => {
-  //   const filteredProducts = product.filter((item) => {
-  //     const subData = item || [];
-  //     return (
-  //       item.subCategorySlug === subCategorySlug &&
-  //       item.productSlug === productSlug &&
-  //       subData.some((subItem) => subItem.vendorSlug === vendorSlug)
-  //     );
-  //   });
-
-  //   const subData = filteredProducts.length > 0 ? filteredProducts : [];
-
-  //   const vendorData = subData.filter(
-  //     (subItem) => subItem.vendorSlug === vendorSlug
-  //   );
-
-  //   return vendorData.map((item) => ({ ...item }));
-  // }, [subCategorySlug, productSlug, vendorSlug]);
+  const columns = useMemo(
+    () => [
+      { Header: "Date", accessor: "purchaseDateProductType" },
+      { Header: "Price", accessor: "eachPriceProductType" },
+      { Header: "Type", accessor: "type" },
+      { Header: "Vendor", accessor: "vendorName" },
+      { Header: "Location", accessor: "currentLocationProductType" },
+      { Header: "Condition", accessor: "productTypeCondition" },
+    ],
+    []
+  );
 
   const handleRowClick = (id) => {
     navigate(
@@ -53,7 +39,7 @@ function VendorTable() {
   };
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable({ columns, data: product });
+    useTable({ columns, data });
 
   const getLoggedIn = () => {
     if (token) {
@@ -65,7 +51,7 @@ function VendorTable() {
 
   const getAllProducts = async () => {
     await api
-      .get(`/v1/im/productTypes?vendor.vendorSlug=${vendorSlug}`, {
+      .get(`/v1/im/productTypes?vendorSlug=${vendorSlug}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
