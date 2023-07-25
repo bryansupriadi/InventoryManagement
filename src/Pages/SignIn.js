@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from "react";
-import LogoIM from "../Assets/logo.png";
 import { useNavigate, Link } from "react-router-dom";
+
+import LogoIM from "../Assets/logo.png";
 
 import api from "../api";
 
 function SignIn() {
+  const navigate = useNavigate();
+
+  const [errorMessage, setErrorMessage] = useState(null);
+
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("");
-  const [errorMessage, setErrorMessage] = useState(null);
-  const navigate = useNavigate();
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
@@ -18,8 +21,8 @@ function SignIn() {
     setRole(event.target.value);
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
     console.log(email, role);
 
