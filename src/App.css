@@ -2191,9 +2191,9 @@ ul {
     padding-left: 10px;
   }
 
-  .floating-action-button-container {
-    bottom: 60px; /* Adjust this value to your liking */
-    right: 10px; /* Adjust this value to your liking */
+  /* .floating-action-button-container {
+    bottom: 60px; 
+    right: 10px; 
     position: fixed;
   }
 
@@ -2207,13 +2207,13 @@ ul {
     margin-bottom: 60px;
     margin-right: 10px;
     position: fixed;
-  }
+  } */
 }
 
 @media (min-width: 401px) and (max-width: 799px) {
   .floating-action-button-container {
-    bottom: 60px; /* Adjust this value to your liking */
-    right: 10px; /* Adjust this value to your liking */
+    bottom: 60px; 
+    right: 10px; 
     position: fixed;
   }
 
