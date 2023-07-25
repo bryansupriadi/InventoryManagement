@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
-// import product from "../Components/data/product";
-
 import SideBar from "../Components/SideBar";
 import FloatingActionProduct from "../Components/FloatingAction/FloatingActionProduct";
 
@@ -11,8 +9,14 @@ import api from "../api";
 const ProductDetail = () => {
   const navigate = useNavigate();
 
-  const { groupSlug, categorySlug, subCategorySlug, productSlug, id } =
-    useParams();
+  const {
+    vendorSlug,
+    groupSlug,
+    categorySlug,
+    subCategorySlug,
+    productSlug,
+    id,
+  } = useParams();
 
   const token = localStorage.getItem("token");
 
@@ -25,7 +29,7 @@ const ProductDetail = () => {
 
   const [filteredProducts, setFilteredProducts] = useState([]);
 
-  const { Type } = filteredProducts.length > 0 ? filteredProducts[0] : "";
+  // const { Type } = filteredProducts.length > 0 ? filteredProducts[0] : "";
 
   const getLoggedIn = () => {
     const token = localStorage.getItem("token");
@@ -60,6 +64,9 @@ const ProductDetail = () => {
     const filteredProducts = productData.filter((item) => {
       const subData = item || [];
       return (
+        item.groupSlug === groupSlug &&
+        item.vendorSlug === vendorSlug &&
+        item.categorySlug === categorySlug &&
         item.subCategorySlug === subCategorySlug &&
         item.productSlug === productSlug &&
         subData.some((subItem) => subItem._id === id)
@@ -87,6 +94,7 @@ const ProductDetail = () => {
       };
     }
   }, [
+    vendorSlug,
     groupSlug,
     categorySlug,
     subCategorySlug,
@@ -115,7 +123,7 @@ const ProductDetail = () => {
         </div>
         <div className="sub-title-product-1">
           <h3>{productSlug}</h3>
-          <h3>{Type}</h3>
+          <h3>{filteredProducts[0].typeProductName}</h3>
         </div>
         <div className="product-type">
           <ul>
