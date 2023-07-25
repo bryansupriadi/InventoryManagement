@@ -16,37 +16,30 @@ function ProductBrandsDetail() {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const [product, setProduct] = useState({
-    purchaseDate: "",
-    eachPrice: "",
-    typeProductName: "",
-    vendorName: "",
-    currentLocation: "",
-    productCondition: "",
-  });
+  const [product, setProduct] = useState([]);
 
   // Kolom-kolom tabel
   const columns = useMemo(() => [
-    { Header: "Date", accessor: "purchaseDate" },
-    { Header: "Price", accessor: "eachPrice" },
-    { Header: "Type", accessor: "typeProductName" },
+    { Header: "Date", accessor: "purchaseDateProductType" },
+    { Header: "Price", accessor: "eachPriceProductType" },
+    { Header: "Type", accessor: "type" },
     { Header: "Vendor", accessor: "vendorName" },
-    { Header: "Location", accessor: "currentLocation" },
-    { Header: "Condition", accessor: "productCondition" },
+    { Header: "Location", accessor: "currentLocationProductType" },
+    { Header: "Condition", accessor: "productTypeCondition" },
   ]);
 
   // Filter product array based on subCategory and brandName
-  const tableData = useMemo(() => {
-    const filteredProducts = product.filter(
-      (item) =>
-        item.subCategorySlug === subCategorySlug &&
-        item.productSlug === productSlug
-    );
+  // const tableData = useMemo(() => {
+  //   const filteredProducts = product.filter(
+  //     (item) =>
+  //       item.subCategorySlug === subCategorySlug &&
+  //       item.productSlug === productSlug
+  //   );
 
-    const subData = filteredProducts.length > 0 ? filteredProducts : [];
+  //   const subData = filteredProducts.length > 0 ? filteredProducts : [];
 
-    return subData.map((item) => ({ ...item }));
-  }, [subCategorySlug, productSlug]);
+  //   return subData.map((item) => ({ ...item }));
+  // }, [subCategorySlug, productSlug]);
 
   const handleRowClick = (id) => {
     navigate(
@@ -56,7 +49,10 @@ function ProductBrandsDetail() {
 
   // Create an instance of React Table
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable({ columns, data: tableData });
+    useTable({
+      columns,
+      data: product,
+    });
 
   const getLoggedIn = () => {
     const token = localStorage.getItem("token");
@@ -70,22 +66,13 @@ function ProductBrandsDetail() {
   // get product detail
   const getProductDetail = async () => {
     await api
-      .get(`/v1/im/products/`, {
+      .get(`/v1/im/productTypes/`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
         console.log(res.data);
 
-        const { data } = res.data.data;
-
-        setProduct({
-          purchaseDate: data.purchaseDate,
-          eachPrice: data.eachPrice,
-          typeProductName: data.typeProductName,
-          vendorName: data.vendorName,
-          currentLocation: data.currentLocation,
-          productCondition: data.productCondition,
-        });
+        setProduct(res.data.data);
       })
       .catch((err) => {
         console.log(err, err.message);
