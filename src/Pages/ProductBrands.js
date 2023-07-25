@@ -7,14 +7,11 @@ import api from "../api";
 
 function ProductBrands() {
   const navigate = useNavigate();
-  const { categorySlug, subCategorySlug } = useParams();
+  const { groupSlug, categorySlug, subCategorySlug } = useParams();
 
   const token = localStorage.getItem("token");
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  const [category, setCategory] = useState("");
-  const [subCategory, setSubCategory] = useState("");
 
   const [product, setProduct] = useState([]);
 
@@ -63,7 +60,7 @@ function ProductBrands() {
 
     getLoggedIn();
     getAllProductBrands();
-  }, [navigate, categorySlug, subCategorySlug]);
+  }, [navigate, groupSlug, categorySlug, subCategorySlug]);
 
   return isLoggedIn ? (
     <div className="App">
