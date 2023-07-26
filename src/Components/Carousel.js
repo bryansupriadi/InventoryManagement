@@ -1,17 +1,21 @@
-import React, { useMemo, useEffect, useState } from 'react';
-import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
+import React, { useMemo, useEffect, useState } from "react";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
-const AutoCarousel = ({ products }) => {
+const Carousel = ({ products }) => {
   const nonZeroQtyProducts = useMemo(() => {
-    return products.filter((item) => item['Sub Data'].length > 0);
+    return products.filter((item) => item.length > 0);
   }, [products]);
 
-  const totalProduct = useMemo(() => nonZeroQtyProducts.length, [nonZeroQtyProducts]);
+  const totalProduct = useMemo(
+    () => nonZeroQtyProducts.length,
+    [nonZeroQtyProducts]
+  );
+
   const outOfStock = useMemo(() => {
     return nonZeroQtyProducts.reduce((count, item) => {
-      if (item['Sub Data'].length < 5) {
+      if (item.length < 5) {
         return count + 1;
       } else {
         return count;
@@ -20,50 +24,51 @@ const AutoCarousel = ({ products }) => {
   }, [nonZeroQtyProducts]);
 
   const totalQty = useMemo(() => {
-    return nonZeroQtyProducts.reduce((total, item) => total + item['Sub Data'].length, 0);
+    return nonZeroQtyProducts.reduce((total, item) => total + item.length, 0);
   }, [nonZeroQtyProducts]);
 
   const totalPrice = useMemo(() => {
     return nonZeroQtyProducts.reduce((total, item) => {
       return (
-        total +
-        item['Sub Data'].reduce((subTotal, subItem) => subTotal + subItem.Price, 0)
+        total + item.reduce((subTotal, subItem) => subTotal + subItem.Price, 0)
       );
     }, 0);
   }, [nonZeroQtyProducts]);
 
   const [isTabletView, setIsTabletView] = useState(false);
 
+  console.log(totalProduct, totalQty, totalPrice, outOfStock);
+
   useEffect(() => {
     const handleResize = () => {
       setIsTabletView(window.innerWidth >= 800 && window.innerWidth <= 1300);
     };
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
     handleResize();
 
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
 
   if (isTabletView) {
     return (
-      <div className='carousel-wrapper'>
-        <div className='carousel-container'>
-          <div className='carousel-slide-1'>
+      <div className="carousel-wrapper">
+        <div className="carousel-container">
+          <div className="carousel-slide-1">
             <h3>Total Product</h3>
             <p>{totalProduct}</p>
           </div>
-          <div className='carousel-slide-2'>
+          <div className="carousel-slide-2">
             <h3>Total Quantity</h3>
             <p>{totalQty}</p>
           </div>
-          <div className='carousel-slide-3'>
+          <div className="carousel-slide-3">
             <h3>Total Price</h3>
             <p>${totalPrice}</p>
           </div>
-          <div className='carousel-slide-4'>
+          <div className="carousel-slide-4">
             <h3>Out of Stock</h3>
             <p>{outOfStock}</p>
           </div>
@@ -82,21 +87,21 @@ const AutoCarousel = ({ products }) => {
   };
 
   return (
-    <div className='carousel-wrapper'>
-      <Slider {...settings} className='carousel-container'>
-        <div className='carousel-slide-1'>
+    <div className="carousel-wrapper">
+      <Slider {...settings} className="carousel-container">
+        <div className="carousel-slide-1">
           <h3>Total Product</h3>
           <p>{totalProduct}</p>
         </div>
-        <div className='carousel-slide-2'>
+        <div className="carousel-slide-2">
           <h3>Total Quantity</h3>
           <p>{totalQty}</p>
         </div>
-        <div className='carousel-slide-3'>
+        <div className="carousel-slide-3">
           <h3>Total Price</h3>
           <p>${totalPrice}</p>
         </div>
-        <div className='carousel-slide-4'>
+        <div className="carousel-slide-4">
           <h3>Out of Stock</h3>
           <p>{outOfStock}</p>
         </div>
@@ -105,4 +110,4 @@ const AutoCarousel = ({ products }) => {
   );
 };
 
-export default AutoCarousel;
+export default Carousel;
