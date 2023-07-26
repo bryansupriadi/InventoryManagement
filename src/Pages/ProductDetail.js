@@ -27,12 +27,15 @@ const ProductDetail = () => {
 
   const [productData, setProductData] = useState([]);
 
+  const [dataDetail, setDataDetail] = useState({
+    type: "",
+    brandName: "",
+    subCategoryName: "",
+  });
+
   const [filteredProducts, setFilteredProducts] = useState([]);
 
-  // const { Type } = filteredProducts.length > 0 ? filteredProducts[0] : "";
-
   const getLoggedIn = () => {
-    const token = localStorage.getItem("token");
     if (token) {
       setIsLoggedIn(true);
     } else {
@@ -48,6 +51,14 @@ const ProductDetail = () => {
       .then((res) => {
         console.log(res.data);
         setProductData(res.data.data);
+
+        const data = res.data.data;
+
+        setDataDetail({
+          type: data.typeProduct.type,
+          brandName: data.brandName,
+          subCategoryName: data.subCategory.subCategoryName,
+        });
       })
       .catch((err) => {
         console.log(err, err.message);
@@ -118,12 +129,12 @@ const ProductDetail = () => {
     <div className="App">
       <div className="product-detail-page-container">
         <div className="navbar-container">
-          <h1>{subCategorySlug}</h1>
+          <h1>{dataDetail.subCategoryName}</h1>
           <SideBar />
         </div>
         <div className="sub-title-product-1">
-          <h3>{productSlug}</h3>
-          <h3>{filteredProducts[0].typeProductName}</h3>
+          <h3>{dataDetail.brandName}</h3>
+          <h3>{dataDetail.type}</h3>
         </div>
         <div className="product-type">
           <ul>
