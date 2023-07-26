@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-
 import { useTable } from "react-table";
+import Moment from "moment";
 
 import SideBar from "../Components/SideBar";
 import FloatingActionDetail from "../Components/FloatingAction/FloatingActionDetail";
@@ -23,12 +23,21 @@ function ProductBrandsDetail() {
   // Kolom-kolom tabel
   const columns = useMemo(
     () => [
-      { Header: "Date", accessor: "purchaseDateProductType" },
-      { Header: "Price", accessor: "eachPriceProductType" },
-      { Header: "Type", accessor: "type" },
-      { Header: "Vendor", accessor: "vendorName" },
-      { Header: "Location", accessor: "currentLocationProductType" },
-      { Header: "Condition", accessor: "productTypeCondition" },
+      {
+        Header: "Date",
+        accessor: (row) =>
+          Moment(row.typeProduct.purchaseDateProductType)
+            .local()
+            .format("DD/MM/YYYY"),
+      },
+      { Header: "Price", accessor: "typeProduct.eachPriceProductType" },
+      { Header: "Type", accessor: "typeProduct.type" },
+      { Header: "Vendor", accessor: "typeProduct.vendor.vendorName" },
+      {
+        Header: "Location",
+        accessor: "typeProduct.currentLocationProductType",
+      },
+      { Header: "Condition", accessor: "typeProduct.productTypeCondition" },
     ],
     []
   );
@@ -58,13 +67,15 @@ function ProductBrandsDetail() {
   // get product detail
   const getProductDetail = async () => {
     await api
-      .get(`/v1/im/productTypes/`, {
+      .get(`/v1/im/products/`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
         console.log(res.data);
 
         setProduct(res.data.data);
+
+        const data = res.data.data;
       })
       .catch((err) => {
         console.log(err, err.message);
