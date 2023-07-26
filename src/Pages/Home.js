@@ -24,102 +24,56 @@ const Home = () => {
   const [product, setProduct] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState(product);
 
-  const columns = useMemo(
-    () => [
-      {
-        Header: "Name",
-        accessor: "brandName",
-      },
-      {
-        Header: "Qty",
-        accessor: "quantity",
-        // accessor: (row) => {
-        //   const product = products.find(
-        //     (item) => item.brandName === row.brandName
-        //   );
-        //   return product ? products.length : 0;
-        // },
-      },
-      {
-        Header: "Price",
-        accessor: "eachPrice",
-        // accessor: (row) => {
-        //   const product = products.find(
-        //     (item) => item.brandName === row.brandName
-        //   );
-        //   let totalPrice = 0;
-        //   if (product) {
-        //     product.forEach((subItem) => {
-        //       totalPrice += subItem.eachPrice;
-        //     });
-        //   }
-        //   return totalPrice;
-        // },
-      },
-      {
-        Header: "Group",
-        accessor: "group",
-      },
-    ],
-    []
-  );
+  const subtractYears = (date, years) => {
+    date.setFullYear(date.getFullYear() - years);
 
-  // const COLUMNS = [
-  //   {
-  //     Header: "Name",
-  //     accessor: "brandName",
-  //   },
-  //   {
-  //     Header: "Qty",
-  //     accessor: "quantity",
-  //     // accessor: (row) => {
-  //     //   const product = products.find(
-  //     //     (item) => item.brandName === row.brandName
-  //     //   );
-  //     //   return product ? products.length : 0;
-  //     // },
-  //   },
-  //   {
-  //     Header: "Price",
-  //     accessor: "eachPrice",
-  //     // accessor: (row) => {
-  //     //   const product = products.find(
-  //     //     (item) => item.brandName === row.brandName
-  //     //   );
-  //     //   let totalPrice = 0;
-  //     //   if (product) {
-  //     //     product.forEach((subItem) => {
-  //     //       totalPrice += subItem.eachPrice;
-  //     //     });
-  //     //   }
-  //     //   return totalPrice;
-  //     // },
-  //   },
-  //   {
-  //     Header: "Group",
-  //     accessor: "group",
-  //   },
-  // ];
+    return date;
+  };
+
+  const COLUMNS = [
+    {
+      Header: "Name",
+      accessor: "brandName",
+    },
+    {
+      Header: "Qty",
+      accessor: "quantity",
+    },
+    {
+      Header: "Price",
+      accessor: "eachPrice",
+    },
+    {
+      Header: "Group",
+      accessor: "groupName",
+    },
+  ];
 
   const [products, setProducts] = useState(product);
   const [keyword, setKeyword] = useState("");
+  const [columns, setColumns] = useState(COLUMNS);
 
   const filterProduct = (e) => {
     const keyword = e.target.value.toLowerCase();
+
+    console.log(keyword);
+
     const filteredProduct =
       keyword !== ""
         ? products.filter(
             (product) =>
               product.brandName.toLowerCase().indexOf(keyword) > -1 ||
-              product.group.toLowerCase().indexOf(keyword) > -1
+              product.groupName.toLowerCase().indexOf(keyword) > -1
           )
         : products;
+
+    console.log(filteredProduct);
 
     setFilteredProducts(filteredProduct);
     setKeyword(keyword);
 
     if (keyword === "") {
-      setFilteredProducts(filteredProducts);
+      setFilteredProducts(product);
       setProducts(product);
     }
   };
@@ -128,61 +82,74 @@ const Home = () => {
     setSelected(option);
 
     if (option === "Last year") {
-      const lastYear = new Date();
+      console.log("last year");
 
-      lastYear.setFullYear(lastYear.getFullYear() - 1);
+      const date = new Date();
 
-      const filtered = product.map((item) => {
-        const subData = item.filter((subItem) => {
-          const subItemDate = new Date(subItem.purchaseDate);
-          return subItemDate >= lastYear;
-        });
-        return { ...item, "Sub Data": subData };
+      const lastYear = subtractYears(date, 1);
+
+      const filtered = product.filter((item) => {
+        const itemDate = new Date(item.purchaseDate);
+        return itemDate >= lastYear;
       });
+
+      // const filtered = product.map((item) => {
+      //   const subData = item.filter((subItem) => {
+      //     const subItemDate = subItem.purchaseDate;
+
+      //     return subItemDate >= new Date(lastYear);
+      //   });
+      //   return { ...item, "Sub Data": subData };
+      // });
 
       setFilteredProducts(filtered);
       setProducts(filtered);
     } else if (option === "Last 3 years") {
-      const last3Years = new Date();
+      console.log("last 3 year");
+      const date = new Date();
 
-      last3Years.setFullYear(last3Years.getFullYear() - 3);
+      const last3Years = subtractYears(date, 3);
 
-      const filtered = product.map((item) => {
-        const subData = item.filter((subItem) => {
-          const subItemDate = new Date(subItem.purchaseDate);
-          return subItemDate >= last3Years;
-        });
-        return { ...item, "Sub Data": subData };
+      const filtered = product.filter((item) => {
+        const itemDate = new Date(item.purchaseDate);
+        return itemDate >= last3Years;
       });
+
+      // const filtered = product.map((item) => {
+      //   const subData = item.filter((subItem) => {
+      //     const subItemDate = subItem.purchaseDate;
+      //     return subItemDate >= last3Years;
+      //   });
+      //   return { ...item, "Sub Data": subData };
+      // });
 
       setFilteredProducts(filtered);
       setProducts(filtered);
     } else if (option === "Last 5 years") {
-      const last5Years = new Date();
+      console.log("last 5 year");
+      const date = new Date();
 
-      last5Years.setFullYear(last5Years.getFullYear() - 5);
+      const last5Years = subtractYears(date, 5);
 
-      const filtered = product.map((item) => {
-        const subData = item.filter((subItem) => {
-          const subItemDate = new Date(subItem.purchaseDate);
-          return subItemDate >= last5Years;
-        });
-        return { ...item, "Sub Data": subData };
+      const filtered = product.filter((item) => {
+        const itemDate = new Date(item.purchaseDate);
+        return itemDate >= last5Years;
       });
+
+      // const filtered = product.map((item) => {
+      //   const subData = item.filter((subItem) => {
+      //     const subItemDate = subItem.purchaseDate;
+      //     return subItemDate >= last5Years;
+      //   });
+      //   return { ...item, "Sub Data": subData };
+      // });
 
       setFilteredProducts(filtered);
     } else if (option === "All time") {
-      setFilteredProducts(filteredProducts);
+      setFilteredProducts(product);
       setProducts(product);
     }
   };
-
-  const data = useMemo(() => filteredProducts, [filteredProducts]);
-
-  const tableInstance = useTable({ columns, data });
-
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    tableInstance;
 
   const getLoggedIn = () => {
     if (token) {
@@ -200,9 +167,7 @@ const Home = () => {
       .then((res) => {
         console.log(res.data);
 
-        const { data } = res.data;
-
-        setProduct(data);
+        setProduct(res.data.data);
       })
       .catch((err) => {
         console.log(err, err.message);
@@ -215,32 +180,39 @@ const Home = () => {
     getLoggedIn();
     getProductData();
 
-    const updatedColumns = [...columns];
+    // const updatedColumns = [...columns];
 
-    console.log(updatedColumns);
+    // console.log(updatedColumns);
 
-    updatedColumns[1].accessor = (row) => {
-      const product = filteredProducts.find(
-        (item) => item.brandName === row.brandName
-      );
-      return product ? product.length : 0;
-    };
+    // updatedColumns[1].accessor = (row) => {
+    //   const product = filteredProducts.find(
+    //     (item) => item.brandName === row.brandName
+    //   );
+    //   return product ? product.length : 0;
+    // };
 
-    updatedColumns[2].accessor = (row) => {
-      const product = filteredProducts.find(
-        (item) => item.brandName === row.brandName
-      );
-      let totalPrice = 0;
-      if (product) {
-        product.forEach((subItem) => {
-          totalPrice += subItem.eachPrice;
-        });
-      }
-      return totalPrice;
-    };
+    // updatedColumns[2].accessor = (row) => {
+    //   const product = filteredProducts.find(
+    //     (item) => item.brandName === row.brandName
+    //   );
+    //   let totalPrice = 0;
+    //   if (product) {
+    //     product.forEach((subItem) => {
+    //       totalPrice += subItem.eachPrice;
+    //     });
+    //   }
+    //   return totalPrice;
+    // };
 
-    // setColumns(updatedColumns);
-  }, [filteredProducts, columns, navigate]);
+    setColumns(columns);
+  }, [filteredProducts, navigate]);
+
+  const data = useMemo(() => filteredProducts, [filteredProducts]);
+
+  const tableInstance = useTable({ columns, data });
+
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+    tableInstance;
 
   return isLoggedIn ? (
     <div className="App">
@@ -271,7 +243,7 @@ const Home = () => {
           </div>
         </div>
         <div className="table-home-page">
-          {products.length === 0 ? (
+          {filteredProducts.length === 0 ? (
             <p>No data available</p>
           ) : (
             <div className="scroll-table-1">
