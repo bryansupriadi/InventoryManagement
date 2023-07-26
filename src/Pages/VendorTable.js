@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-
 import { useTable } from "react-table";
+
+import Moment from "moment";
 
 import SideBar from "../Components/SideBar";
 
@@ -22,19 +23,28 @@ function VendorTable() {
 
   const columns = useMemo(
     () => [
-      { Header: "Date", accessor: "purchaseDateProductType" },
-      { Header: "Price", accessor: "eachPriceProductType" },
-      { Header: "Type", accessor: "type" },
-      { Header: "Vendor", accessor: "vendorName" },
-      { Header: "Location", accessor: "currentLocationProductType" },
-      { Header: "Condition", accessor: "productTypeCondition" },
+      {
+        Header: "Date",
+        accessor: (row) =>
+          Moment(row.typeProduct.purchaseDateProductType)
+            .local()
+            .format("DD/MM/YYYY"),
+      },
+      { Header: "Price", accessor: "typeProduct.eachPriceProductType" },
+      { Header: "Type", accessor: "typeProduct.type" },
+      { Header: "Vendor", accessor: "typeProduct.vendor.vendorName" },
+      {
+        Header: "Location",
+        accessor: "typeProduct.currentLocationProductType",
+      },
+      { Header: "Condition", accessor: "typeProduct.productTypeCondition" },
     ],
     []
   );
 
-  const handleRowClick = (id) => {
+  const handleRowClick = (id, categorySlug) => {
     navigate(
-      `/vendor-list/${product.categorySlug}/${subCategorySlug}/${productSlug}/${id}`
+      `/vendor-list/${categorySlug}/${subCategorySlug}/${productSlug}/${id}`
     );
   };
 
@@ -51,7 +61,7 @@ function VendorTable() {
 
   const getAllProducts = async () => {
     await api
-      .get(`/v1/im/productTypes?vendorSlug=${vendorSlug}`, {
+      .get(`/v1/im/products?vendorSlug=${vendorSlug}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
@@ -105,7 +115,12 @@ function VendorTable() {
                 return (
                   <tr
                     {...row.getRowProps()}
-                    onClick={() => handleRowClick(row.original._id)}
+                    onClick={() =>
+                      handleRowClick(
+                        row.original._id,
+                        row.original.categorySlug
+                      )
+                    }
                     style={{ cursor: "pointer" }}
                   >
                     {row.cells.map((cell) => (
