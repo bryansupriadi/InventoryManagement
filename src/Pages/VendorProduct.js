@@ -81,9 +81,9 @@ function VendorProduct() {
     getLoggedIn();
     getData();
 
-    setFilteredItems(data.filter((item) => item.vendorName === vendorSlug));
+    setFilteredItems(data.filter((item) => item.vendorSlug === vendorSlug));
 
-    setVendorItems(data.filter((item) => item.vendorName === vendorSlug));
+    setVendorItems(data.filter((item) => item.vendorSlug === vendorSlug));
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigate, vendorSlug]);
