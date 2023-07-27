@@ -58,14 +58,13 @@ const Home = () => {
 
     console.log(keyword);
 
-    const filteredProduct =
-      keyword !== ""
-        ? products.filter(
-            (product) =>
-              product.brandName.toLowerCase().indexOf(keyword) > -1 ||
-              product.groupName.toLowerCase().indexOf(keyword) > -1
-          )
-        : products;
+    const filteredProduct = keyword
+      ? products.filter(
+          (product) =>
+            product.brandName.toLowerCase().includes(keyword.toLowerCase()) ||
+            product.groupName.toLowerCase().includes(keyword.toLowerCase())
+        )
+      : products;
 
     console.log(filteredProduct);
 
@@ -93,15 +92,6 @@ const Home = () => {
         return itemDate >= lastYear;
       });
 
-      // const filtered = product.map((item) => {
-      //   const subData = item.filter((subItem) => {
-      //     const subItemDate = subItem.purchaseDate;
-
-      //     return subItemDate >= new Date(lastYear);
-      //   });
-      //   return { ...item, "Sub Data": subData };
-      // });
-
       setFilteredProducts(filtered);
       setProducts(filtered);
     } else if (option === "Last 3 years") {
@@ -115,14 +105,6 @@ const Home = () => {
         return itemDate >= last3Years;
       });
 
-      // const filtered = product.map((item) => {
-      //   const subData = item.filter((subItem) => {
-      //     const subItemDate = subItem.purchaseDate;
-      //     return subItemDate >= last3Years;
-      //   });
-      //   return { ...item, "Sub Data": subData };
-      // });
-
       setFilteredProducts(filtered);
       setProducts(filtered);
     } else if (option === "Last 5 years") {
@@ -135,14 +117,6 @@ const Home = () => {
         const itemDate = new Date(item.purchaseDate);
         return itemDate >= last5Years;
       });
-
-      // const filtered = product.map((item) => {
-      //   const subData = item.filter((subItem) => {
-      //     const subItemDate = subItem.purchaseDate;
-      //     return subItemDate >= last5Years;
-      //   });
-      //   return { ...item, "Sub Data": subData };
-      // });
 
       setFilteredProducts(filtered);
     } else if (option === "All time") {
