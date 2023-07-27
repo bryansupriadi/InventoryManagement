@@ -17,10 +17,13 @@ const ManageAccount = () => {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const [users, setUsers] = useState([]);
+  const [user, setUser] = useState([]);
+  const [users, setUsers] = useState(user);
+  const [filteredUsers, setFilteredUsers] = useState(user);
+
   const [keyword, setKeyword] = useState("");
 
-  const data = useMemo(() => users, [users]);
+  const data = useMemo(() => filteredUsers, [filteredUsers]);
 
   const columns = useMemo(
     () => [
@@ -52,19 +55,25 @@ const ManageAccount = () => {
 
     console.log(keyword);
 
-    const filteredUser =
-      keyword !== ""
-        ? users.filter(
-            (user) =>
-              user.username.toLocaleLowerCase().indexOf(keyword) > -1 ||
-              user.emailAddress.toLocaleLowerCase().indexOf(keyword) > -1
-          )
-        : users;
+    const filteredUser = keyword
+      ? users.filter(
+          (user) =>
+            user.username.toLocaleLowerCase().includes(keyword.toLowerCase()) ||
+            user.emailAddress
+              .toLocaleLowerCase()
+              .includes(keyword.toLowerCase())
+        )
+      : users;
 
     console.log(filteredUser);
 
-    setUsers(filteredUser);
+    setFilteredUsers(filteredUser);
     setKeyword(keyword);
+
+    if (keyword === "") {
+      setFilteredUsers(user);
+      setUsers(user);
+    }
   };
 
   const handleRowClick = (user, e) => {
@@ -140,13 +149,13 @@ const ManageAccount = () => {
   const getUsers = async () => {
     if (token) {
       await api
-        .get("/v1/im/users/", {
+        .get("/v1/im/users?role=Admin", {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((res) => {
           console.log(res.data);
 
-          setUsers(res.data.data);
+          setUser(res.data.data);
         })
         .catch((err) => {
           console.log(err, err.message);
@@ -159,7 +168,7 @@ const ManageAccount = () => {
 
     getLoggedIn();
     getUsers();
-  }, [navigate]);
+  }, [filteredUsers, navigate]);
 
   const Popup = ({ message }) => {
     return (
