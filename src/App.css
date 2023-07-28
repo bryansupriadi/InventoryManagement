@@ -1158,8 +1158,7 @@ ul {
   display: flex;
   justify-content: flex-end;
   align-items: flex-end;
-  margin-bottom: 8vh;
-  margin-left: 50vh;
+  margin-bottom: -26vh;
 }
 
 .floating-action-product-container {
@@ -1179,9 +1178,10 @@ ul {
     position: fixed;
   }
 
-  .floating-action-vendor-container-1 {
-    margin-bottom: 60px;
-    margin-right: 10px;
+  .floating-action-vendor-container {
+    margin-bottom: auto;
+    bottom: 60px;
+    right: 10px;
     position: fixed;
   }
 
@@ -2197,7 +2197,7 @@ ul {
     position: fixed;
   }
 
-  .floating-action-vendor-container-1 {
+  .floating-action-vendor-container-1{
     margin-bottom: 60px;
     margin-right: 10px;
     position: fixed;
@@ -2212,14 +2212,15 @@ ul {
 
 @media (min-width: 401px) and (max-width: 799px) {
   .floating-action-button-container {
-    bottom: 60px; 
-    right: 10px; 
+    bottom: 60px;
+    right: 10px;
     position: fixed;
   }
 
-  .floating-action-vendor-container-1 {
-    margin-bottom: 60px;
-    margin-right: 10px;
+  .floating-action-vendor-container {
+    margin-bottom: auto;
+    bottom: 60px;
+    right: 10px;
     position: fixed;
   }
 
