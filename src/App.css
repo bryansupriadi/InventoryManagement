@@ -1185,7 +1185,6 @@ ul {
   justify-content: flex-end;
   align-items: flex-end;
   margin-bottom: -26vh;
-  margin-left: 50vh;
 }
 
 .floating-action-product-container {
@@ -1205,9 +1204,10 @@ ul {
     position: fixed;
   }
 
-  .floating-action-vendor-container-1{
-    margin-bottom: 60px;
-    margin-right: 10px;
+  .floating-action-vendor-container{
+    margin-bottom: auto;
+    bottom: 60px;
+    right: 10px;
     position: fixed;
   }
 
@@ -2256,9 +2256,10 @@ border-radius: 5px;
     position: fixed;
   }
 
-  .floating-action-vendor-container-1{
-    margin-bottom: 60px;
-    margin-right: 10px;
+  .floating-action-vendor-container{
+    margin-bottom: auto;
+    bottom: 60px;
+    right: 10px;
     position: fixed;
   }
 
