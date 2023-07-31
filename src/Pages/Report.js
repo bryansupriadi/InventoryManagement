@@ -6,7 +6,7 @@ import product from '../Components/data/product';
 
 function Report() {
   const [selected, setSelected] = useState('All time');
-  const [filteredProducts, setFilteredProducts] = useState(product);
+  const [filteredProducts, setFilteredProducts] = useState(product);3
 
   const setSelectedOption = (option) => {
     setSelected(option);
