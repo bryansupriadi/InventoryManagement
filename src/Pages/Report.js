@@ -6,7 +6,7 @@ import product from '../Components/data/product';
 
 function Report() {
   const [selected, setSelected] = useState('All time');
-  const [filteredProducts, setFilteredProducts] = useState(product);3
+  const [filteredProducts, setFilteredProducts] = useState(product);
 
   const setSelectedOption = (option) => {
     setSelected(option);
@@ -71,11 +71,6 @@ function Report() {
     },
   ];
 
-  const totalGoodFormatted = totalGood.toLocaleString();
-  const totalBadFormatted = totalBad.toLocaleString();
-  const percentGoodFormatted = ((totalGood / totalQty) * 100).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  const percentBadFormatted = ((totalBad / totalQty) * 100).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-
 
   return (
     <div className='App'>
@@ -103,14 +98,14 @@ function Report() {
             <div className='condition-good-table'>
               <h4>Good</h4>
               <p>
-                {totalGoodFormatted} ({percentGoodFormatted}%)
+                {totalGood} ({percentGood}%)
               </p>
             </div>
             <div className='condition-divider'></div>
             <div className='condition-bad-table'>
               <h4>Bad</h4>
               <p>
-                {totalBadFormatted} ({percentBadFormatted}%)
+                {totalBad} ({percentBad}%)
               </p>
             </div>
           </div>
