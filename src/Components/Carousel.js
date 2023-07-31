@@ -1,4 +1,5 @@
 import React, { useMemo, useEffect, useState } from "react";
+
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -30,7 +31,8 @@ const Carousel = ({ products }) => {
   const totalPrice = useMemo(() => {
     return nonZeroQtyProducts.reduce((total, item) => {
       return (
-        total + item.reduce((subTotal, subItem) => subTotal + subItem.Price, 0)
+        total +
+        item.reduce((subTotal, subItem) => subTotal + subItem.eachPrice, 0)
       );
     }, 0);
   }, [nonZeroQtyProducts]);
