@@ -11,7 +11,7 @@ function FloatingActionDetail({ group, item, subCategory, brandName }) {
 
 
   return (
-    <div className="floating-action-vendor-container">
+    <div className="floating-action-detail-container">
       <button className="floating-action-button" onClick={toggleOptions}>
         <span>+</span>
       </button>

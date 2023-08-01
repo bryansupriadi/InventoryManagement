@@ -172,7 +172,7 @@ const ManageAccount = () => {
           {users.length === 0 ? (
             <p>No data available</p>
           ) : (
-            <div className="scroll-table">
+            <div className="scroll-table-account">
             <div className="table-header">
             <table {...getTableProps()}>
               <thead>
