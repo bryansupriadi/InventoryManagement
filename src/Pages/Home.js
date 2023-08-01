@@ -9,8 +9,6 @@ import SideBar from "../Components/SideBar";
 import Carousel from "../Components/Carousel";
 import Dropdown from "../Components/Dropdown";
 
-// import SearchBar from "../Components/SearchBar";
-
 import api from "../api";
 
 const Home = () => {
@@ -37,11 +35,29 @@ const Home = () => {
     },
     {
       Header: "Qty",
-      accessor: "quantity",
+      accessor: (row) => {
+        const product = products.find(
+          (item) => item.brandName === row.brandName
+        );
+
+        return product ? product.quantity : 0;
+      },
     },
     {
       Header: "Price",
-      accessor: "eachPrice",
+      accessor: (row) => {
+        const product = products.find(
+          (item) => item.brandName === row.brandName
+        );
+
+        let totalPrice = 0;
+        if (product) {
+          product.forEach((subItem) => {
+            totalPrice += subItem.eachPrice;
+          });
+        }
+        return totalPrice;
+      },
     },
     {
       Header: "Group",
@@ -96,6 +112,7 @@ const Home = () => {
       setProducts(filtered);
     } else if (option === "Last 3 years") {
       console.log("last 3 year");
+
       const date = new Date();
 
       const last3Years = subtractYears(date, 3);
@@ -154,31 +171,30 @@ const Home = () => {
     getLoggedIn();
     getProductData();
 
-    // const updatedColumns = [...columns];
+    const updatedColumns = [...columns];
 
-    // console.log(updatedColumns);
+    updatedColumns[1].accessor = (row) => {
+      const product = filteredProducts.find(
+        (item) => item.brandName === row.brandName
+      );
 
-    // updatedColumns[1].accessor = (row) => {
-    //   const product = filteredProducts.find(
-    //     (item) => item.brandName === row.brandName
-    //   );
-    //   return product ? product.length : 0;
-    // };
+      return product ? product.quantity : 0;
+    };
 
-    // updatedColumns[2].accessor = (row) => {
-    //   const product = filteredProducts.find(
-    //     (item) => item.brandName === row.brandName
-    //   );
-    //   let totalPrice = 0;
-    //   if (product) {
-    //     product.forEach((subItem) => {
-    //       totalPrice += subItem.eachPrice;
-    //     });
-    //   }
-    //   return totalPrice;
-    // };
+    updatedColumns[2].accessor = (row) => {
+      const product = filteredProducts.find(
+        (item) => item.brandName === row.brandName
+      );
 
-    setColumns(columns);
+      let totalPrice = 0;
+
+      if (product) {
+        totalPrice += row.eachPrice;
+      }
+      return totalPrice;
+    };
+
+    setColumns(updatedColumns);
   }, [filteredProducts, navigate]);
 
   const data = useMemo(() => filteredProducts, [filteredProducts]);
