@@ -19,42 +19,42 @@ function Report() {
   const [selected, setSelected] = useState("All time");
   const [filteredProducts, setFilteredProducts] = useState(product);
 
+  const subtractYears = (date, years) => {
+    date.setFullYear(date.getFullYear() - years);
+
+    return date;
+  };
+
   const setSelectedOption = (option) => {
     setSelected(option);
     let filtered = [];
 
     if (option === "Last year") {
-      const lastYear = new Date();
-      lastYear.setFullYear(lastYear.getFullYear() - 1);
+      const date = new Date();
+
+      const lastYear = subtractYears(date, 1);
+
       filtered = product.filter((item) => {
-        const subData = item;
-        return subData.some((subItem) => {
-          const date = new Date(subItem.purchaseDate);
-          return date >= lastYear;
-        });
-        return { ...item, "Sub Data": subData };
+        const itemDate = new Date(item.purchaseDate);
+        return itemDate >= lastYear;
       });
     } else if (option === "Last 3 years") {
-      const last3Years = new Date();
-      last3Years.setFullYear(last3Years.getFullYear() - 3);
+      const date = new Date();
+
+      const last3Year = subtractYears(date, 3);
+
       filtered = product.filter((item) => {
-        const subData = item;
-        return subData.some((subItem) => {
-          const date = new Date(subItem.purchaseDate);
-          return date >= last3Years;
-        });
-        return { ...item, "Sub Data": subData };
+        const itemDate = new Date(item.purchaseDate);
+        return itemDate >= last3Year;
       });
     } else if (option === "Last 5 years") {
-      const last5Years = new Date();
-      last5Years.setFullYear(last5Years.getFullYear() - 5);
+      const date = new Date();
+
+      const last5Year = subtractYears(date, 5);
+
       filtered = product.filter((item) => {
-        const subData = item;
-        return subData.some((subItem) => {
-          const date = new Date(subItem.purchaseDate);
-          return date >= last5Years;
-        });
-        return { ...item, "Sub Data": subData };
+        const itemDate = new Date(item.purchaseDate);
+        return itemDate >= last5Year;
       });
     } else if (option === "All time") {
       filtered = product;
@@ -87,18 +87,18 @@ function Report() {
 
   const percentBad = ((totalBad / totalQty) * 100).toFixed(2);
 
-  // const data = [
-  //   {
-  //     title: "Good",
-  //     value: totalGood,
-  //     color: "#3456D0",
-  //   },
-  //   {
-  //     title: "Bad",
-  //     value: totalBad,
-  //     color: "#2C428D",
-  //   },
-  // ];
+  const pieData = [
+    {
+      title: "Good",
+      value: totalGood,
+      color: "#3456D0",
+    },
+    {
+      title: "Bad",
+      value: totalBad,
+      color: "#2C428D",
+    },
+  ];
 
   const getLoggedIn = () => {
     const token = localStorage.getItem("token");
@@ -109,9 +109,9 @@ function Report() {
     }
   };
 
-  const getReportData = () => {
+  const getProduct = () => {
     api
-      .get("/v1/im/products/report-data", {
+      .get("/v1/im/products/", {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
@@ -127,7 +127,7 @@ function Report() {
     document.title = "Inventory Management - Report";
 
     getLoggedIn();
-    // getReportData();
+    getProduct();
   }, []);
 
   return isLoggedIn ? (
@@ -171,7 +171,7 @@ function Report() {
         <div className="chart-container">
           <PieChart
             className="pie-chart"
-            data={product}
+            data={pieData}
             lengthAngle={360}
             label={({ dataEntry }) => {
               const percent =
