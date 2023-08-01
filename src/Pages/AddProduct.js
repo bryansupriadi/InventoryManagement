@@ -153,12 +153,12 @@ const AddProductForm = () => {
     }
 
     if (!formValues.conditionGood || !formValues.conditionBad) {
-      newErrors.condition = "Please enter the condition of product!";
+      newErrors.conditionProduct = "Please enter the condition of product!";
     } else if (
       parseInt(formValues.conditionGood) + parseInt(formValues.conditionBad) !==
       parseInt(formValues.quantity)
     ) {
-      newErrors.condition =
+      newErrors.conditionProduct =
         "The total of good and bad condition must be equal to quantity!";
     }
 
@@ -495,8 +495,10 @@ const AddProductForm = () => {
                   />
                 </div>
               </label>
-              {errors.condition && (
-                <div className="error-message-ctgry">{errors.condition}</div>
+              {errors.conditionProduct && (
+                <div className="error-message-ctgry">
+                  {errors.conditionProduct}
+                </div>
               )}
             </div>
             <button type="submit" className="btn-form">
