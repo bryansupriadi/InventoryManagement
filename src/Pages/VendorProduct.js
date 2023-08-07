@@ -121,7 +121,9 @@ function VendorProduct() {
                     : itemStyle
                 }
                 className="slider-sub-category"
-                onClick={() => handleSubCategoryClick(item)}
+                onClick={() =>
+                  handleSubCategoryClick(item.subCategory.subCategoryName)
+                }
               >
                 {item.subCategory.subCategoryName}
               </div>
