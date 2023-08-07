@@ -208,7 +208,7 @@ const Home = () => {
     <div className="App">
       <div className="home-page-container">
         <div className="navbar-container">
-          <img src={logo} width="40" height="40" alt="" />
+          <img src={logo} width="40" height="40" alt="logo-im" />
           <SideBar />
         </div>
         <div className="dropdown-home">
