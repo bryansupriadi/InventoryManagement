@@ -111,8 +111,8 @@ function VendorProduct() {
 
         <Carousel responsive={responsive} showDots={false} arrows={false}>
           {data
-            .sort((a, b) => a.localeCompare(b))
-            .map((item, index) => (
+            .sort((a, b) => a._id.localeCompare(b))
+            .map((item) => (
               <div
                 key={item._id}
                 style={
