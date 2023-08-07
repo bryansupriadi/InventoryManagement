@@ -1,12 +1,18 @@
-import React, { useState } from 'react';
-import { Link, useLocation, useParams } from 'react-router-dom';
-import QRCode from 'qrcode.react';
+import React, { useState } from "react";
+import { Link, useLocation, useParams } from "react-router-dom";
+import QRCode from "qrcode.react";
 
-function FloatingActionProduct(props) {
-  const { id: urlId } = useParams();
+import api from "../../api";
+
+function FloatingActionProduct() {
+  const { id } = useParams();
+
+  const token = localStorage.getItem("token");
+
   const [showOptions, setShowOptions] = useState(false);
   const [showPopupQR, setShowPopupQR] = useState(false);
   const [showPopupDelete, setShowPopupDelete] = useState(false);
+
   const location = useLocation();
   const { pathname } = location;
 
@@ -20,12 +26,26 @@ function FloatingActionProduct(props) {
 
   const togglePopupDelete = () => {
     setShowPopupDelete(!showPopupDelete);
-  }
+  };
 
-  const handleDelete = () => {
-    console.log('Delete product with ID:', urlId);
+  const handleDelete = async () => {
+    console.log("Delete product with ID:", id);
     togglePopupDelete();
-  }
+
+    setShowPopupDelete(!showPopupDelete);
+
+    // api
+    await api
+      .delete(`/v1/im/products/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err, err.message);
+      });
+  };
 
   const isVendorListPath = pathname.match(/^\/vendor-list\//);
 
@@ -41,25 +61,33 @@ function FloatingActionProduct(props) {
       </button>
       {showOptions && (
         <div className="floating-action-button-options">
-          <div className='fab-option-container'>
-          <span onClick={togglePopupDelete}>
-            Delete Product
-          </span>
-          <button className='fab-option' onClick={togglePopupDelete}>
-          3
-          </button>
-          </div>
-          <div className='fab-option-container'>
-            <span>
-              <Link to={`${pathname}/edit-product`} style={{ textDecoration: 'none', color: '#002938' }}>Edit Product Type</Link>
-            </span>
-            <button className='fab-option'>
-              <Link to={`${pathname}/edit-product`} style={{ textDecoration: 'none', color: '#002938' }}>2</Link>
+          <div className="fab-option-container">
+            <span onClick={togglePopupDelete}>Delete Product</span>
+            <button className="fab-option" onClick={togglePopupDelete}>
+              3
             </button>
           </div>
-          <div className='fab-option-container'>
+          <div className="fab-option-container">
+            <span>
+              <Link
+                to={`${pathname}/edit-product`}
+                style={{ textDecoration: "none", color: "#002938" }}
+              >
+                Edit Product Type
+              </Link>
+            </span>
+            <button className="fab-option">
+              <Link
+                to={`${pathname}/edit-product`}
+                style={{ textDecoration: "none", color: "#002938" }}
+              >
+                2
+              </Link>
+            </button>
+          </div>
+          <div className="fab-option-container">
             <span onClick={togglePopupQR}>Generate ID</span>
-            <button className='fab-option' onClick={togglePopupQR}>
+            <button className="fab-option" onClick={togglePopupQR}>
               1
             </button>
           </div>
@@ -73,12 +101,16 @@ function FloatingActionProduct(props) {
             </div>
           )}
           {showPopupDelete && (
-            <div className='popup-delete-container'>
-            <h3>Are you sure you want to delete this product?</h3>
-            <div className="button-container">
-              <button className="cancel-button" onClick={togglePopupDelete}>Cancel</button>
-              <button className="delete-button" onClick={handleDelete}>Delete</button>
-            </div>
+            <div className="popup-delete-container">
+              <h3>Are you sure you want to delete this product?</h3>
+              <div className="button-container">
+                <button className="cancel-button" onClick={togglePopupDelete}>
+                  Cancel
+                </button>
+                <button className="delete-button" onClick={handleDelete}>
+                  Delete
+                </button>
+              </div>
             </div>
           )}
         </div>
