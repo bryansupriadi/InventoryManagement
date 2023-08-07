@@ -44,6 +44,10 @@ const router = createBrowserRouter([
     path: "/sign-in",
     element: <SignIn/>,
   },
+  // {
+  //   path: "/super-admin",
+  //   element: <SASignIn/>,
+  // },
   {
     path: "/otp",
     element: <Otp/>,

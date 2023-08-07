@@ -3,10 +3,8 @@ import FloatingActionCategory from '../Components/FloatingAction/FloatingActionC
 import SideBar from '../Components/SideBar';
 import SliderActive from '../Components/Slider/SliderActive';
 
-
-
-
 function ActiveCategory() {
+  
   return (
     <div className='App'>
         <div className='active-page-container'>

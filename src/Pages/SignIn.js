@@ -60,6 +60,7 @@ function SignIn() {
                 <option selected>Choose your role</option>
                 <option value="User">User</option>
                 <option value="Admin">Admin</option>
+                <option value="Super Admin">Super Admin</option>
               </select>
             </div>
             <div className="email-form">
