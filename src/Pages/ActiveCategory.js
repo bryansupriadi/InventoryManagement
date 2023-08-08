@@ -34,6 +34,7 @@ function ActiveCategory() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const [subCategoryData, setSubCategoryData] = useState([]);
+  const [filteredItems, setFilteredItems] = useState([]);
 
   const getLoggedIn = () => {
     if (token) {
@@ -45,9 +46,8 @@ function ActiveCategory() {
 
   const getAllSubCategoryByGroup = async () => {
     await api
-      .get("/v1/im/subCategories", {
+      .get(`/v1/im/subCategories?groupSlug=active`, {
         headers: { Authorization: `Bearer ${token}` },
-        params: { groupSlug: "active" },
       })
       .then((res) => {
         console.log(res.data);
@@ -63,7 +63,6 @@ function ActiveCategory() {
     document.title = "Inventory Management - Active Category";
 
     getLoggedIn();
-
     getAllSubCategoryByGroup();
   }, [navigate]);
 
