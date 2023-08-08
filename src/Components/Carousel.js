@@ -39,8 +39,6 @@ const Carousel = ({ products }) => {
 
   const [isTabletView, setIsTabletView] = useState(false);
 
-  console.log(totalProduct, totalQty, totalPrice, outOfStock);
-
   useEffect(() => {
     const handleResize = () => {
       setIsTabletView(window.innerWidth >= 800 && window.innerWidth <= 1300);
