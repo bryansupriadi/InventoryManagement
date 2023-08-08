@@ -34,7 +34,7 @@ function ProductSeeAll() {
 
   const getAllProducts = async () => {
     await api
-      .get(`/v1/im/products?categorySlug=${categorySlug}`, {
+      .get(`/v1/im/products?category.categorySlug=${categorySlug}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
