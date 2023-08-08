@@ -110,8 +110,8 @@ function VendorProduct() {
         </div>
 
         <Carousel responsive={responsive} showDots={false} arrows={false}>
-          {data
-            .sort((a, b) => a._id.localeCompare(b))
+          {filteredItems
+            .sort((a, b) => a._id.localeCompare(b._id))
             .map((item) => (
               <div
                 key={item._id}
@@ -131,9 +131,9 @@ function VendorProduct() {
         </Carousel>
 
         <div className="vendor-content-container">
-          {data.length > 0 ? (
+          {vendorItems.length > 0 ? (
             <>
-              {data.map((info) => (
+              {vendorItems.map((info) => (
                 <ul className="list-brands-container">
                   <li key={`${info.brandName}-${info.eachPrice}`}>
                     <Link
