@@ -16,10 +16,6 @@ function ProductSeeAll() {
   const [products, setProducts] = useState([]);
   const [selectedSubCategory, setSelectedSubCategory] = useState([]);
 
-  const subCategory = products.map((product) => product.subCategorySlug);
-
-  console.log(subCategory);
-
   const handleSubCategoryClick = (subCategory) => {
     setSelectedSubCategory(subCategory);
   };
