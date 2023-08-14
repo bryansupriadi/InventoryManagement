@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SideBar from '../Components/SideBar';
 import Select from 'react-select';
 
@@ -6,6 +6,8 @@ function AddProductType() {
 
   const [productId, setProductId] =useState('');
   const [errors, setErrors] = useState({});
+  const [showPopupSuccess, setShowPopupSuccess] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('')
 
   const [formValues, setFormValues] = useState({
     type: '',
@@ -30,6 +32,18 @@ function AddProductType() {
       [name]: value,
     }));
   };
+
+  const resetForm = () => {
+    setFormValues((prevState) => ({ ...prevState, type: '' })) 
+    setFormValues((prevState) => ({ ...prevState, vendor: '' })) 
+    setFormValues((prevState) => ({ ...prevState, purchaseDate: '' })) 
+    setFormValues((prevState) => ({ ...prevState, quantity: '' })) 
+    setFormValues((prevState) => ({ ...prevState, eachPrice: '' })) 
+    setFormValues((prevState) => ({ ...prevState, currentLocation: '' })) 
+    setFormValues((prevState) => ({ ...prevState, condition: '' }))
+    setFormValues((prevState) => ({ ...prevState, conditionGood: '' })) 
+    setFormValues((prevState) => ({ ...prevState, conditionBad: '' })) 
+  }
 
   const handleSelectChange = (name, selectedOption) => {
     setFormValues((prevValues) => ({
@@ -92,10 +106,34 @@ function AddProductType() {
     if (Object.keys(newErrors).length === 0) {
       setErrors({});
       setProductId((prevId) => prevId + 1)
+      setSuccessMessage('Product Type successfully added!');
+      setShowPopupSuccess(true);
+      resetForm();
+      setTimeout(() => {
+        setShowPopupSuccess(false);
+      },3500);
     } else{
       setErrors(newErrors);
+      setSuccessMessage('');
     }
   };
+
+    useEffect(() => {
+    if (showPopupSuccess) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [showPopupSuccess]);
+
+  const Popup = ({ message }) => {
+    return (
+      <div className="popup-success">
+        <div className="popup-success-content">
+          <div className="popup-success-message">{message}</div>
+        </div>
+      </div>
+    );
+  };
+
 
   return (
     <div className='App'>
@@ -203,6 +241,11 @@ function AddProductType() {
             </div>
           </form>
         </div>
+        {showPopupSuccess && (
+          <Popup
+          message={successMessage}
+          />
+        )}    
       </div>
     </div>
   );
