@@ -15,6 +15,20 @@ function OtpSuccess() {
   const [userData, setUserData] = useState([]);
 
   const fontWeight = "bold";
+  const location = useLocation();
+
+  // Mengekstrak email dari parameter URL
+  const searchParams = new URLSearchParams(location.search);
+  const email = searchParams.get("email");
+
+  // Fungsi untuk mengarahkan ke halaman yang sesuai berdasarkan alamat email
+  const redirectToPage = () => {
+    if (email === "bryansupriadi@gmail.com") {
+      return "/manage-account";
+    } else {
+      return "/home";
+    }
+  };
 
   const getLoggedIn = () => {
     if (token) {

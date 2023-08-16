@@ -199,7 +199,7 @@ function Otp() {
         </div>
         {showPopupResend && (
           <div className="popup">
-            <div className="popup-box">
+            <div className="popup-box-resend">
               <h4>Code Resend!</h4>
               <h6>Please check your email for the new OTP Code</h6>
             </div>

@@ -15,6 +15,8 @@ function AddProductType() {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [errors, setErrors] = useState({});
+  const [showPopupSuccess, setShowPopupSuccess] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
 
   const [formValues, setFormValues] = useState({
     type: "",
@@ -39,6 +41,18 @@ function AddProductType() {
       ...prevValues,
       [name]: value,
     }));
+  };
+
+  const resetForm = () => {
+    setFormValues((prevState) => ({ ...prevState, type: "" }));
+    setFormValues((prevState) => ({ ...prevState, vendor: "" }));
+    setFormValues((prevState) => ({ ...prevState, purchaseDate: "" }));
+    setFormValues((prevState) => ({ ...prevState, quantity: "" }));
+    setFormValues((prevState) => ({ ...prevState, eachPrice: "" }));
+    setFormValues((prevState) => ({ ...prevState, currentLocation: "" }));
+    setFormValues((prevState) => ({ ...prevState, condition: "" }));
+    setFormValues((prevState) => ({ ...prevState, conditionGood: "" }));
+    setFormValues((prevState) => ({ ...prevState, conditionBad: "" }));
   };
 
   const handleSelectChange = (name, selectedOption) => {
@@ -299,6 +313,7 @@ function AddProductType() {
             </div>
           </form>
         </div>
+        {showPopupSuccess && <Popup message={successMessage} />}
       </div>
     </div>
   ) : (

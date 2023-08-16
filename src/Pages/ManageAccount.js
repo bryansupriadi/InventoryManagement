@@ -97,22 +97,24 @@ const ManageAccount = () => {
 
   const handleChange = (e, id) => {
     const newRole = e.target.value;
-
     handleChangeRole(id, newRole);
 
-    setUsers(users.map((v) => (v._id === id ? { ...v, role: newRole } : v)));
+    setFilteredUsers(
+      users.map((v) => (v._id === id ? { ...v, role: newRole } : v))
+    );
   };
 
   const handleChangeRole = (id, newRole) => {
     const updatedUsers = users.map((user) =>
       user._id === id ? { ...user, role: newRole } : user
     );
-
-    setUsers(updatedUsers);
+    setFilteredUsers(updatedUsers);
     setHasChanges(true);
   };
 
   const handleSubmit = async (id, newRole) => {
+    console.log(id, newRole);
+
     await api
       .patch(
         `/v1/im/users/${id}`,
@@ -208,10 +210,10 @@ const ManageAccount = () => {
         </div>
 
         <div className="user-list-container">
-          {users.length === 0 ? (
+          {filteredUsers.length === 0 ? (
             <p>No data available</p>
           ) : (
-            <div className="scroll-table">
+            <div className="scroll-table-account">
               <div className="table-header">
                 <table {...getTableProps()}>
                   <thead>
