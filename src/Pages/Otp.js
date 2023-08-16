@@ -21,8 +21,8 @@ function Otp() {
   const [showPopupResend, setShowPopupResend] = useState(false);
   // const [showBorder, setShowBorder] = useState(false);
 
-  const handleChange = (event, index) => {
-    const { value } = event.target;
+  const handleChange = (e, index) => {
+    const { value } = e.target;
     const newOTP = [...otp];
     newOTP[index] = value;
     setOTP(newOTP);
@@ -31,36 +31,21 @@ function Otp() {
     }
   };
 
-  const handleKeyDown = (event, index) => {
-    if (event.key === "Backspace" && index > 0) {
+  const handleKeyDown = (e, index) => {
+    if (e.key === "Backspace" && index > 0) {
       const newOTP = [...otp];
       newOTP[index - 1] = "";
       setOTP(newOTP);
       refs[index - 1].current.focus();
-    } else if (event.key === "ArrowLeft" && index > 0) {
+    } else if (e.key === "ArrowLeft" && index > 0) {
       refs[index - 1].current.focus();
-    } else if (event.key === "ArrowRight" && index < otp.length - 1) {
+    } else if (e.key === "ArrowRight" && index < otp.length - 1) {
       refs[index + 1].current.focus();
     }
   };
 
-  // useEffect(()=>{
-
-  //   let timeoutId;
-
-  //       if(timer > 0){
-  //           timeoutId = setTimeout(() => {
-  //             setTimer(timer - 1);
-  //           }, 1000)
-  //       }
-  //       else{
-  //         setShowPopup(false);
-  //       }
-  //       return () => clearTimeout(timeoutId);
-  // }, [timer, disabled]);
-
-  const handleResend = async (event) => {
-    event.preventDefault();
+  const handleResend = async (e) => {
+    e.preventDefault();
 
     console.log("Sending request....");
 
@@ -87,6 +72,106 @@ function Otp() {
       });
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    console.log("Sending request....");
+    console.log(otp);
+
+    await api
+      .post("/v1/im/users/verified", { otp })
+      .then((res) => {
+        console.log(res.data);
+        console.log(res.data.msg);
+
+        localStorage.setItem("token", res.data.token);
+
+        setIsInvalid(false);
+        navigate("/otp-successful");
+      })
+      .catch((err) => {
+        console.log(err, err.message);
+
+        setIsInvalid(true);
+        setShowPopupInvalid(true);
+        setTimeout(() => setShowPopupInvalid(false), 4000);
+        // showPopupWithTimer();
+        setShowPopupInvalid(true);
+        setOTP(["", "", "", ""]);
+        setFailedAttempts(failedAttempts + 1);
+        if (failedAttempts >= 3) {
+          navigate("/otp-failed");
+        }
+      });
+
+    // if (!otp.join("") || !correctOTP.join("")) {
+    //   setIsInvalid(true);
+    //   setShowPopupInvalid(true);
+    //   setTimeout(() => setShowPopupInvalid(false), 4000);
+    //   // showPopupWithTimer();
+    //   setShowPopupInvalid(true);
+    //   setOTP(["", "", "", ""]);
+    //   setFailedAttempts(failedAttempts + 1);
+    //   if (failedAttempts >= 3) {
+    //     navigate("/otp-failed");
+    //   }
+    // } else {
+    //   await api
+    //     .post("/v1/im/users/verified", { otp })
+    //     .then((res) => {
+    //       console.log(res.data);
+    //       console.log(res.data.msg);
+
+    //       localStorage.setItem("token", res.data.token);
+
+    //       setIsInvalid(false);
+    //       navigate("/otp-successful");
+    //     })
+    //     .catch((err) => {
+    //       console.log(err, err.message);
+
+    //       setIsInvalid(true);
+    //       setShowPopupInvalid(true);
+    //       setTimeout(() => setShowPopupInvalid(false), 4000);
+    //       // showPopupWithTimer();
+    //       setShowPopupInvalid(true);
+    //       setOTP(["", "", "", ""]);
+    //       setFailedAttempts(failedAttempts + 1);
+    //       if (failedAttempts >= 3) {
+    //         navigate("/otp-failed");
+    //       }
+    //     });
+    // }
+  };
+
+  // const handleFocus = (event) => {
+  //   event.target.style.border = "2px solid red";
+  //   setTimeout(() => {event.target.border = ""
+  // }, 1000);
+  // };
+
+  useEffect(() => {
+    document.title = "Inventory Management - OTP";
+    if (resendAttemps === 1) {
+      setFailedAttempts(0);
+    }
+  }, [resendAttemps]);
+
+  // useEffect(()=>{
+
+  //   let timeoutId;
+
+  //       if(timer > 0){
+  //           timeoutId = setTimeout(() => {
+  //             setTimer(timer - 1);
+  //           }, 1000)
+  //       }
+  //       else{
+  //         setShowPopup(false);
+  //       }
+  //       return () => clearTimeout(timeoutId);
+  // }, [timer, disabled]);
+
   // useEffect(() => {
   //   let intervalId;
 
@@ -112,54 +197,6 @@ function Otp() {
   //     clearInterval(intervalId);
   //   }, 5000);
   // };
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    console.log("Sending request....");
-    console.log(otp);
-
-    if (!otp.join("") || !correctOTP.join("")) {
-      setIsInvalid(true);
-      setShowPopupInvalid(true);
-      setTimeout(() => setShowPopupInvalid(false), 4000);
-      // showPopupWithTimer();
-      setShowPopupInvalid(true);
-      setOTP(["", "", "", ""]);
-      setFailedAttempts(failedAttempts + 1);
-      if (failedAttempts >= 3) {
-        navigate("/otp-failed");
-      }
-    } else {
-      await api
-        .post("/v1/im/users/verified", { otp })
-        .then((res) => {
-          console.log(res.data);
-          console.log(res.data.msg);
-
-          localStorage.setItem("token", res.data.token);
-
-          setIsInvalid(false);
-          navigate("/otp-successful");
-        })
-        .catch((err) => {
-          console.log(err, err.message);
-        });
-    }
-  };
-
-  // const handleFocus = (event) => {
-  //   event.target.style.border = "2px solid red";
-  //   setTimeout(() => {event.target.border = ""
-  // }, 1000);
-  // };
-
-  useEffect(() => {
-    document.title = "Inventory Management - OTP";
-    if (resendAttemps === 1) {
-      setFailedAttempts(0);
-    }
-  }, [resendAttemps]);
 
   const fontWeight = "bold";
 
@@ -192,7 +229,7 @@ function Otp() {
         <div className="resend-otp">
           <h3>
             Didn't receive the code?
-            <a href="/otp" disabled={disabled} onClick={handleResend}>
+            <a disabled={disabled} onClick={handleResend}>
               Resend Code
             </a>
           </h3>
