@@ -128,6 +128,9 @@ function AddProductType() {
         console.log(res.data);
         setErrors({});
 
+        setSuccessMessage(res.data.msg);
+        setShowPopupSuccess(true);
+
         // redirect to product list
         navigate(
           `/${groupSlug}-category/${categorySlug}/${subCategorySlug}/${productSlug}`
@@ -170,6 +173,16 @@ function AddProductType() {
   }, [navigate]);
 
   console.log(formValues);
+
+  const Popup = ({ message }) => {
+    return (
+      <div className="popup-success">
+        <div className="popup-success-content">
+          <div className="popup-success-message">{message}</div>
+        </div>
+      </div>
+    );
+  };
 
   return isLoggedIn ? (
     <div className="App">
