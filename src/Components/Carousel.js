@@ -63,11 +63,11 @@ const Carousel = ({ products }) => {
 
   const totalProduct = products.length;
   const totalQty = products.reduce(
-    (total, product) => total + product.length,
+    (total, product) => total + product.quantity,
     0
   );
   const totalPrice = products.reduce(
-    (total, product) => total + product.length * product.eachPrice,
+    (total, product) => total + product.quantity * product.eachPrice,
     0
   );
   const outOfStock = products.filter((product) => product.length < 5).length;
