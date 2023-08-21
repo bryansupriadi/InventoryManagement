@@ -131,6 +131,8 @@ function AddProductType() {
         setSuccessMessage(res.data.msg);
         setShowPopupSuccess(true);
 
+        resetForm();
+
         // redirect to product list
         navigate(
           `/${groupSlug}-category/${categorySlug}/${subCategorySlug}/${productSlug}`
