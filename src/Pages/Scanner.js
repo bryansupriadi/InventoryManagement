@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
+// import useScanDetection from "use-scan-detection";
 import { BrowserMultiFormatReader } from "@zxing/library";
 
 import SideBar from "../Components/SideBar";
