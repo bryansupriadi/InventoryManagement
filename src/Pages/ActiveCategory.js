@@ -33,6 +33,7 @@ function ActiveCategory() {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  // const [data, setData] = useState([]);
   const [subCategoryData, setSubCategoryData] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
 
@@ -51,7 +52,9 @@ function ActiveCategory() {
       })
       .then((res) => {
         console.log(res.data);
+        // setData(res.data.data);
 
+        // const filteredData = data.filter((item) => item.subCategoryName === item.subCategorySlug);
         setSubCategoryData(res.data.data);
       })
       .catch((err) => {
