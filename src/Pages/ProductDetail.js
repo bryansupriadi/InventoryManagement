@@ -140,7 +140,7 @@ const ProductDetail = () => {
           <ul>
             {filteredProducts.map((item) => (
               <li key={item._id}>
-                <p>ID Number : {item.productId}</p>
+                <p>ID Number : {item.combinedId}</p>
                 <p>Vendor : {item.vendorName}</p>
                 <p>Purchase Date : {item.purchaseDate}</p>
                 <p>Price : {item.eachPrice}</p>
@@ -151,7 +151,12 @@ const ProductDetail = () => {
           </ul>
         </div>
         <div className="fab-btn">
-          <FloatingActionProduct />
+          <FloatingActionProduct
+            groupSlug={groupSlug}
+            categorySlug={categorySlug}
+            subCategorySlug={subCategorySlug}
+            productSlug={productSlug}
+          />
         </div>
       </div>
       {showPopupSuccess && <Popup message={successMessage} />}
