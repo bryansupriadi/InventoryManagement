@@ -74,8 +74,6 @@ function ProductBrandsDetail() {
         console.log(res.data);
 
         setProduct(res.data.data);
-
-        const data = res.data.data;
       })
       .catch((err) => {
         console.log(err, err.message);
