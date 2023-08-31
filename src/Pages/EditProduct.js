@@ -8,15 +8,9 @@ import SideBar from "../Components/SideBar";
 import api from "../api";
 
 function EditProduct() {
-  const {
-    id,
-    brandName,
-    subCategorySlug,
-    // group: urlGroup,
-    // item: urlItem,
-    // subCategory: urlSubCategory,
-    // brandName: urlBrandName,
-  } = useParams();
+  const { id, groupSlug, categorySlug, subCategorySlug, productSlug } =
+    useParams();
+
   const navigate = useNavigate();
 
   const token = localStorage.getItem("token");
@@ -82,7 +76,9 @@ function EditProduct() {
           setShowPopupSuccess(true);
           setSuccessMessage(res.data.msg);
 
-          // navigate(`/active-category/${urlItem}/${urlSubCategory}/${urlBrandName}/${urlId}`);
+          navigate(
+            `/${groupSlug}-category/${categorySlug}/${subCategorySlug}/${productSlug}/${id}`
+          );
         })
         .catch((err) => {
           console.log(err, err.message);
@@ -124,8 +120,10 @@ function EditProduct() {
     const filteredProducts = product.filter((item) => {
       const subData = item || [];
       return (
+        item.groupName === groupSlug &&
+        item.categoryName === categorySlug &&
         item.subCategoryName === subCategorySlug &&
-        item.brandName === brandName &&
+        item.brandName === productSlug &&
         subData.some((subItem) => subItem._id === id)
       );
     });
@@ -134,7 +132,7 @@ function EditProduct() {
     const productIdData = subData.filter((subItem) => subItem._id === id);
 
     setFilteredProducts(productIdData);
-  }, [subCategorySlug, brandName, id, navigate]);
+  }, [groupSlug, categorySlug, subCategorySlug, productSlug, id, navigate]);
 
   return isLoggedIn ? (
     <div className="App">
@@ -144,7 +142,7 @@ function EditProduct() {
           <SideBar />
         </div>
         <div className="sub-title-product-1">
-          <h3>{brandName}</h3>
+          <h3>{product.brandName}</h3>
           <h3>{product.typeProductName}</h3>
         </div>
         <div className="product-type">
