@@ -1,11 +1,18 @@
 import React, { useState } from "react";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, useNavigate, useLocation, useParams } from "react-router-dom";
 import QRCode from "qrcode.react";
 
 import api from "../../api";
 
-function FloatingActionProduct() {
+function FloatingActionProduct({
+  groupSlug,
+  categorySlug,
+  subCategorySlug,
+  productSlug,
+}) {
   const { id } = useParams();
+
+  const navigate = useNavigate();
 
   const token = localStorage.getItem("token");
 
@@ -41,6 +48,10 @@ function FloatingActionProduct() {
       })
       .then((res) => {
         console.log(res.data);
+
+        navigate(
+          `/${groupSlug}-category/${categorySlug}/${subCategorySlug}/${productSlug}/"`
+        );
       })
       .catch((err) => {
         console.log(err, err.message);
@@ -91,6 +102,7 @@ function FloatingActionProduct() {
               1
             </button>
           </div>
+
           {showPopupQR && (
             <div className="popup-generate-container">
               <h1>QR Code</h1>
@@ -100,6 +112,7 @@ function FloatingActionProduct() {
               <button onClick={togglePopupQR}>Close</button>
             </div>
           )}
+
           {showPopupDelete && (
             <div className="popup-delete-container">
               <h3>Are you sure you want to delete this product?</h3>
