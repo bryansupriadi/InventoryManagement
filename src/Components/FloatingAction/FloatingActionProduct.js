@@ -5,12 +5,13 @@ import QRCode from "qrcode.react";
 import api from "../../api";
 
 function FloatingActionProduct({
+  productTypeId,
   groupSlug,
   categorySlug,
   subCategorySlug,
   productSlug,
 }) {
-  const { id } = useParams();
+  console.log(productTypeId);
 
   const navigate = useNavigate();
 
@@ -32,25 +33,25 @@ function FloatingActionProduct({
   };
 
   const togglePopupDelete = () => {
+    console.log("Delete product with ID:", productTypeId);
     setShowPopupDelete(!showPopupDelete);
   };
 
   const handleDelete = async () => {
-    console.log("Delete product with ID:", id);
     togglePopupDelete();
 
     setShowPopupDelete(!showPopupDelete);
 
     // api
     await api
-      .delete(`/v1/im/products/${id}`, {
+      .delete(`/v1/im/productTypes/${productTypeId}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
         console.log(res.data);
 
         navigate(
-          `/${groupSlug}-category/${categorySlug}/${subCategorySlug}/${productSlug}/"`
+          `/${groupSlug}-category/${categorySlug}/${subCategorySlug}/${productSlug}/`
         );
       })
       .catch((err) => {
