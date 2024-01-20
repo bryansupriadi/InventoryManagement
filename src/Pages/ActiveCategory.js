@@ -33,9 +33,8 @@ function ActiveCategory() {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  // const [data, setData] = useState([]);
+  const [categoryData, setCategoryData] = useState([]);
   const [subCategoryData, setSubCategoryData] = useState([]);
-  const [filteredItems, setFilteredItems] = useState([]);
 
   const getLoggedIn = () => {
     if (token) {
@@ -45,6 +44,21 @@ function ActiveCategory() {
     }
   };
 
+  const getAllCategoriesByGroup = async () => {
+    await api
+      .get(`/v1/im/categories?groupSlug=active`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((res) => {
+        console.log(res.data);
+
+        setCategoryData(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  };
+
   const getAllSubCategoryByGroup = async () => {
     await api
       .get(`/v1/im/subCategories?groupSlug=active`, {
@@ -52,9 +66,7 @@ function ActiveCategory() {
       })
       .then((res) => {
         console.log(res.data);
-        // setData(res.data.data);
 
-        // const filteredData = data.filter((item) => item.subCategoryName === item.subCategorySlug);
         setSubCategoryData(res.data.data);
       })
       .catch((err) => {
@@ -66,8 +78,15 @@ function ActiveCategory() {
     document.title = "Inventory Management - Active Category";
 
     getLoggedIn();
+    getAllCategoriesByGroup();
     getAllSubCategoryByGroup();
   }, [navigate]);
+
+  const filteredData = subCategoryData.filter(
+    (item) => item.category.categoryName
+  );
+
+  console.log(filteredData);
 
   function ProductTemp({ id, subCategoryName, subCategoryImage }) {
     return (
@@ -90,9 +109,9 @@ function ActiveCategory() {
           <SideBar />
         </div>
         <div className="content-container">
-          {subCategoryData ? (
-            subCategoryData.map((item) => (
-              <div className="product-category-container">
+          {categoryData ? (
+            categoryData.map((item) => (
+              <div className="product-category-container" key={item._id}>
                 <h4>{item.categoryName}</h4>
                 <h6>
                   <Link

@@ -61,7 +61,7 @@ function VendorTable() {
 
   const getAllProducts = async () => {
     await api
-      .get(`/v1/im/products?vendorSlug=${vendorSlug}`, {
+      .get(`/v1/im/products?vendor.vendorSlug=${vendorSlug}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {

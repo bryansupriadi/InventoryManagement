@@ -38,18 +38,18 @@ function VendorProduct() {
   const [data, setData] = useState([]);
   const [selectedSubCategory, setSelectedSubCategory] = useState("");
 
-  const [filteredItems, setFilteredItems] = useState([]);
+  // const [filteredItems, setFilteredItems] = useState([]);
 
-  const [vendorItems, setVendorItems] = useState([]);
+  // const [vendorItems, setVendorItems] = useState([]);
 
   const handleSubCategoryClick = (subCategory) => {
     setSelectedSubCategory(subCategory);
 
-    const filteredItems = data.filter(
-      (item) =>
-        item.subCategoryName === subCategory && item.vendorSlug === vendorSlug
-    );
-    setVendorItems(filteredItems);
+    // const filteredItems = data.filter(
+    //   (item) =>
+    //     item.subCategoryName === subCategory && item.vendorSlug === vendorSlug
+    // );
+    // // setVendorItems(filteredItems);
   };
 
   const getLoggedIn = () => {
@@ -81,9 +81,9 @@ function VendorProduct() {
     getLoggedIn();
     getData();
 
-    setFilteredItems(data.filter((item) => item.vendorSlug === vendorSlug));
+    // setFilteredItems(data.filter((item) => item.vendorSlug === vendorSlug));
 
-    setVendorItems(data.filter((item) => item.vendorSlug === vendorSlug));
+    // setVendorItems(data.filter((item) => item.vendorSlug === vendorSlug));
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigate, vendorSlug]);
@@ -110,7 +110,7 @@ function VendorProduct() {
         </div>
 
         <Carousel responsive={responsive} showDots={false} arrows={false}>
-          {filteredItems
+          {data
             .sort((a, b) => a._id.localeCompare(b._id))
             .map((item) => (
               <div
@@ -131,9 +131,9 @@ function VendorProduct() {
         </Carousel>
 
         <div className="vendor-content-container">
-          {vendorItems.length > 0 ? (
+          {data.length > 0 ? (
             <>
-              {vendorItems.map((info) => (
+              {data.map((info) => (
                 <ul className="list-brands-container">
                   <li key={`${info.brandName}-${info.eachPrice}`}>
                     <Link

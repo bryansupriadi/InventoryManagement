@@ -20,52 +20,64 @@ function EditProduct() {
   const [showPopupSuccess, setShowPopupSuccess] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
 
-  const [product, setProduct] = useState([]);
-  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [dataDetail, setDataDetail] = useState({
+    type: "",
+    brandName: "",
+    subCategoryName: "",
+  });
 
-  const [purchaseDate, setPurchaseDate] = useState("");
-  const [eachPrice, setEachPrice] = useState(0);
-  const [currentLocation, setCurrentLocation] = useState("");
-  const [conditionGood, setConditionGood] = useState(0);
-  const [conditionBad, setConditionBad] = useState(0);
-  const [condition, setCondition] = useState("");
+  const [values, setValues] = useState({
+    productTypeId: "",
+    combinedId: "",
+    vendorName: "",
+    purchaseDate: "",
+    eachPrice: 0,
+    currentLocation: "",
+    productCondition: "",
+  });
 
   const [errors, setErrors] = useState("");
 
-  const { Type } = filteredProducts.length > 0 ? filteredProducts[0] : "";
+  const handleChangeProduct = (e) => {
+    const { name, value } = e.target;
+
+    setValues({ ...values, [name]: value });
+  };
 
   const handleEditProduct = async (e) => {
     e.preventDefault();
     const newErrors = {};
 
-    if (!purchaseDate) {
+    if (!values.purchaseDate) {
       newErrors.purchaseDate = "Please enter the purchase date!";
     }
 
-    if (!eachPrice) {
+    if (!values.eachPrice) {
       newErrors.eachPrice = "Please enter the price!";
     }
 
-    if (!currentLocation) {
+    if (!values.currentLocation) {
       newErrors.currentLocation = "Please enter the current location!";
     }
 
-    if (!condition) {
+    if (!values.productCondition) {
       newErrors.condition = "Please enter the condition!";
-    } else if (condition !== "Good" && condition !== "Bad") {
+    } else if (
+      values.productCondition !== "Good" &&
+      values.productCondition !== "Bad"
+    ) {
       newErrors.condition = 'Condition must be either "Good" or "Bad"!';
     }
 
     if (Object.keys(newErrors).length === 0) {
       await api
-        .post(
-          `/v1/products/${id}`,
+        .patch(
+          `/v1/im/productTypes/${values.productTypeId}`,
           {
-            purchaseDate,
-            eachPrice,
-            currentLocation,
-            conditionGood,
-            conditionBad,
+            purchaseDateProductType: values.purchaseDate,
+            eachPriceProductType: values.eachPrice,
+            currentLocationProductType: values.currentLocation,
+            productTypeCondition: values.productCondition,
           },
           { headers: { Authorization: `Bearer ${token}` } }
         )
@@ -103,7 +115,24 @@ function EditProduct() {
       })
       .then((res) => {
         console.log(res.data);
-        setProduct(res.data.data);
+
+        const data = res.data.data;
+
+        setValues({
+          productTypeId: data.typeProduct._id,
+          combinedId: data.combinedId,
+          vendorName: data.typeProduct.vendor.vendorName,
+          purchaseDate: data.typeProduct.purchaseDateProductType,
+          eachPrice: data.typeProduct.eachPriceProductType,
+          currentLocation: data.typeProduct.currentLocationProductType,
+          productCondition: data.typeProduct.productTypeCondition,
+        });
+
+        setDataDetail({
+          type: data.typeProduct.type,
+          brandName: data.brandName,
+          subCategoryName: data.subCategory.subCategoryName,
+        });
       })
       .catch((err) => {
         console.log(err, err.message);
@@ -115,23 +144,6 @@ function EditProduct() {
 
     getLoggedIn();
     getProductById();
-
-    // Mencari produk berdasarkan subCategory dan brandName
-    const filteredProducts = product.filter((item) => {
-      const subData = item || [];
-      return (
-        item.groupName === groupSlug &&
-        item.categoryName === categorySlug &&
-        item.subCategoryName === subCategorySlug &&
-        item.brandName === productSlug &&
-        subData.some((subItem) => subItem._id === id)
-      );
-    });
-
-    const subData = filteredProducts.length > 0 ? filteredProducts[0] : [];
-    const productIdData = subData.filter((subItem) => subItem._id === id);
-
-    setFilteredProducts(productIdData);
   }, [groupSlug, categorySlug, subCategorySlug, productSlug, id, navigate]);
 
   return isLoggedIn ? (
@@ -142,88 +154,88 @@ function EditProduct() {
           <SideBar />
         </div>
         <div className="sub-title-product-1">
-          <h3>{product.brandName}</h3>
-          <h3>{product.typeProductName}</h3>
+          <h3>{dataDetail.brandName}</h3>
+          <h3>{dataDetail.type}</h3>
         </div>
         <div className="product-type">
           <ul>
-            {filteredProducts.map((item) => (
-              <li key={item._id}>
-                <p>ID Number: {item.productId}</p>
-                <p>Vendor: {item.vendorName}</p>
-                <div className="form-container">
-                  <form onSubmit={handleEditProduct}>
-                    <div>
-                      <label htmlFor="purchaseDate" className="form-field-1">
-                        Purchase Date
-                      </label>
-                      <input
-                        type="date"
-                        id="purchaseDate"
-                        value={item.purchaseDate}
-                        onChange={(e) => setPurchaseDate(e.target.value)}
-                        className="input-form"
-                      />
+            <li>
+              <p>ID Number: {values.combinedId}</p>
+              <p>Vendor: {values.vendorName}</p>
+              <div className="form-container">
+                <form onSubmit={handleEditProduct}>
+                  <div>
+                    <label htmlFor="purchaseDate" className="form-field-1">
+                      Purchase Date
+                    </label>
+                    <input
+                      type="date"
+                      id="purchaseDate"
+                      name="purchaseDate"
+                      value={values.purchaseDate}
+                      onChange={handleChangeProduct}
+                      className="input-form"
+                    />
+                  </div>
+                  {errors.purchaseDate && (
+                    <div className="error-message-2">{errors.purchaseDate}</div>
+                  )}
+                  <div>
+                    <label htmlFor="price" className="form-field-1">
+                      Price
+                    </label>
+                    <input
+                      type="number"
+                      id="price"
+                      name="eachPrice"
+                      value={values.eachPrice}
+                      onChange={handleChangeProduct}
+                      className="input-form"
+                    />
+                  </div>
+                  {errors.price && (
+                    <div className="error-message-2">{errors.eachPrice}</div>
+                  )}
+                  <div>
+                    <label htmlFor="currentLocation" className="form-field-1">
+                      Current Location
+                    </label>
+                    <input
+                      type="text"
+                      id="currentLocation"
+                      name="currentLocation"
+                      value={values.currentLocation}
+                      onChange={handleChangeProduct}
+                      className="input-form"
+                    />
+                  </div>
+                  {errors.currentLocation && (
+                    <div className="error-message-2">
+                      {errors.currentLocation}
                     </div>
-                    {errors.purchaseDate && (
-                      <div className="error-message-2">
-                        {errors.purchaseDate}
-                      </div>
-                    )}
-                    <div>
-                      <label htmlFor="price" className="form-field-1">
-                        Price
-                      </label>
-                      <input
-                        type="number"
-                        id="price"
-                        value={eachPrice}
-                        onChange={(e) => setEachPrice(e.target.value)}
-                        className="input-form"
-                      />
-                    </div>
-                    {errors.price && (
-                      <div className="error-message-2">{errors.eachPrice}</div>
-                    )}
-                    <div>
-                      <label htmlFor="currentLocation" className="form-field-1">
-                        Current Location
-                      </label>
-                      <input
-                        type="text"
-                        id="currentLocation"
-                        value={currentLocation}
-                        onChange={(e) => setCurrentLocation(e.target.value)}
-                        className="input-form"
-                      />
-                    </div>
-                    {errors.currentLocation && (
-                      <div className="error-message-2">
-                        {errors.currentLocation}
-                      </div>
-                    )}
-                    <div>
-                      <label htmlFor="condition" className="form-field-1">
-                        Condition
-                      </label>
-                      <input
-                        type="text"
-                        id="condition"
-                        value={condition}
-                        onChange={(e) => setCondition(e.target.value)}
-                        className="input-form"
-                      />
-                    </div>
-                    {errors.condition && (
-                      <div className="error-message-2">{errors.condition}</div>
-                    )}
-                    <button type="submit" className="btn-form-1">
-                      Save Changes
-                    </button>
-                  </form>
-                </div>
-              </li>
-            ))}
+                  )}
+                  <div>
+                    <label htmlFor="condition" className="form-field-1">
+                      Condition
+                    </label>
+                    <input
+                      type="text"
+                      id="condition"
+                      name="productCondition"
+                      value={values.productCondition}
+                      onChange={handleChangeProduct}
+                      className="input-form"
+                    />
+                  </div>
+                  {errors.condition && (
+                    <div className="error-message-2">{errors.condition}</div>
+                  )}
+                  <button type="submit" className="btn-form-1">
+                    Save Changes
+                  </button>
+                </form>
+              </div>
+            </li>
           </ul>
         </div>
       </div>

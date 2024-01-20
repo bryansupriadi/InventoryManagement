@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
+import Moment from "moment";
+
 import SideBar from "../Components/SideBar";
 import FloatingActionProduct from "../Components/FloatingAction/FloatingActionProduct";
 
@@ -25,15 +27,18 @@ const ProductDetail = () => {
   const [showPopupSuccess, setShowPopupSuccess] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
 
-  const [productData, setProductData] = useState([]);
-
   const [dataDetail, setDataDetail] = useState({
+    productTypeId: "",
     type: "",
     brandName: "",
     subCategoryName: "",
+    combinedId: "",
+    vendorName: "",
+    purchaseDate: "",
+    eachPrice: "",
+    currentLocation: "",
+    productCondition: "",
   });
-
-  const [filteredProducts, setFilteredProducts] = useState([]);
 
   const getLoggedIn = () => {
     if (token) {
@@ -50,14 +55,20 @@ const ProductDetail = () => {
       })
       .then((res) => {
         console.log(res.data);
-        setProductData(res.data.data);
 
         const data = res.data.data;
 
         setDataDetail({
+          productTypeId: data.typeProduct._id,
           type: data.typeProduct.type,
           brandName: data.brandName,
           subCategoryName: data.subCategory.subCategoryName,
+          combinedId: data.combinedId,
+          vendorName: data.vendor.vendorName,
+          purchaseDate: data.typeProduct.purchaseDateProductType,
+          eachPrice: data.typeProduct.eachPriceProductType,
+          currentLocation: data.typeProduct.currentLocationProductType,
+          productCondition: data.typeProduct.productTypeCondition,
         });
       })
       .catch((err) => {
@@ -70,25 +81,6 @@ const ProductDetail = () => {
 
     getLoggedIn();
     getProductDetail();
-
-    // Mencari produk berdasarkan subCategory dan brandName
-    const filteredProducts = productData.filter((item) => {
-      const subData = item || [];
-      return (
-        item.groupSlug === groupSlug &&
-        item.vendorSlug === vendorSlug &&
-        item.categorySlug === categorySlug &&
-        item.subCategorySlug === subCategorySlug &&
-        item.productSlug === productSlug &&
-        subData.some((subItem) => subItem._id === id)
-      );
-    });
-
-    const subData = filteredProducts.length > 0 ? filteredProducts : [];
-
-    const productIdData = subData.filter((subItem) => subItem._id === id);
-
-    setFilteredProducts(productIdData);
 
     if (showPopupSuccess) {
       setSuccessMessage(successMessage);
@@ -138,20 +130,25 @@ const ProductDetail = () => {
         </div>
         <div className="product-type">
           <ul>
-            {filteredProducts.map((item) => (
-              <li key={item._id}>
-                <p>ID Number : {item.combinedId}</p>
-                <p>Vendor : {item.vendorName}</p>
-                <p>Purchase Date : {item.purchaseDate}</p>
-                <p>Price : {item.eachPrice}</p>
-                <p>Current Location : {item.location}</p>
-                <p>Condition : {item.productCondition}</p>
-              </li>
-            ))}
+            <li>
+              <p>ID Number: {dataDetail.combinedId}</p>
+              <p>Vendor: {dataDetail.vendorName}</p>
+              <p>
+                Purchase Date:{" "}
+                {Moment(dataDetail.purchaseDate).local().format("DD/MM/YYYY")}
+              </p>
+              <p>Price: {dataDetail.eachPrice}</p>
+              <p>
+                Current Location: {""}
+                {dataDetail.currentLocation}
+              </p>
+              <p>Condition: {dataDetail.productCondition}</p>
+            </li>
           </ul>
         </div>
         <div className="fab-btn">
           <FloatingActionProduct
+            productTypeId={dataDetail.productTypeId}
             groupSlug={groupSlug}
             categorySlug={categorySlug}
             subCategorySlug={subCategorySlug}
